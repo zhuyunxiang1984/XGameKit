@@ -3,3 +3,5 @@
 !/Packages/
 !/ProjectSettings/
 !.gitignore
+
+/Assets/Plugins/Editor/JetBrains
