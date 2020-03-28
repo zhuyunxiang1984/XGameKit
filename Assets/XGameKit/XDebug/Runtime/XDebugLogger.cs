@@ -21,6 +21,12 @@ namespace XGameKit.Core
             Debug.LogError(_AssembleMessage(message));
         }
 
+        //创建一个支持多行的log
+        public XDebugMutiLogger CreateMutiLogger()
+        {
+            return new XDebugMutiLogger(this);
+        }
+
         #region 拼接Log文本
 
         string _AssembleMessage(string message)

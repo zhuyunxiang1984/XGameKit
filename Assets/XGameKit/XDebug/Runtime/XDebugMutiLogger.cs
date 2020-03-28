@@ -18,7 +18,7 @@ namespace XGameKit.Core
         public void Append(string message)
         {
             if (_mute) return;
-            if (string.IsNullOrEmpty(message))
+            if (string.IsNullOrEmpty(_message))
                 _message = message;
             else
                 _message = _message + "\n" + message;
