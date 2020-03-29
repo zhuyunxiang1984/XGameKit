@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -76,5 +77,37 @@ namespace XGameKit.Core
             }
         }
 #endif
+
+        private bool _initialized;
+        private Dictionary<string, XMonoVariable> _dictValues = new Dictionary<string, XMonoVariable>();
+        private void Awake()
+        {
+            _InitializeInternal();
+        }
+
+        private void _InitializeInternal()
+        {
+            if (_initialized)
+                return;
+            _dictValues.Clear();
+            foreach (var value in values)
+            {
+                if (string.IsNullOrEmpty(value.name))
+                    continue;
+                if (_dictValues.ContainsKey(value.name))
+                {
+                    Debug.LogError($"{value.name} 重复定义");
+                    continue;
+                }
+                _dictValues.Add(value.name, value);
+            }
+            _initialized = true;
+        }
+
+        //将变量注入制定对象
+        public void Inject<T>(T target)
+        {
+            
+        }
     }
 }

@@ -35,6 +35,35 @@ namespace XGameKit.Core
         //记录相对路径
         public string relativePath;
 #endif
+
+        public object GetValue()
+        {
+            switch (type)
+            {
+                case XMonoVariableType.Bool:
+                    return XMonoVariableUtility.ToBool(valData);
+                case XMonoVariableType.Float:
+                    return XMonoVariableUtility.ToFloat(valData);
+                case XMonoVariableType.Int:
+                    return XMonoVariableUtility.ToInt32(valData);
+                case XMonoVariableType.String:
+                    return valData;
+                case XMonoVariableType.Color:
+                    return XMonoVariableUtility.ToColor(valData);
+                case XMonoVariableType.Vector2:
+                    return XMonoVariableUtility.ToVector2(valData);
+                case XMonoVariableType.Vector3:
+                    return XMonoVariableUtility.ToVector3(valData);
+                case XMonoVariableType.Vector4:
+                    return XMonoVariableUtility.ToVector4(valData);
+                case XMonoVariableType.GameObject:
+                    return objData;
+                case XMonoVariableType.Component:
+                    return objData;
+                default:
+                    throw new System.NotSupportedException();
+            }
+        }
     }
     
 #if UNITY_EDITOR
