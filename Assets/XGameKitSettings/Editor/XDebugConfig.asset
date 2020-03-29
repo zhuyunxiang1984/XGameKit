@@ -15,7 +15,7 @@ MonoBehaviour:
   listLoggerInfo:
   - active: 1
     name: Sample1
-    color: {r: 1, g: 0, b: 0.92144823, a: 1}
+    color: {r: 0.07075471, g: 0.2226177, b: 1, a: 1}
   - active: 1
     name: Sample2
     color: {r: 0, g: 1, b: 0.18730927, a: 1}
