@@ -34,6 +34,15 @@ namespace XGameKit.Core
         public bool isself;
         //记录相对路径
         public string relativePath;
+        //编辑器模式下的数据保存
+        public bool    cacheBool;
+        public float   cacheFloat;
+        public int     cacheInt;
+        public string  cacheString;
+        public Color   cacheColor = Color.white;
+        public Vector2 cacheVec2;
+        public Vector3 cacheVec3;
+        public Vector4 cacheVec4;
 #endif
 
         public object GetValue()
@@ -43,7 +52,7 @@ namespace XGameKit.Core
                 case XMonoVariableType.Bool:
                     return XMonoVariableUtility.ToBool(valData);
                 case XMonoVariableType.Float:
-                    return XMonoVariableUtility.ToFloat(valData);
+                    return XMonoVariableUtility.ToSingle(valData);
                 case XMonoVariableType.Int:
                     return XMonoVariableUtility.ToInt32(valData);
                 case XMonoVariableType.String:
@@ -87,9 +96,9 @@ namespace XGameKit.Core
             if (EditorGUI.EndChangeCheck())
             {
                 target.recorded = false;
-                
+                _SyncValData(target);
             }
-            
+            EditorGUI.BeginChangeCheck();
             switch (target.type)
             {
                 case XMonoVariableType.GameObject:
@@ -99,29 +108,33 @@ namespace XGameKit.Core
                     DrawValueComponent(target);
                     break;
                 case XMonoVariableType.Bool:
-                    DrawValueBoolean(target);
+                    target.cacheBool = EditorGUILayout.Toggle(target.cacheBool);
                     break;
                 case XMonoVariableType.Int:
-                    DrawValueInteger(target);
+                    target.cacheInt = EditorGUILayout.IntField(target.cacheInt);
                     break;
                 case XMonoVariableType.Float:
-                    DrawValueFloat(target); 
-                    break;
-                case XMonoVariableType.Color:
-                    DrawValueColor(target);
+                    target.cacheFloat = EditorGUILayout.FloatField(target.cacheFloat);
                     break;
                 case XMonoVariableType.String:
-                    DrawValueString(target); 
+                    target.cacheString = EditorGUILayout.TextField(target.cacheString);
+                    break;
+                case XMonoVariableType.Color:
+                    target.cacheColor = EditorGUILayout.ColorField(target.cacheColor);
                     break;
                 case XMonoVariableType.Vector2:
-                    DrawValueVector2(target); 
+                    target.cacheVec2 = EditorGUILayout.Vector2Field(GUIContent.none, target.cacheVec2);
                     break;
                 case XMonoVariableType.Vector3:
-                    DrawValueVector3(target);
+                    target.cacheVec3 = EditorGUILayout.Vector3Field(GUIContent.none, target.cacheVec3);
                     break;
                 case XMonoVariableType.Vector4:
-                    DrawValueVector4(target);
+                    target.cacheVec4 = EditorGUILayout.Vector4Field(GUIContent.none, target.cacheVec4);
                     break;
+            }
+            if (EditorGUI.EndChangeCheck())
+            {
+                _SyncValData(target);
             }
             EditorGUILayout.EndHorizontal();
 
@@ -205,88 +218,39 @@ namespace XGameKit.Core
                 target.name = target.gameobject.name;
             }
         }
-        void DrawValueBoolean(XMonoVariable target)
-        {
-            EditorGUI.BeginChangeCheck();
-            var value = XMonoVariableUtility.ToBool(target.valData);
-            value = EditorGUILayout.Toggle(value);
-            if (EditorGUI.EndChangeCheck())
-            {
-                target.valData = XMonoVariableUtility.ToString(value);
-            }
-        }
-        void DrawValueInteger(XMonoVariable target)
-        {
-            EditorGUI.BeginChangeCheck();
-            var value = XMonoVariableUtility.ToInt32(target.valData);
-            value = EditorGUILayout.IntField(value);
-            if (EditorGUI.EndChangeCheck())
-            {
-                target.valData = XMonoVariableUtility.ToString(value);
-            }
-        }
-        void DrawValueFloat(XMonoVariable target)
-        {
-            EditorGUI.BeginChangeCheck();
-            var value = XMonoVariableUtility.ToFloat(target.valData);
-            value = EditorGUILayout.FloatField(value);
-            if (EditorGUI.EndChangeCheck())
-            {
-                target.valData = XMonoVariableUtility.ToString(value);
-            }
-        }
-        void DrawValueString(XMonoVariable target)
-        {
-            EditorGUI.BeginChangeCheck();
-            var value = target.valData;
-            value = EditorGUILayout.TextField(value);
-            if (EditorGUI.EndChangeCheck())
-            {
-                target.valData = value;
-            }
-        }
-        void DrawValueColor(XMonoVariable target)
-        {
-            EditorGUI.BeginChangeCheck();
-            var value = XMonoVariableUtility.ToColor(target.valData);
-            value = EditorGUILayout.ColorField(value);
-            if (EditorGUI.EndChangeCheck())
-            {
-                target.valData = XMonoVariableUtility.ToString(value);
-            }
-        }
-        void DrawValueVector2(XMonoVariable target)
-        {
-            EditorGUI.BeginChangeCheck();
-            var value = XMonoVariableUtility.ToVector2(target.valData);
-            value = EditorGUILayout.Vector2Field(GUIContent.none, value);
-            if (EditorGUI.EndChangeCheck())
-            {
-                target.valData = XMonoVariableUtility.ToString(value);
-            }
-        }
-        void DrawValueVector3(XMonoVariable target)
-        {
-            EditorGUI.BeginChangeCheck();
-            var value = XMonoVariableUtility.ToVector3(target.valData);
-            value = EditorGUILayout.Vector3Field(GUIContent.none, value);
-            if (EditorGUI.EndChangeCheck())
-            {
-                target.valData = XMonoVariableUtility.ToString(value);
-            }
-        }
-        void DrawValueVector4(XMonoVariable target)
-        {
-            EditorGUI.BeginChangeCheck();
-            var value = XMonoVariableUtility.ToVector4(target.valData);
-            value = EditorGUILayout.Vector4Field(GUIContent.none, value);
-            if (EditorGUI.EndChangeCheck())
-            {
-                target.valData = XMonoVariableUtility.ToString(value);
-            }
-        }
+        
         #endregion
 
+        private void _SyncValData(XMonoVariable target)
+        {
+            switch (target.type)
+            {
+                case XMonoVariableType.Bool:
+                    target.valData = XMonoVariableUtility.ToString(target.cacheBool);
+                    break;
+                case XMonoVariableType.Int:
+                    target.valData = XMonoVariableUtility.ToString(target.cacheInt);
+                    break;
+                case XMonoVariableType.Float:
+                    target.valData = XMonoVariableUtility.ToString(target.cacheFloat);
+                    break;
+                case XMonoVariableType.Color:
+                    target.valData = XMonoVariableUtility.ToString(target.cacheColor);
+                    break;
+                case XMonoVariableType.String:
+                    target.valData = target.cacheString;
+                    break;
+                case XMonoVariableType.Vector2:
+                    target.valData = XMonoVariableUtility.ToString(target.cacheVec2);
+                    break;
+                case XMonoVariableType.Vector3:
+                    target.valData = XMonoVariableUtility.ToString(target.cacheVec3);
+                    break;
+                case XMonoVariableType.Vector4:
+                    target.valData = XMonoVariableUtility.ToString(target.cacheVec4);
+                    break;
+            }
+        }
     }
 #endif
 }

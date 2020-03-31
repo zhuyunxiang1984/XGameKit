@@ -15,6 +15,7 @@ namespace XGameKit.Core
 {
     public class XMonoVariables : MonoBehaviour
     {
+        [CustomContextMenu("打印数据", "CheckValue")]
         public List<XMonoVariable> values;
 
 #if UNITY_EDITOR
@@ -75,6 +76,17 @@ namespace XGameKit.Core
                 }
                 value.gameobject = child.gameObject;
             }
+        }
+
+        void CheckValue()
+        {
+            var logger = XDebug.CreateMutiLogger("XMonoVariables");
+            logger.Append($"===打印数据=== count:{values.Count}");
+            foreach (var value in values)
+            {
+                logger.Append($"{value.name}:{value.GetValue()}");
+            }
+            logger.Log();
         }
 #endif
 

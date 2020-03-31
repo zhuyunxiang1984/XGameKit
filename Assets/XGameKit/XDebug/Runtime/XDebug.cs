@@ -121,6 +121,12 @@ namespace XGameKit.Core
             _DefaultLogger.LogWarning(message);
         }
         
+        //创建一个支持多行的log
+        public static XDebugMutiLogger CreateMutiLogger(string tag)
+        {
+            return new XDebugMutiLogger(_GetLogger(tag));
+        }
+        
         static XDebugLogger _GetLogger(string tag)
         {
             if (_Loggers.ContainsKey(tag))

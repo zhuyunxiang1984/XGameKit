@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -96,7 +96,6 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
-    m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
   m_UseShadowmask: 1
 --- !u!196 &4
@@ -219,9 +218,8 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 705507993}
   m_Enabled: 1
-  serializedVersion: 10
+  serializedVersion: 9
   m_Type: 1
-  m_Shape: 0
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
   m_Intensity: 1
   m_Range: 10
@@ -268,7 +266,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 9.121062e-19}
+  m_BoundingSphereOverride: {x: 0, y: 6e-45, z: 3.471e-42, w: 1.05e-43}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -414,12 +412,20 @@ MonoBehaviour:
   values:
   - name: node1
     type: 1
-    objData: {fileID: 0}
+    objData: {fileID: 674131030}
     valData: 
     gameobject: {fileID: 674131029}
     recorded: 1
     isself: 0
     relativePath: node1
+    cacheBool: 0
+    cacheFloat: 0
+    cacheInt: 0
+    cacheString: 
+    cacheColor: {r: 0, g: 0, b: 0, a: 0}
+    cacheVec2: {x: 0, y: 0}
+    cacheVec3: {x: 0, y: 0, z: 0}
+    cacheVec4: {x: 0, y: 0, z: 0, w: 0}
   - name: node2
     type: 0
     objData: {fileID: 48816403}
@@ -428,6 +434,14 @@ MonoBehaviour:
     recorded: 1
     isself: 0
     relativePath: node2
+    cacheBool: 0
+    cacheFloat: 0
+    cacheInt: 0
+    cacheString: 
+    cacheColor: {r: 0, g: 0, b: 0, a: 0}
+    cacheVec2: {x: 0, y: 0}
+    cacheVec3: {x: 0, y: 0, z: 0}
+    cacheVec4: {x: 0, y: 0, z: 0, w: 0}
   - name: self
     type: 1
     objData: {fileID: 2070069105}
@@ -436,7 +450,15 @@ MonoBehaviour:
     recorded: 1
     isself: 1
     relativePath: .
-  - name: 
+    cacheBool: 0
+    cacheFloat: 0
+    cacheInt: 0
+    cacheString: 
+    cacheColor: {r: 0, g: 0, b: 0, a: 0}
+    cacheVec2: {x: 0, y: 0}
+    cacheVec3: {x: 0, y: 0, z: 0}
+    cacheVec4: {x: 0, y: 0, z: 0, w: 0}
+  - name: aaa
     type: 3
     objData: {fileID: 0}
     valData: 
@@ -444,6 +466,62 @@ MonoBehaviour:
     recorded: 1
     isself: 0
     relativePath: 
+    cacheBool: 0
+    cacheFloat: 0
+    cacheInt: 0
+    cacheString: 
+    cacheColor: {r: 0, g: 0, b: 0, a: 0}
+    cacheVec2: {x: 0, y: 0}
+    cacheVec3: {x: 0, y: 0, z: 0}
+    cacheVec4: {x: 0, y: 0, z: 0, w: 0}
+  - name: bbb
+    type: 7
+    objData: {fileID: 0}
+    valData: 
+    gameobject: {fileID: 0}
+    recorded: 0
+    isself: 0
+    relativePath: 
+    cacheBool: 0
+    cacheFloat: 0
+    cacheInt: 0
+    cacheString: 
+    cacheColor: {r: 0, g: 0, b: 0, a: 0}
+    cacheVec2: {x: 0, y: 0}
+    cacheVec3: {x: 0, y: 0, z: 0}
+    cacheVec4: {x: 0, y: 0, z: 0, w: 0}
+  - name: ccc
+    type: 2
+    objData: {fileID: 0}
+    valData: AQ==
+    gameobject: {fileID: 0}
+    recorded: 0
+    isself: 0
+    relativePath: 
+    cacheBool: 1
+    cacheFloat: 0
+    cacheInt: 0
+    cacheString: 
+    cacheColor: {r: 1, g: 1, b: 1, a: 1}
+    cacheVec2: {x: 2, y: 2}
+    cacheVec3: {x: 1, y: 1, z: 1}
+    cacheVec4: {x: 0, y: 0, z: 0, w: 0}
+  - name: ddd
+    type: 6
+    objData: {fileID: 0}
+    valData: AACAPwAAAAAAAAAAAACAPw==
+    gameobject: {fileID: 0}
+    recorded: 0
+    isself: 0
+    relativePath: 
+    cacheBool: 0
+    cacheFloat: 0
+    cacheInt: 0
+    cacheString: 
+    cacheColor: {r: 1, g: 0, b: 0, a: 1}
+    cacheVec2: {x: 0, y: 0}
+    cacheVec3: {x: 0, y: 0, z: 0}
+    cacheVec4: {x: 0, y: 0, z: 0, w: 0}
 --- !u!4 &2070069106
 Transform:
   m_ObjectHideFlags: 0
