@@ -5,13 +5,17 @@ using XGameKit.Core;
 
 public class XTaskSample : MonoBehaviour
 {
-    protected XTaskSampleSchedule _Schedule = new XTaskSampleSchedule();
+    protected XTaskSchedule<XTaskSampleData> _Schedule = new XTaskSchedule<XTaskSampleData>();
     // Start is called before the first frame update
     void Start()
     {
-        _Schedule.AddTask(new XTaskStepWait<int>(2f));
-        _Schedule.AddTask(new XTaskStepWait<int>(2f));
-        _Schedule.AddTask(new XTaskStepWait<int>(2f));
+        _Schedule.AddMethod((data)=> { Debug.Log("execute something 111");  });
+        _Schedule.AddWait(2f);
+        _Schedule.AddMethod((data)=> { Debug.Log("execute something 222");  });
+        _Schedule.AddWait(2f);
+        _Schedule.AddMethod((data)=> { Debug.Log("execute something 333");  });
+        _Schedule.AddWait(2f);
+        _Schedule.AddMethod((data)=> { Debug.Log("execute something 444");  });
     }
 
     // Update is called once per frame
@@ -19,7 +23,7 @@ public class XTaskSample : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            _Schedule.Start(1);
+            _Schedule.Start(new XTaskSampleData());
         }
         _Schedule.Update(Time.deltaTime);
     }
@@ -27,16 +31,8 @@ public class XTaskSample : MonoBehaviour
 
 #region 例子
 
-public class XTaskSampleSchedule : XTaskSchedule<int>
+public class XTaskSampleData
 {
-    public class SampleData : XTaskData<int>
-    {
-        
-    }
-    protected override XTaskData<int> _CreateTaskData(int data)
-    {
-        return XObjectPool.Alloc<SampleData>();
-    }
 }
 
 #endregion
