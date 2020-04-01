@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace XGameKit.Core
 {
-    public class XEventManager : IXService
+    public class XEvtManager : IXService
     {
         //事件列表
         private Queue<XEvent> _events = new Queue<XEvent>();

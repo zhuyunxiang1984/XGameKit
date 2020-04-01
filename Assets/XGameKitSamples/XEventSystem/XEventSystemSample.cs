@@ -7,11 +7,11 @@ public class XEventSystemSample : MonoBehaviour
 {
     void Start()
     {
-        XService.AddService<XEventManager>();
+        XService.AddService<XEvtManager>();
         
-        var aa = XService.AddService<XMessageManager>();
-        var bb = XService.AddService<XMessageManager>("bb");
-        XMessageManager.Append(aa, bb);
+        var aa = XService.AddService<XMsgManager>();
+        var bb = XService.AddService<XMsgManager>("bb");
+        XMsgManager.Append(aa, bb);
         
         aa.Register<XSampleMsg1>(OnHandleMsg1aa);
         bb.Register<XSampleMsg1>(OnHandleMsg1bb);
@@ -22,21 +22,21 @@ public class XEventSystemSample : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            var evtManager = XService.GetService<XEventManager>();
+            var evtManager = XService.GetService<XEvtManager>();
             var evt = evtManager.GetEvent<XSampleEvent1>();
             evt.value = 100;
             evtManager.PostEvent(evt);
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            var evtManager = XService.GetService<XEventManager>();
+            var evtManager = XService.GetService<XEvtManager>();
             var evt = evtManager.GetEvent<XSampleEvent1>();
             evt.value = 200;
             evtManager.PostEvent(evt);
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            var msgManager = XService.GetService<XMessageManager>();
+            var msgManager = XService.GetService<XMsgManager>();
             var mgr = msgManager.GetMsg<XSampleMsg1>();
             mgr.value = 200;
             msgManager.SendMsg(mgr);
