@@ -6,92 +6,77 @@ using UnityEngine;
 
 namespace XGameKit.Core
 {
-    public abstract class XTaskSchedule<DATA>
+    public class XTaskSchedule<T> where T : class
     {
-        public Action<DATA, bool> OnComplete { get; set; }
-        
-        protected List<XTask<DATA>> m_tasks = new List<XTask<DATA>>();
-        
-        public void AddTask(XTask<DATA> task)
+        protected List<XTask<T>> m_tasks = new List<XTask<T>>();
+        protected Action<bool> m_OnComplete;
+        protected T m_obj;
+        protected int m_step;
+
+        public void AddMethod(Action<T> method)
+        {
+            if (method == null)
+                return;
+            m_tasks.Add(new XTaskCallMethod<T>(method));
+        }
+
+        public void AddWait(float seconds)
+        {
+            if (seconds <= 0f)
+                return;
+            m_tasks.Add(new XTaskWaitSeconds<T>(seconds));
+        }
+        public void AddTask(XTask<T> task)
         {
             if (task == null)
                 return;
             m_tasks.Add(task);
         }
-        public void DelTask(XTask<DATA> task)
+        public void Start(T obj, Action<bool> OnComplete = null)
         {
-            if (task == null)
-                return;
-            m_tasks.Remove(task);
+            m_obj = obj;
+            m_OnComplete = OnComplete;
+            m_step = 0;
+            m_tasks[m_step].Enter(m_obj);
         }
-        protected List<XTaskData<DATA>> m_listTaskDatas = new List<XTaskData<DATA>>();
-        protected Dictionary<DATA, XTaskData<DATA>> m_dictTaskDatas = new Dictionary<DATA, XTaskData<DATA>>();
-
-        protected abstract XTaskData<DATA> _CreateTaskData(DATA data);
-
-        public void Start(DATA data)
+        public void Stop()
         {
-            if (m_dictTaskDatas.ContainsKey(data))
+            if (m_obj == null)
                 return;
-            var taskData = _CreateTaskData(data);
-            taskData.Init(data);
-            m_listTaskDatas.Add(taskData);
-            m_dictTaskDatas.Add(data, taskData);
+            m_tasks[m_step].Leave(m_obj);
+            m_obj = null;
+            m_OnComplete?.Invoke(false);
+            m_OnComplete = null;
         }
-        public void Stop(DATA data)
+        public void Complete(bool success)
         {
-            if (!m_dictTaskDatas.ContainsKey(data))
+            if (m_obj == null)
                 return;
-            var taskData = m_dictTaskDatas[data];
-            if (taskData.CurStep >= 0 && taskData.CurStep < m_tasks.Count)
-            {
-                m_tasks[taskData.CurStep].Stop(taskData);
-            }
-            m_listTaskDatas.Remove(taskData);
-            m_dictTaskDatas.Remove(data);
+            m_tasks[m_step].Leave(m_obj);
+            m_obj = null;
+            m_OnComplete?.Invoke(success);
+            m_OnComplete = null;
         }
-
         public void Update(float elapsedTime)
         {
-            int max = m_listTaskDatas.Count;
-            if (max < 1)
+            if (m_obj == null)
                 return;
-            for (int i = 0; i < max; ++i)
+            var result = m_tasks[m_step].Execute(m_obj, elapsedTime);
+            if (result == EnumXTaskResult.Execute)
+                return;
+            if (result == EnumXTaskResult.Failure)
             {
-                var taskData = m_listTaskDatas[i];
-                if (taskData.CurStep >= 0 || taskData.CurStep < m_tasks.Count)
-                {
-                    m_tasks[taskData.CurStep].Execute(taskData, elapsedTime);
-                }
-                else
-                {
-                    taskData.State = EnumXTaskState.Failure;
-                }
-                switch (taskData.State)
-                {
-                    case EnumXTaskState.Success:
-                        taskData.CurStep += 1;
-                        if (taskData.CurStep >= m_tasks.Count)
-                        {
-                            OnComplete?.Invoke(taskData.Data, true);
-                            XObjectPool.Free(taskData);
-                            m_listTaskDatas.RemoveAt(i);
-                            --i;
-                        }
-                        else
-                        {
-                            taskData.State = EnumXTaskState.None;
-                        }
-                        break;
-                    case EnumXTaskState.Failure:
-                    case EnumXTaskState.Remove:
-                        OnComplete?.Invoke(taskData.Data, false);
-                        XObjectPool.Free(taskData);
-                        m_listTaskDatas.RemoveAt(i);
-                        --i;
-                        break;
-                }
+                Complete(false);
+                return;
             }
+            if (result == EnumXTaskResult.Success && m_step + 1 >= m_tasks.Count)
+            {
+                Complete(true);
+                return;
+            }
+            m_tasks[m_step].Leave(m_obj);
+            m_step += 1;
+            m_tasks[m_step].Enter(m_obj);
         }
     }
 }
