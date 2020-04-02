@@ -1,18 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using XGameKit.Core;
 
-public class XUIWidget : MonoBehaviour
+namespace XGameKit.XUI
 {
-    // Start is called before the first frame update
-    void Start()
+    public class XUIWidget
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        public XUIManager uiManager { get; protected set; }
+        public XUIWidgetMono mono;
+        public object controller;
     }
 }

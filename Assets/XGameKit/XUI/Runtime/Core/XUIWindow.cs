@@ -5,54 +5,59 @@ using XGameKit.Core;
 
 namespace XGameKit.XUI
 {
-    public class XUIWindow
+    public class XUIWindow : IXPoolable
     {
+        public void Reset()
+        {
+        }
+
+        public bool isShow;
+        public XUIWindowStateMachine stateMachine = new XUIWindowStateMachine();
+        
         //uimanager
         public XUIManager uiManager { get; protected set; }
         public string name { get; protected set; }
         public int layer;
-        public GameObject prefab;
-        public object view;
-        public object controller;
-        public object canvas;
+        public string resName;
+        public GameObject gameObject;
+        public XUIWindowMono mono;
+
+        public Canvas canvas;
         public object initParam;
-        public float openTick;
+        public long openTick;
+        
+        //缓存时间
+        public float cacheTime;
         
         //controller
         //view
         //msgcache
         public List<XMessage> msgCacheList { get; protected set; }= new List<XMessage>();
         //msgmanager
-        public XMsgManager msgManager { get; protected set; } = new XMsgManager();
-
-        //schedule
-        protected XTaskSchedule<XUIWindow> m_schedule;
+        public XMsgManager MsgManager { get; protected set; } = new XMsgManager();
+        
         //widgetlist
         //protected List<XUIWidget> m_widgets = new List<XUIWidget>();
 
-        public void Init(XUIManager uiManager, object param)
+        public void Init(XUIManager uiManager, string name, object param)
         {
             this.uiManager = uiManager;
+            this.name = name;
+            //临时
+            resName = "SampleWindow";
             initParam = param;
-            XMsgManager.Append(uiManager.msgManager, msgManager);
+            XMsgManager.Append(uiManager.MsgManager, MsgManager);
+            stateMachine.Start();
         }
 
         public void Term()
         {
-            XMsgManager.Remove(uiManager.msgManager, msgManager);
+            XMsgManager.Remove(uiManager.MsgManager, MsgManager);
             uiManager = null;
         }
-        public void Tick(float step)
+        public void Tick(float elapsedTime)
         {
-            m_schedule.Update(step);
-        }
-        public void SetState(XTaskSchedule<XUIWindow> state)
-        {
-            if(m_schedule != null)
-                m_schedule.Stop();
-            m_schedule = state;
-            m_schedule.Start(this);
+            stateMachine.Tick(this, elapsedTime);
         }
     }
-
 }

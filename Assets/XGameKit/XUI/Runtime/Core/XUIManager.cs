@@ -12,16 +12,23 @@ namespace XGameKit.XUI
             return XObjectPool.Alloc<T>();
         }
         
+        //
+        public XUIRoot uiRoot { get; protected set; }
         //msgmanager
-        public XMsgManager msgManager { get; protected set; } = new XMsgManager();
+        public XMsgManager MsgManager { get; protected set; } = new XMsgManager();
         //evtmanager
-        public XEvtManager evtManager { get; protected set; } = new XEvtManager();
+        public XEvtManager EvtManager { get; protected set; } = new XEvtManager();
         //assetloader
         public IXUIAssetLoader assetLoader { get; protected set; } = new XUIAssetLoaderDefault();
 
         //windowlist
         protected Dictionary<string, XUIWindow> m_dictWindows = new Dictionary<string, XUIWindow>();
         protected List<XUIWindow> m_listWindows = new List<XUIWindow>();
+        
+        public XUIManager()
+        {
+            uiRoot = XUIRoot.CreateInstance("XUIRoot");
+        }
         public void Dispose()
         {
             
@@ -35,14 +42,30 @@ namespace XGameKit.XUI
             }
         }
 
-        public void ShowWindow(string name, object param)
+        public void ShowWindow(string name, object param = null)
         {
-            
+            Debug.Log($"ShowWindow {name}");
+            XUIWindow window = null;
+            if (m_dictWindows.ContainsKey(name))
+            {
+                window = m_dictWindows[name];
+            }
+            else
+            {
+                window = XObjectPool.Alloc<XUIWindow>();
+                window.Init(this, name, param);
+                m_listWindows.Add(window);
+                m_dictWindows.Add(name, window);
+            }
+            window.isShow = true;
         }
 
         public void HideWindow(string name)
         {
-            
+            if (!m_dictWindows.ContainsKey(name))
+                return;
+            XUIWindow window = m_dictWindows[name];
+            window.isShow = false;
         }
     }
 }

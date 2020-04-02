@@ -8,17 +8,21 @@ using Object = UnityEngine.Object;
 
 namespace XGameKit.XUI
 {
+
     public interface IXUIAssetLoader
     {
-        void LoadAsset(string name, Action<GameObject> callback);
+        void LoadAsset(string name, Action<GameObject> callback = null);
         void UnloadAsset(string name);
         void UnloadAllAssets();
+        void AddListener(Action<string, GameObject> callback);
+        void DelListener(Action<string, GameObject> callback);
     }
 
     public class XUIAssetLoaderDefault : IXUIAssetLoader
     {
         protected Dictionary<string, Object> m_caches = new Dictionary<string, Object>();
-        public void LoadAsset(string name, Action<GameObject> callback)
+        protected Action<string, GameObject> m_callback;
+        public void LoadAsset(string name, Action<GameObject> callback = null)
         {
             Object prefab = null;
             if (m_caches.ContainsKey(name))
@@ -31,23 +35,36 @@ namespace XGameKit.XUI
                 m_caches.Add(name, prefab);
             }
             callback?.Invoke(prefab as GameObject);
+
+            m_callback?.Invoke(name, prefab as GameObject);
         }
 
         public void UnloadAsset(string name)
         {
             if (!m_caches.ContainsKey(name))
                 return;
-            Resources.UnloadAsset(m_caches[name]);
+            //Resources.UnloadAsset(m_caches[name]);
             m_caches.Remove(name);
         }
 
         public void UnloadAllAssets()
         {
-            foreach (var prefab in m_caches.Values)
-            {
-                Resources.UnloadAsset(prefab);
-            }
+//            foreach (var prefab in m_caches.Values)
+//            {
+//                Resources.UnloadAsset(prefab);
+//            }
             m_caches.Clear();
         }
+
+        public void AddListener(Action<string, GameObject> callback)
+        {
+            m_callback += callback;
+        }
+
+        public void DelListener(Action<string, GameObject> callback)
+        {
+            m_callback -= callback;
+        }
     }
+
 }

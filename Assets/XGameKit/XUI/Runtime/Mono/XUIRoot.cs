@@ -10,28 +10,29 @@ namespace XGameKit.XUI
     {
         public static XUIRoot instance { get; private set; }
 
-        public static void CreateInstance(string path)
+        public static XUIRoot CreateInstance(string path)
         {
             var go = GameObject.Find("XUIRoot");
             if (go != null)
             {
                 instance = go.GetComponent<XUIRoot>();
-                return;
+                return null;
             }
             if (string.IsNullOrEmpty(path))
             {
                 Debug.LogError("场景中没有XUIManagerRoot!!! ");
-                return;
+                return null;
             }
             var pfb = Resources.Load(path);
             if (pfb == null)
             {
                 Debug.LogErrorFormat("资源不存在!!! {0}", path);
-                return;
+                return null;
             }
             go = Instantiate(pfb, Vector3.zero, Quaternion.identity) as GameObject;
             DontDestroyOnLoad(go);
             instance = go.GetComponent<XUIRoot>();
+            return instance;
         }
 
         public Camera uiCamera;
