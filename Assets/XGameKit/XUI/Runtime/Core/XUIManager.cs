@@ -42,6 +42,12 @@ namespace XGameKit.XUI
             }
         }
 
+        public bool IsShow(string name)
+        {
+            if (!m_dictWindows.ContainsKey(name))
+                return false;
+            return m_dictWindows[name].isShow;
+        }
         public void ShowWindow(string name, object param = null)
         {
             Debug.Log($"ShowWindow {name}");

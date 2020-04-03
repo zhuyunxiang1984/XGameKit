@@ -44,7 +44,7 @@ namespace XGameKit.XUI
             this.uiManager = uiManager;
             this.name = name;
             //临时
-            resName = "SampleWindow";
+            resName = name;
             initParam = param;
             XMsgManager.Append(uiManager.MsgManager, MsgManager);
             stateMachine.Start();

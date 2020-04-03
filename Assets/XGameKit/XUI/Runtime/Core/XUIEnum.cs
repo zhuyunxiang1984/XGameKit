@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace XGameKit.XUI
 {
-    //XUI层级枚举 (-50, 50](50, 100]
+    //XUI层级枚举
     public enum EnumXUILayer
     {
         Background  = -2, //背景层

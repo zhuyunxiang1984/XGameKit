@@ -17,12 +17,20 @@ public class XUISample : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            m_uiManager.ShowWindow("xxx", null);
+            var name = "SampleWindow1";
+            if(m_uiManager.IsShow(name))
+                m_uiManager.HideWindow(name);
+            else
+                m_uiManager.ShowWindow(name);
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            m_uiManager.HideWindow("xxx");
+            var name = "SampleWindow2";
+            if(m_uiManager.IsShow(name))
+                m_uiManager.HideWindow(name);
+            else
+                m_uiManager.ShowWindow(name);
         }
     }
 }

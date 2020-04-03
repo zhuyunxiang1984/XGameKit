@@ -121,11 +121,11 @@ namespace XGameKit.Core
         public void Inject<T>(T obj) where T : class
         {
             Type type = obj.GetType();
-            Debug.Log(type.FullName);
+            //Debug.Log(type.FullName);
             var fileds = type.GetFields(BindingFlags.Public | BindingFlags.Instance);
             foreach (var fieldInfo in fileds)
             {
-                Debug.Log(fieldInfo.Name);
+                //Debug.Log(fieldInfo.Name);
                 bool success = false;
                 foreach (var value in values)
                 {

@@ -38,6 +38,11 @@ namespace XGameKit.Core
             if (m_curState != null)
             {
                 m_curState.OnUpdate(obj, elapsedTime);
+                var next = m_curState.Transition(obj);
+                if (!string.IsNullOrEmpty(next))
+                {
+                    ChangeState(next);
+                }
             }
         }
 
@@ -72,32 +77,6 @@ namespace XGameKit.Core
                 newState.OnEnter(obj);
             m_curr = state;
             m_curState = newState;
-        }
-    }
-
-    public abstract class XState<T>
-    {
-        protected XStateMachine<T> m_machine;
-
-        public void SetMachine(XStateMachine<T> machine)
-        {
-            m_machine = machine;
-        }
-        public abstract void OnEnter(T obj);
-        public abstract void OnLeave(T obj);
-        public abstract void OnUpdate(T obj, float elapsedTime);
-    }
-
-    public class XStateEmpty<T> : XState<T>
-    {
-        public override void OnEnter(T obj)
-        {
-        }
-        public override void OnLeave(T obj)
-        {
-        }
-        public override void OnUpdate(T obj, float elapsedTime)
-        {
         }
     }
 }
