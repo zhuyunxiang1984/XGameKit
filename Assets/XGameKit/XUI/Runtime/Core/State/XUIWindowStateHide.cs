@@ -17,10 +17,12 @@ namespace XGameKit.XUI
 
         public override void OnUpdate(XUIWindow obj, float elapsedTime)
         {
+            //将窗口消息器断开总消息器
+            XMsgManager.Remove(obj.uiManager.MsgManager, obj.MsgManager);
+            
             obj.mono.HideController();
             obj.uiManager.uiRoot.uiCanvasManager.RemoveCanvas(obj.canvas);
             obj.canvas = null;
-            obj.gameObject.SetActive(false);
             obj.gameObject.transform.SetParent(obj.uiManager.uiRoot.uiUnusedNode, false);
             
             obj.stateMachine.ChangeState(XUIWindowStateMachine.stCache);

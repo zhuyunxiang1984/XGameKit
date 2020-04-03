@@ -12,10 +12,12 @@ namespace XGameKit.XUI
     {
         public override void OnEnter(XUIWindow obj)
         {
+            obj.waitDestroy = true;
         }
 
         public override void OnLeave(XUIWindow obj)
         {
+            obj.waitDestroy = false;
         }
 
         public override void OnUpdate(XUIWindow obj, float elapsedTime)

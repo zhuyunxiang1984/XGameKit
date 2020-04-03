@@ -40,7 +40,7 @@ namespace XGameKit.XUI
         public Transform uiUnusedNode;
 
         //遮罩
-        //空白区
+        public GameObject uiMask;
         //闪屏
         private void Awake()
         {
@@ -56,37 +56,18 @@ namespace XGameKit.XUI
         private void OnEnable()
         {
             HideMask();
-            HideBlank();
-            //UnusedCanvas.gameObject.SetActive(false);
         }
 
-        public void ShowMask(Transform node, int index)
+        public void ShowMask(Transform node)
         {
-//            uiMask.transform.SetParent(node, false);
-//            uiMask.transform.SetSiblingIndex(index);
-//            uiMask.gameObject.SetActive(true);
+            uiMask.transform.SetParent(node, false);
+            uiMask.transform.SetSiblingIndex(0);
         }
         public void HideMask()
         {
-//            uiMask.onClick.RemoveAllListeners();
-//            uiMask.transform.SetParent(UnusedCanvas, false);
-//            uiMask.gameObject.SetActive(false);
+            uiMask.transform.SetParent(uiUnusedNode, false);
         }
-        public void ShowBlank(Transform node, int index)
-        {
-//            uiBlank.transform.SetParent(node, false);
-//            uiBlank.transform.SetSiblingIndex(index);
-//            uiBlank.gameObject.SetActive(true);
-        }
-        public void HideBlank()
-        {
-//            uiBlank.onClick.RemoveAllListeners();
-//            uiBlank.transform.SetParent(UnusedCanvas, false);
-//            uiBlank.gameObject.SetActive(false);
-        }
-        
-        
-        
+
         //启用/禁用UI绘制
         public void EnableUICamera(bool on)
         {

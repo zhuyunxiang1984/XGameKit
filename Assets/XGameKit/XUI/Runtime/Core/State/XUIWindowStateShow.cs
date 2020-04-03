@@ -25,13 +25,14 @@ namespace XGameKit.XUI
             {
                 obj.MsgManager.SendMsg(msg);
             }
+            //将窗口消息器挂入总消息器
+            XMsgManager.Append(obj.uiManager.MsgManager, obj.MsgManager);
             //加入canvas排序
             obj.layer = obj.mono.layerData.GetValue();
-            obj.canvas = obj.uiManager.uiRoot.uiCanvasManager.AppendCanvas(obj.layer, obj.openTick);
+            obj.canvas = obj.uiManager.uiRoot.uiCanvasManager.AppendCanvas(obj.layer);
             obj.gameObject.transform.SetParent(obj.canvas.transform, false);
-            obj.gameObject.SetActive(true);
 
-            obj.stateMachine.ChangeState(XUIWindowStateMachine.stIdle);
+            obj.stateMachine.ChangeState(XUIWindowStateMachine.stShowAnim);
         }
 
         public override string Transition(XUIWindow obj)

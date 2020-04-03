@@ -22,7 +22,7 @@ namespace XGameKit.XUI
         public override string Transition(XUIWindow obj)
         {
             if (!obj.isShow)
-                return XUIWindowStateMachine.stHide;
+                return XUIWindowStateMachine.stHideAnim;
             return String.Empty;
         }
     }

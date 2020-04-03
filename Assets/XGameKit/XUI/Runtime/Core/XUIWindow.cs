@@ -21,10 +21,11 @@ namespace XGameKit.XUI
         public string resName;
         public GameObject gameObject;
         public XUIWindowMono mono;
+        public bool waitDestroy;
 
         public Canvas canvas;
         public object initParam;
-        public long openTick;
+        public float openTick;
         
         //缓存时间
         public float cacheTime;
@@ -46,13 +47,12 @@ namespace XGameKit.XUI
             //临时
             resName = name;
             initParam = param;
-            XMsgManager.Append(uiManager.MsgManager, MsgManager);
+            openTick = Time.realtimeSinceStartup;
+            waitDestroy = false;
             stateMachine.Start();
         }
-
         public void Term()
         {
-            XMsgManager.Remove(uiManager.MsgManager, MsgManager);
             uiManager = null;
         }
         public void Tick(float elapsedTime)

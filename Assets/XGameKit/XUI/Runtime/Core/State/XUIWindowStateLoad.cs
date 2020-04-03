@@ -38,6 +38,7 @@ namespace XGameKit.XUI
             if (m_asset == null)
                 return;
             obj.gameObject = GameObject.Instantiate(m_asset, obj.uiManager.uiRoot.uiUnusedNode);
+            obj.gameObject.SetActive(false);
             obj.mono = obj.gameObject.GetComponent<XUIWindowMono>();
             obj.mono.Init(obj);
             obj.cacheTime = obj.mono.cacheTime;

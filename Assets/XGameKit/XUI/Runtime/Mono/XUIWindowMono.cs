@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using XGameKit.Core;
 
 namespace XGameKit.XUI
 {
@@ -17,7 +18,7 @@ namespace XGameKit.XUI
 
             public int GetValue()
             {
-                return ((int) layer * XUIConst.LayerPadding + offset) * XUIConst.LayerPaddingInner;
+                return (int) layer * XUIConst.LayerPadding + offset;
             }
         }
         [HideLabel]
@@ -27,6 +28,9 @@ namespace XGameKit.XUI
         public bool mask;
 
         [LabelText("缓存时间")] public int cacheTime = 5;
+        
+        [LabelText("打开动画")] public XPlayableBase showAnim;
+        [LabelText("关闭动画")] public XPlayableBase hideAnim;
 
     }
 

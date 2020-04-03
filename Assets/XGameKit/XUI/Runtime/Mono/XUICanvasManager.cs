@@ -11,20 +11,7 @@ namespace XGameKit.XUI
         public GameObject prefab;
 
         protected Stack<Canvas> m_caches = new Stack<Canvas>();
-        protected class CanvasData : IXPoolable
-        {
-            public Canvas canvas;
-            public int layer;
-            public long openTick;
-
-            public void Reset()
-            {
-                canvas = null;
-                layer = 0;
-                openTick = 0;
-            }
-        }
-        protected List<CanvasData> m_datas = new List<CanvasData>();
+        protected List<Canvas> m_ltCanvas = new List<Canvas>();
         
         private void Awake()
         {
@@ -46,61 +33,20 @@ namespace XGameKit.XUI
         }
 #endif
 
-        public Canvas AppendCanvas(int layer, long openTick)
+        public Canvas AppendCanvas(int layer)
         {
-            int index = -1;
-            for (int i = 0; i < m_datas.Count; ++i)
-            {
-                //层级越低排在越前面（越早绘制）
-                if (m_datas[i].layer > layer)
-                {
-                    index = i;
-                    break;
-                }
-                //层级相同，打开时间越大排在越前面（越早绘制）
-                if (m_datas[i].layer == layer && m_datas[i].openTick > openTick)
-                {
-                    index = i;
-                    break;
-                }
-            }
             var canvas = _GetOrCreateCanvas();
-            canvas.sortingOrder = layer;
             canvas.gameObject.SetActive(true);
-            
-            var data = XObjectPool.Alloc<CanvasData>();
-            data.canvas = canvas;
-            data.layer = layer;
-            if (index == -1)
-            {
-                canvas.transform.SetSiblingIndex(m_datas.Count);
-                m_datas.Add(data);
-            }
-            else
-            {
-                canvas.transform.SetSiblingIndex(index);
-                m_datas.Insert(index, data);
-            }
+            canvas.transform.SetSiblingIndex(0);
+            m_ltCanvas.Add(canvas);
             return canvas;
         }
 
         public void RemoveCanvas(Canvas canvas)
         {
-            int index = -1;
-            for (int i = 0; i < m_datas.Count; ++i)
-            {
-                if (m_datas[i].canvas == canvas)
-                {
-                    index = i;
-                    break;
-                }
-            }
-            if (index != -1)
-            {
-                m_datas.RemoveAt(index);
-            }
             canvas.gameObject.SetActive(false);
             canvas.transform.SetAsLastSibling();
+            m_ltCanvas.Remove(canvas);
             m_caches.Push(canvas);
         }
 
@@ -113,11 +59,10 @@ namespace XGameKit.XUI
         
         void _UpdateCanvasName()
         {
-            foreach (var data in m_datas)
+            foreach (var canvas in m_ltCanvas)
             {
-                data.canvas.name = $"{prefab.name}_{data.layer}";
+                canvas.name = $"{prefab.name}_{canvas.sortingOrder}";
             }
-
             int index = 0;
             foreach (var go in m_caches)
             {
