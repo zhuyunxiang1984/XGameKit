@@ -9,7 +9,9 @@ public class XUISample : MonoBehaviour
     private XUIManager m_uiManager;
     void Start()
     {
+        XDebug.Initialize();
         m_uiManager = XService.AddService<XUIManager>();
+        
     }
 
     // Update is called once per frame

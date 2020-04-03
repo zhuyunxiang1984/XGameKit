@@ -10,14 +10,17 @@ namespace XGameKit.Core
 
         public void Log(string message)
         {
+            if (mute) return;
             Debug.Log(_AssembleMessage(message));
         }
         public void LogWarning(string message)
         {
+            if (mute) return;
             Debug.LogWarning(_AssembleMessage(message));
         }
         public void LogError(string message)
         {
+            if (mute) return;
             Debug.LogError(_AssembleMessage(message));
         }
 
