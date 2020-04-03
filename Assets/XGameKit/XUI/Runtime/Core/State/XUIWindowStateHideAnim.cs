@@ -37,16 +37,12 @@ namespace XGameKit.XUI
         {
             if (m_complete)
             {
-                obj.uiManager.DelSort(obj);
                 obj.gameObject.SetActive(false);
                 obj.stateMachine.ChangeState(XUIWindowStateMachine.stHide);
             }
         }
-
         public override string Transition(XUIWindow obj)
         {
-            if (obj.isShow)
-                return XUIWindowStateMachine.stShowAnim;
             return string.Empty;
         }
     }

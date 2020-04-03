@@ -33,11 +33,11 @@ namespace XGameKit.XUI
         }
 #endif
 
-        public Canvas AppendCanvas(int layer)
+        public Canvas AppendCanvas(int index, int layer)
         {
             var canvas = _GetOrCreateCanvas();
             canvas.gameObject.SetActive(true);
-            canvas.transform.SetSiblingIndex(0);
+            canvas.transform.SetSiblingIndex(index);
             m_ltCanvas.Add(canvas);
             return canvas;
         }

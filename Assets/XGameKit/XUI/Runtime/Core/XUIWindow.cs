@@ -47,7 +47,6 @@ namespace XGameKit.XUI
             //临时
             resName = name;
             initParam = param;
-            openTick = Time.realtimeSinceStartup;
             waitDestroy = false;
             stateMachine.Start();
         }

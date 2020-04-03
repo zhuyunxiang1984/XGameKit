@@ -10,8 +10,6 @@ namespace XGameKit.XUI
         protected bool m_complete;
         public override void OnEnter(XUIWindow obj)
         {
-            int index = obj.uiManager.GetSort(obj);
-            obj.uiManager.AddSort(obj, index);
             obj.gameObject.SetActive(true);
             if (obj.mono.showAnim != null)
             {
@@ -39,8 +37,6 @@ namespace XGameKit.XUI
 
         public override string Transition(XUIWindow obj)
         {
-            if (!obj.isShow)
-                return XUIWindowStateMachine.stHideAnim;
             return string.Empty;
         }
     }

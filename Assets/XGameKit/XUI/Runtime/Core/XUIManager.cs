@@ -97,6 +97,7 @@ namespace XGameKit.XUI
                 m_dictWindows.Add(name, window);
             }
             window.isShow = true;
+            window.openTick = Time.realtimeSinceStartup;
         }
 
         public void HideWindow(string name)
@@ -165,13 +166,16 @@ namespace XGameKit.XUI
                     index = i;
                     break;
                 }
-                //层级相同，打开时间越大排在越前面（越早绘制）
+                //层级相同，打开时间越小排在越前面（越早绘制）
                 if (window.layer == temp.layer && window.openTick < temp.openTick)
                 {
                     index = i;
                     break;
                 }
             }
+
+            if (index == -1)
+                index = m_ltSort.Count;
             XDebug.Log(XUIConst.Tag,$"GetSort {window.name} {index}");
             return index;
         }

@@ -29,9 +29,11 @@ namespace XGameKit.XUI
             XMsgManager.Append(obj.uiManager.MsgManager, obj.MsgManager);
             //加入canvas排序
             obj.layer = obj.mono.layerData.GetValue();
-            obj.canvas = obj.uiManager.uiRoot.uiCanvasManager.AppendCanvas(obj.layer);
+            int index = obj.uiManager.GetSort(obj);
+            obj.uiManager.AddSort(obj, index);
+            obj.canvas = obj.uiManager.uiRoot.uiCanvasManager.AppendCanvas(index, obj.layer);
             obj.gameObject.transform.SetParent(obj.canvas.transform, false);
-
+            
             obj.stateMachine.ChangeState(XUIWindowStateMachine.stShowAnim);
         }
 
