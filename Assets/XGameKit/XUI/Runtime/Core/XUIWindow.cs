@@ -16,6 +16,7 @@ namespace XGameKit.XUI
         
         //uimanager
         public XUIManager uiManager { get; protected set; }
+        public XUIParamBundle paramBundle { get; protected set; }
         public string name { get; protected set; }
         public int layer;
         public string resName;
@@ -40,9 +41,10 @@ namespace XGameKit.XUI
         //widgetlist
         //protected List<XUIWidget> m_widgets = new List<XUIWidget>();
 
-        public void Init(XUIManager uiManager, string name, object param)
+        public void Init(XUIManager uiManager, XUIParamBundle paramBundle, string name, object param)
         {
             this.uiManager = uiManager;
+            this.paramBundle = paramBundle;
             this.name = name;
             //临时
             resName = name;

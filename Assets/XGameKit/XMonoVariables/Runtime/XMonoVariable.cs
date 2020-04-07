@@ -194,6 +194,7 @@ namespace XGameKit.Core
                     List<GUIContent> contents = new List<GUIContent>();
                     foreach (var component in components)
                     {
+                        if (component == null) continue;
                         var type = component.GetType();
                         contents.Add(new GUIContent(type.Name, type.FullName));
                     }

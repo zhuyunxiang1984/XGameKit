@@ -19,7 +19,8 @@ namespace XGameKit.XUI
         //evtmanager
         public XEvtManager EvtManager { get; protected set; } = new XEvtManager();
         //assetloader
-        public IXUIAssetLoader assetLoader { get; protected set; } = new XUIAssetLoaderDefault();
+        public IXUIAssetLoader AssetLoader { get; protected set; } = new XUIAssetLoaderDefault();
+        public IXUILocalizationLoader LocalizationLoader { get; protected set; }=new XUILocalizationLoaderDefault();
 
         //windowlist
         protected Dictionary<string, XUIWindow> m_dictWindows = new Dictionary<string, XUIWindow>();
@@ -91,8 +92,15 @@ namespace XGameKit.XUI
             }
             else
             {
+                var paramBundle = new XUIParamBundle();
+                paramBundle.AssetLoader = AssetLoader;
+                paramBundle.LocalizationLoader = LocalizationLoader;
+                paramBundle.EvtManager = EvtManager;
+                paramBundle.MsgManager = MsgManager;
+                paramBundle.uiRoot = uiRoot;
+                
                 window = XObjectPool.Alloc<XUIWindow>();
-                window.Init(this, name, param);
+                window.Init(this, paramBundle, name, param);
                 m_listWindows.Add(window);
                 m_dictWindows.Add(name, window);
             }

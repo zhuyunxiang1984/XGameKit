@@ -10,7 +10,7 @@ namespace XGameKit.XUI
     {
         XMsgManager MsgManager { get; set; }
         //初始化
-        void Init(XUIWindow uiWindow, XMonoVariables variables);
+        void Init(string windowName, XUIParamBundle paramBundle, XMonoVariables variables);
         //销毁
         void Term();
         //设置父节点
@@ -27,16 +27,16 @@ namespace XGameKit.XUI
     public abstract class XUIController : IXUIController
     {
         public XMsgManager MsgManager { get; set; } = new XMsgManager();
-        public XEvtManager EvtManager { get; protected set; }
-
+        
         protected IXUIController m_parent;
-        protected XUIWindow m_uiWindow;
+        protected string m_windowName;
+        protected XUIParamBundle m_paramBundle;
         protected bool m_registered = false;
         
-        public virtual void Init(XUIWindow uiWindow, XMonoVariables variables)
+        public virtual void Init(string windowName, XUIParamBundle paramBundle, XMonoVariables variables)
         {
-            m_uiWindow = uiWindow;
-            EvtManager = uiWindow.uiManager.EvtManager;
+            m_windowName = windowName;
+            m_paramBundle = paramBundle;
         }
 
         public virtual void Term()
@@ -100,9 +100,9 @@ namespace XGameKit.XUI
     {
         protected VIEW m_view = new VIEW();
         
-        public override void Init(XUIWindow uiWindow, XMonoVariables variables)
+        public override void Init(string windowName, XUIParamBundle paramBundle, XMonoVariables variables)
         {
-            base.Init(uiWindow, variables);
+            base.Init(windowName, paramBundle, variables);
             variables.Inject(m_view);
         }
 
@@ -119,9 +119,9 @@ namespace XGameKit.XUI
     {
         protected VIEW m_view = new VIEW();
         protected PARAM m_param;
-        public override void Init(XUIWindow uiWindow, XMonoVariables variables)
+        public override void Init(string windowName, XUIParamBundle paramBundle, XMonoVariables variables)
         {
-            base.Init(uiWindow, variables);
+            base.Init(windowName, paramBundle, variables);
             variables.Inject(variables);
         }
 

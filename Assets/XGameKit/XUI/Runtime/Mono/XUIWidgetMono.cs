@@ -8,17 +8,24 @@ namespace XGameKit.XUI
     public class XUIWidgetMono : XUIControllerMono
     {
         protected List<XUIWidgetMono> m_children = new List<XUIWidgetMono>();
-        
-        public override void Init(XUIWindow uiWindow)
+        protected List<XUIViewMono> m_viewMonos = new List<XUIViewMono>();
+        public override void Init(string windowName, XUIParamBundle paramBundle)
         {
-            base.Init(uiWindow);
-            
+            base.Init(windowName, paramBundle);
+
             m_children.Clear();
-            _FindChildren(transform, ref m_children);
+            _FindControllerMonos(transform, ref m_children);
             foreach (var child in m_children)
             {
-                child.Init(uiWindow);
+                child.Init(windowName, paramBundle);
                 child.Controller.SetParent(Controller);
+            }
+            //初始化节点下所有的viewmono
+            m_viewMonos.Clear();
+            _FindViewMonos(transform, ref m_viewMonos);
+            foreach (var viewMono in m_viewMonos)
+            {
+                viewMono.Init(windowName, paramBundle);
             }
         }
         public override void Term()
@@ -29,6 +36,13 @@ namespace XGameKit.XUI
             {
                 child.Term();
             }
+            m_children.Clear();
+            
+            foreach (var viewMono in m_viewMonos)
+            {
+                viewMono.Term();
+            }
+            m_viewMonos.Clear();
         }
         public override void Tick(float elapsedTime)
         {

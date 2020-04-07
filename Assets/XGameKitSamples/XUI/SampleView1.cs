@@ -9,7 +9,7 @@ public class SampleView1 : XUIViewCSharp<SampleView1.View, SampleView1.Param>
 {
     public class View
     {
-        public TextMeshProUGUI uiLabel;
+        public XUILabel uiLabel;
     }
 
     public class Param : IXPoolable
@@ -24,6 +24,6 @@ public class SampleView1 : XUIViewCSharp<SampleView1.View, SampleView1.Param>
 
     protected override void SetData(View view, Param param)
     {
-        view.uiLabel.text = param.Name;
+        view.uiLabel.SetText(param.Name);
     }
 }

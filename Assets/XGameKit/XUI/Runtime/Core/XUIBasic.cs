@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor.Animations;
 using UnityEngine;
+using XGameKit.Core;
 using Object = UnityEngine.Object;
 
 namespace XGameKit.XUI
@@ -67,4 +68,41 @@ namespace XGameKit.XUI
         }
     }
 
+    public interface IXUILocalizationLoader
+    {
+        string GetLanguage();
+        string GetLanguageText(string key);
+    }
+
+    public class XUILocalizationLoaderDefault : IXUILocalizationLoader
+    {
+        public string GetLanguage()
+        {
+            return "None";
+        }
+
+        public string GetLanguageText(string key)
+        {
+            return key;
+        }
+    }
+    
+    //
+    public struct XUIParamBundle
+    {
+        public XMsgManager MsgManager;
+        public XEvtManager EvtManager;
+        public XUIRoot uiRoot;
+        public IXUIAssetLoader AssetLoader;
+        public IXUILocalizationLoader LocalizationLoader;
+
+        public void Clear()
+        {
+            MsgManager = null;
+            EvtManager = null;
+            uiRoot = null;
+            AssetLoader = null;
+            LocalizationLoader = null;
+        }
+    }
 }

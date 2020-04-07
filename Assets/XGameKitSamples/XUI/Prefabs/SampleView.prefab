@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5859806291334818978}
   - component: {fileID: 8591139614562249536}
   - component: {fileID: 7917341581479613530}
+  - component: {fileID: 5279446761327803073}
   m_Layer: 5
   m_Name: uiLabel
   m_TagString: Untagged
@@ -155,6 +156,19 @@ MonoBehaviour:
   - {fileID: 0}
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &5279446761327803073
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2883435376757557592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6e7c7b1217daad4580337048a695b33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultLanguageText: 
 --- !u!1 &8901121592049421899
 GameObject:
   m_ObjectHideFlags: 0
@@ -208,7 +222,7 @@ MonoBehaviour:
   values:
   - name: uiLabel
     type: 1
-    objData: {fileID: 7917341581479613530}
+    objData: {fileID: 5279446761327803073}
     valData: 
     gameobject: {fileID: 2883435376757557592}
     recorded: 1
@@ -231,7 +245,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8901121592049421899}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b3d309ebd4db65429b331965a05ed67, type: 3}
+  m_Script: {fileID: 11500000, guid: 71529d00e36385045a29b372a1f9b299, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   lua: 0

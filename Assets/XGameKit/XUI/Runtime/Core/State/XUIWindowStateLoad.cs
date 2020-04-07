@@ -17,14 +17,14 @@ namespace XGameKit.XUI
         {
             m_name = obj.resName;
             m_asset = null;
-            obj.uiManager.assetLoader.AddListener(_OnLoadAsset);
-            obj.uiManager.assetLoader.LoadAsset(m_name);
+            obj.uiManager.AssetLoader.AddListener(_OnLoadAsset);
+            obj.uiManager.AssetLoader.LoadAsset(m_name);
         }
 
         public override void OnLeave(XUIWindow obj)
         {
-            obj.uiManager.assetLoader.DelListener(_OnLoadAsset);
-            obj.uiManager.assetLoader.UnloadAsset(m_name);
+            obj.uiManager.AssetLoader.DelListener(_OnLoadAsset);
+            obj.uiManager.AssetLoader.UnloadAsset(m_name);
         }
 
         void _OnLoadAsset(string name, GameObject asset)
@@ -37,10 +37,11 @@ namespace XGameKit.XUI
         {
             if (m_asset == null)
                 return;
+
             obj.gameObject = GameObject.Instantiate(m_asset, obj.uiManager.uiRoot.uiUnusedNode);
             obj.gameObject.SetActive(false);
             obj.mono = obj.gameObject.GetComponent<XUIWindowMono>();
-            obj.mono.Init(obj);
+            obj.mono.Init(obj.name, obj.paramBundle);
             obj.cacheTime = obj.mono.cacheTime;
             obj.stateMachine.ChangeState(XUIWindowStateMachine.stShow);
         }
