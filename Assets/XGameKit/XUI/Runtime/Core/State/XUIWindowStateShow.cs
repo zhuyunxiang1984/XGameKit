@@ -31,7 +31,7 @@ namespace XGameKit.XUI
             obj.layer = obj.mono.layerData.GetValue();
             int index = obj.uiManager.GetSort(obj);
             obj.uiManager.AddSort(obj, index);
-            obj.canvas = obj.uiManager.uiRoot.uiCanvasManager.AppendCanvas(index, obj.layer);
+            obj.canvas = obj.uiManager.uiRoot.uiCanvasManager.AppendClone(index);
             obj.gameObject.transform.SetParent(obj.canvas.transform, false);
             
             obj.stateMachine.ChangeState(XUIWindowStateMachine.stShowAnim);

@@ -23,7 +23,7 @@ namespace XGameKit.XUI
             obj.mono.HideController();
             
             obj.uiManager.DelSort(obj);
-            obj.uiManager.uiRoot.uiCanvasManager.RemoveCanvas(obj.canvas);
+            obj.uiManager.uiRoot.uiCanvasManager.RemoveClone(obj.canvas);
             obj.canvas = null;
             obj.gameObject.transform.SetParent(obj.uiManager.uiRoot.uiUnusedNode, false);
             
