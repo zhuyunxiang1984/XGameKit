@@ -7,7 +7,8 @@ namespace XGameKit.Core
 {
     public static class XUtilities
     {
-        public static void EnsurePath(string assetPath)
+        //保证路径存在
+        public static void MakePathExist(string assetPath)
         {
             var directory = Path.GetDirectoryName(assetPath);
             if (Directory.Exists(directory))

@@ -22,6 +22,8 @@ namespace XGameKit.XUI
         public IXUIAssetLoader AssetLoader { get; protected set; } = new XUIAssetLoaderDefault();
         public IXUILocalizationLoader LocalizationLoader { get; protected set; }=new XUILocalizationLoaderDefault();
 
+        public XUITextureManager TextureManager { get; protected set; } = new XUITextureManager();
+
         //windowlist
         protected Dictionary<string, XUIWindow> m_dictWindows = new Dictionary<string, XUIWindow>();
         protected List<XUIWindow> m_listWindows = new List<XUIWindow>();
@@ -98,6 +100,7 @@ namespace XGameKit.XUI
                 paramBundle.EvtManager = EvtManager;
                 paramBundle.MsgManager = MsgManager;
                 paramBundle.uiRoot = uiRoot;
+                paramBundle.TextureManager = TextureManager;
                 
                 window = XObjectPool.Alloc<XUIWindow>();
                 window.Init(this, paramBundle, name, param);

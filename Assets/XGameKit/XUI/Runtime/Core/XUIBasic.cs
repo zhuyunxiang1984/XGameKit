@@ -95,6 +95,7 @@ namespace XGameKit.XUI
         public XUIRoot uiRoot;
         public IXUIAssetLoader AssetLoader;
         public IXUILocalizationLoader LocalizationLoader;
+        public XUITextureManager TextureManager;
 
         public void Clear()
         {
@@ -103,6 +104,7 @@ namespace XGameKit.XUI
             uiRoot = null;
             AssetLoader = null;
             LocalizationLoader = null;
+            TextureManager = null;
         }
     }
 }

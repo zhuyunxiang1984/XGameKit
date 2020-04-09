@@ -15,7 +15,10 @@ MonoBehaviour:
   listLoggerInfo:
   - active: 0
     name: XStateMachine
-    color: {r: 0.07075471, g: 0.2226177, b: 1, a: 1}
+    color: {r: 1, g: 0.33577096, b: 0, a: 1}
   - active: 1
     name: XUI
     color: {r: 0.0036325455, g: 1, b: 0, a: 1}
+  - active: 1
+    name: XPlayable
+    color: {r: 1, g: 0.8549239, b: 0, a: 1}

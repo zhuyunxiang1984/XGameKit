@@ -1,0 +1,971 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d970e76d7e3e9f40876a2453e8a8d40, type: 3}
+  m_Name: XUITextureConfig
+  m_EditorClassIdentifier: 
+  filterWord: 
+  filters:
+  - name: NN_00
+    language: common
+    atlasName: Common
+    buildin: 0
+    path: Assets/Project/Atlas/Common.spriteatlas
+    assetPath: 
+  - name: NN_01
+    language: common
+    atlasName: Common
+    buildin: 0
+    path: Assets/Project/Atlas/Common.spriteatlas
+    assetPath: 
+  - name: NN_02
+    language: common
+    atlasName: Common
+    buildin: 0
+    path: Assets/Project/Atlas/Common.spriteatlas
+    assetPath: 
+  - name: NN_03
+    language: common
+    atlasName: Common
+    buildin: 0
+    path: Assets/Project/Atlas/Common.spriteatlas
+    assetPath: 
+  - name: NN_04
+    language: common
+    atlasName: Common
+    buildin: 0
+    path: Assets/Project/Atlas/Common.spriteatlas
+    assetPath: 
+  - name: NN_05
+    language: common
+    atlasName: Common
+    buildin: 0
+    path: Assets/Project/Atlas/Common.spriteatlas
+    assetPath: 
+  - name: NN_06
+    language: common
+    atlasName: Common
+    buildin: 0
+    path: Assets/Project/Atlas/Common.spriteatlas
+    assetPath: 
+  - name: NN_07
+    language: common
+    atlasName: Common
+    buildin: 0
+    path: Assets/Project/Atlas/Common.spriteatlas
+    assetPath: 
+  - name: NN_08
+    language: common
+    atlasName: Common
+    buildin: 0
+    path: Assets/Project/Atlas/Common.spriteatlas
+    assetPath: 
+  - name: NN_09
+    language: common
+    atlasName: Common
+    buildin: 0
+    path: Assets/Project/Atlas/Common.spriteatlas
+    assetPath: 
+  - name: pic_basicbattle06
+    language: common
+    atlasName: Circle
+    buildin: 1
+    path: Assets/Resources/Atlas-build-in/Circle.spriteatlas
+    assetPath: 
+  - name: pic_basicbattle07
+    language: common
+    atlasName: Circle
+    buildin: 1
+    path: Assets/Resources/Atlas-build-in/Circle.spriteatlas
+    assetPath: 
+  - name: pic_basicbattle08
+    language: common
+    atlasName: Circle
+    buildin: 1
+    path: Assets/Resources/Atlas-build-in/Circle.spriteatlas
+    assetPath: 
+  - name: pic_basicbattle09
+    language: common
+    atlasName: Circle
+    buildin: 1
+    path: Assets/Resources/Atlas-build-in/Circle.spriteatlas
+    assetPath: 
+  - name: Icon_hero_B80002
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80002.png
+    assetPath: 
+  - name: Icon_hero_B80006
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80006.png
+    assetPath: 
+  - name: Icon_hero_B80010
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80010.png
+    assetPath: 
+  - name: Icon_hero_B80011
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80011.png
+    assetPath: 
+  - name: Icon_hero_B80015
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80015.png
+    assetPath: 
+  - name: Icon_hero_B80018
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80018.png
+    assetPath: 
+  - name: Icon_hero_B80019
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80019.png
+    assetPath: 
+  - name: Icon_hero_B80020
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80020.png
+    assetPath: 
+  - name: Icon_hero_B80022
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80022.png
+    assetPath: 
+  - name: Icon_hero_B80023
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80023.png
+    assetPath: 
+  - name: Icon_hero_B80024
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80024.png
+    assetPath: 
+  - name: Icon_hero_B80026
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80026.png
+    assetPath: 
+  - name: Icon_hero_B80028
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80028.png
+    assetPath: 
+  - name: Icon_hero_B80030
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80030.png
+    assetPath: 
+  - name: Icon_hero_B80032
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80032.png
+    assetPath: 
+  - name: Icon_hero_B80034
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80034.png
+    assetPath: 
+  - name: Icon_hero_B80036
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80036.png
+    assetPath: 
+  - name: Icon_hero_B80039
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80039.png
+    assetPath: 
+  - name: Icon_hero_B80041
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80041.png
+    assetPath: 
+  - name: Icon_hero_B80046
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80046.png
+    assetPath: 
+  - name: Icon_hero_B80049
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80049.png
+    assetPath: 
+  - name: Icon_hero_B80050
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80050.png
+    assetPath: 
+  - name: Icon_hero_B80051
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80051.png
+    assetPath: 
+  - name: Icon_hero_B80052
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80052.png
+    assetPath: 
+  - name: Icon_hero_B80055
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80055.png
+    assetPath: 
+  - name: Icon_hero_B80057
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80057.png
+    assetPath: 
+  - name: Icon_hero_B80058
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80058.png
+    assetPath: 
+  - name: Icon_hero_B80059
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80059.png
+    assetPath: 
+  - name: Icon_hero_B80061
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80061.png
+    assetPath: 
+  - name: Icon_hero_B80062
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80062.png
+    assetPath: 
+  - name: Icon_hero_B80064
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80064.png
+    assetPath: 
+  - name: Icon_hero_B80002
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80002.png
+    assetPath: 
+  - name: Icon_hero_B80006
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80006.png
+    assetPath: 
+  - name: Icon_hero_B80010
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80010.png
+    assetPath: 
+  - name: Icon_hero_B80011
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80011.png
+    assetPath: 
+  - name: Icon_hero_B80015
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80015.png
+    assetPath: 
+  - name: Icon_hero_B80018
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80018.png
+    assetPath: 
+  - name: Icon_hero_B80019
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80019.png
+    assetPath: 
+  - name: Icon_hero_B80020
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80020.png
+    assetPath: 
+  - name: Icon_hero_B80022
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80022.png
+    assetPath: 
+  - name: Icon_hero_B80023
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80023.png
+    assetPath: 
+  - name: Icon_hero_B80024
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80024.png
+    assetPath: 
+  - name: Icon_hero_B80026
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80026.png
+    assetPath: 
+  - name: Icon_hero_B80028
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80028.png
+    assetPath: 
+  - name: Icon_hero_B80030
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80030.png
+    assetPath: 
+  - name: Icon_hero_B80032
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80032.png
+    assetPath: 
+  - name: Icon_hero_B80034
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80034.png
+    assetPath: 
+  - name: Icon_hero_B80036
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80036.png
+    assetPath: 
+  - name: Icon_hero_B80039
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80039.png
+    assetPath: 
+  - name: Icon_hero_B80041
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80041.png
+    assetPath: 
+  - name: Icon_hero_B80046
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80046.png
+    assetPath: 
+  - name: Icon_hero_B80049
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80049.png
+    assetPath: 
+  - name: Icon_hero_B80050
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80050.png
+    assetPath: 
+  - name: Icon_hero_B80051
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80051.png
+    assetPath: 
+  - name: Icon_hero_B80052
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80052.png
+    assetPath: 
+  - name: Icon_hero_B80055
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80055.png
+    assetPath: 
+  - name: Icon_hero_B80057
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80057.png
+    assetPath: 
+  - name: Icon_hero_B80058
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80058.png
+    assetPath: 
+  - name: Icon_hero_B80059
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80059.png
+    assetPath: 
+  - name: Icon_hero_B80061
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80061.png
+    assetPath: 
+  - name: Icon_hero_B80062
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80062.png
+    assetPath: 
+  - name: Icon_hero_B80064
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80064.png
+    assetPath: 
+  configData:
+  - name: NN_00
+    language: common
+    atlasName: Common
+    buildin: 0
+    path: Assets/Project/Atlas/Common.spriteatlas
+    assetPath: Assets/Project/Sprites/Number\NN_00.png
+  - name: NN_01
+    language: common
+    atlasName: Common
+    buildin: 0
+    path: Assets/Project/Atlas/Common.spriteatlas
+    assetPath: Assets/Project/Sprites/Number\NN_01.png
+  - name: NN_02
+    language: common
+    atlasName: Common
+    buildin: 0
+    path: Assets/Project/Atlas/Common.spriteatlas
+    assetPath: Assets/Project/Sprites/Number\NN_02.png
+  - name: NN_03
+    language: common
+    atlasName: Common
+    buildin: 0
+    path: Assets/Project/Atlas/Common.spriteatlas
+    assetPath: Assets/Project/Sprites/Number\NN_03.png
+  - name: NN_04
+    language: common
+    atlasName: Common
+    buildin: 0
+    path: Assets/Project/Atlas/Common.spriteatlas
+    assetPath: Assets/Project/Sprites/Number\NN_04.png
+  - name: NN_05
+    language: common
+    atlasName: Common
+    buildin: 0
+    path: Assets/Project/Atlas/Common.spriteatlas
+    assetPath: Assets/Project/Sprites/Number\NN_05.png
+  - name: NN_06
+    language: common
+    atlasName: Common
+    buildin: 0
+    path: Assets/Project/Atlas/Common.spriteatlas
+    assetPath: Assets/Project/Sprites/Number\NN_06.png
+  - name: NN_07
+    language: common
+    atlasName: Common
+    buildin: 0
+    path: Assets/Project/Atlas/Common.spriteatlas
+    assetPath: Assets/Project/Sprites/Number\NN_07.png
+  - name: NN_08
+    language: common
+    atlasName: Common
+    buildin: 0
+    path: Assets/Project/Atlas/Common.spriteatlas
+    assetPath: Assets/Project/Sprites/Number\NN_08.png
+  - name: NN_09
+    language: common
+    atlasName: Common
+    buildin: 0
+    path: Assets/Project/Atlas/Common.spriteatlas
+    assetPath: Assets/Project/Sprites/Number\NN_09.png
+  - name: pic_basicbattle06
+    language: common
+    atlasName: Circle
+    buildin: 1
+    path: Atlas-build-in/Circle
+    assetPath: Assets/Project/Sprites/Cricle\pic_basicbattle06.png
+  - name: pic_basicbattle07
+    language: common
+    atlasName: Circle
+    buildin: 1
+    path: Atlas-build-in/Circle
+    assetPath: Assets/Project/Sprites/Cricle\pic_basicbattle07.png
+  - name: pic_basicbattle08
+    language: common
+    atlasName: Circle
+    buildin: 1
+    path: Atlas-build-in/Circle
+    assetPath: Assets/Project/Sprites/Cricle\pic_basicbattle08.png
+  - name: pic_basicbattle09
+    language: common
+    atlasName: Circle
+    buildin: 1
+    path: Atlas-build-in/Circle
+    assetPath: Assets/Project/Sprites/Cricle\pic_basicbattle09.png
+  - name: Icon_hero_B80002
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80002.png
+    assetPath: Assets/Project/Sprites/Hero\Icon_hero_B80002.png
+  - name: Icon_hero_B80006
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80006.png
+    assetPath: Assets/Project/Sprites/Hero\Icon_hero_B80006.png
+  - name: Icon_hero_B80010
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80010.png
+    assetPath: Assets/Project/Sprites/Hero\Icon_hero_B80010.png
+  - name: Icon_hero_B80011
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80011.png
+    assetPath: Assets/Project/Sprites/Hero\Icon_hero_B80011.png
+  - name: Icon_hero_B80015
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80015.png
+    assetPath: Assets/Project/Sprites/Hero\Icon_hero_B80015.png
+  - name: Icon_hero_B80018
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80018.png
+    assetPath: Assets/Project/Sprites/Hero\Icon_hero_B80018.png
+  - name: Icon_hero_B80019
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80019.png
+    assetPath: Assets/Project/Sprites/Hero\Icon_hero_B80019.png
+  - name: Icon_hero_B80020
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80020.png
+    assetPath: Assets/Project/Sprites/Hero\Icon_hero_B80020.png
+  - name: Icon_hero_B80022
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80022.png
+    assetPath: Assets/Project/Sprites/Hero\Icon_hero_B80022.png
+  - name: Icon_hero_B80023
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80023.png
+    assetPath: Assets/Project/Sprites/Hero\Icon_hero_B80023.png
+  - name: Icon_hero_B80024
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80024.png
+    assetPath: Assets/Project/Sprites/Hero\Icon_hero_B80024.png
+  - name: Icon_hero_B80026
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80026.png
+    assetPath: Assets/Project/Sprites/Hero\Icon_hero_B80026.png
+  - name: Icon_hero_B80028
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80028.png
+    assetPath: Assets/Project/Sprites/Hero\Icon_hero_B80028.png
+  - name: Icon_hero_B80030
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80030.png
+    assetPath: Assets/Project/Sprites/Hero\Icon_hero_B80030.png
+  - name: Icon_hero_B80032
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80032.png
+    assetPath: Assets/Project/Sprites/Hero\Icon_hero_B80032.png
+  - name: Icon_hero_B80034
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80034.png
+    assetPath: Assets/Project/Sprites/Hero\Icon_hero_B80034.png
+  - name: Icon_hero_B80036
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80036.png
+    assetPath: Assets/Project/Sprites/Hero\Icon_hero_B80036.png
+  - name: Icon_hero_B80039
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80039.png
+    assetPath: Assets/Project/Sprites/Hero\Icon_hero_B80039.png
+  - name: Icon_hero_B80041
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80041.png
+    assetPath: Assets/Project/Sprites/Hero\Icon_hero_B80041.png
+  - name: Icon_hero_B80046
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80046.png
+    assetPath: Assets/Project/Sprites/Hero\Icon_hero_B80046.png
+  - name: Icon_hero_B80049
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80049.png
+    assetPath: Assets/Project/Sprites/Hero\Icon_hero_B80049.png
+  - name: Icon_hero_B80050
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80050.png
+    assetPath: Assets/Project/Sprites/Hero\Icon_hero_B80050.png
+  - name: Icon_hero_B80051
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80051.png
+    assetPath: Assets/Project/Sprites/Hero\Icon_hero_B80051.png
+  - name: Icon_hero_B80052
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80052.png
+    assetPath: Assets/Project/Sprites/Hero\Icon_hero_B80052.png
+  - name: Icon_hero_B80055
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80055.png
+    assetPath: Assets/Project/Sprites/Hero\Icon_hero_B80055.png
+  - name: Icon_hero_B80057
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80057.png
+    assetPath: Assets/Project/Sprites/Hero\Icon_hero_B80057.png
+  - name: Icon_hero_B80058
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80058.png
+    assetPath: Assets/Project/Sprites/Hero\Icon_hero_B80058.png
+  - name: Icon_hero_B80059
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80059.png
+    assetPath: Assets/Project/Sprites/Hero\Icon_hero_B80059.png
+  - name: Icon_hero_B80061
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80061.png
+    assetPath: Assets/Project/Sprites/Hero\Icon_hero_B80061.png
+  - name: Icon_hero_B80062
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80062.png
+    assetPath: Assets/Project/Sprites/Hero\Icon_hero_B80062.png
+  - name: Icon_hero_B80064
+    language: common
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero\Icon_hero_B80064.png
+    assetPath: Assets/Project/Sprites/Hero\Icon_hero_B80064.png
+  - name: Icon_shuxing_dengji
+    language: common
+    atlasName: 
+    buildin: 1
+    path: Attribute\Icon_shuxing_dengji
+    assetPath: Assets/Resources/Attribute\Icon_shuxing_dengji.png
+  - name: Icon_shuxing_fangyu
+    language: common
+    atlasName: 
+    buildin: 1
+    path: Attribute\Icon_shuxing_fangyu
+    assetPath: Assets/Resources/Attribute\Icon_shuxing_fangyu.png
+  - name: Icon_shuxing_gongji
+    language: common
+    atlasName: 
+    buildin: 1
+    path: Attribute\Icon_shuxing_gongji
+    assetPath: Assets/Resources/Attribute\Icon_shuxing_gongji.png
+  - name: Icon_shuxing_liliang
+    language: common
+    atlasName: 
+    buildin: 1
+    path: Attribute\Icon_shuxing_liliang
+    assetPath: Assets/Resources/Attribute\Icon_shuxing_liliang.png
+  - name: Icon_shuxing_mingzhong
+    language: common
+    atlasName: 
+    buildin: 1
+    path: Attribute\Icon_shuxing_mingzhong
+    assetPath: Assets/Resources/Attribute\Icon_shuxing_mingzhong.png
+  - name: Icon_shuxing_shengming
+    language: common
+    atlasName: 
+    buildin: 1
+    path: Attribute\Icon_shuxing_shengming
+    assetPath: Assets/Resources/Attribute\Icon_shuxing_shengming.png
+  - name: Icon_shuxing_sudu
+    language: common
+    atlasName: 
+    buildin: 1
+    path: Attribute\Icon_shuxing_sudu
+    assetPath: Assets/Resources/Attribute\Icon_shuxing_sudu.png
+  - name: Icon_hero_B80002
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80002.png
+    assetPath: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80002.png
+  - name: Icon_hero_B80006
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80006.png
+    assetPath: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80006.png
+  - name: Icon_hero_B80010
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80010.png
+    assetPath: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80010.png
+  - name: Icon_hero_B80011
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80011.png
+    assetPath: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80011.png
+  - name: Icon_hero_B80015
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80015.png
+    assetPath: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80015.png
+  - name: Icon_hero_B80018
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80018.png
+    assetPath: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80018.png
+  - name: Icon_hero_B80019
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80019.png
+    assetPath: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80019.png
+  - name: Icon_hero_B80020
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80020.png
+    assetPath: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80020.png
+  - name: Icon_hero_B80022
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80022.png
+    assetPath: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80022.png
+  - name: Icon_hero_B80023
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80023.png
+    assetPath: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80023.png
+  - name: Icon_hero_B80024
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80024.png
+    assetPath: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80024.png
+  - name: Icon_hero_B80026
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80026.png
+    assetPath: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80026.png
+  - name: Icon_hero_B80028
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80028.png
+    assetPath: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80028.png
+  - name: Icon_hero_B80030
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80030.png
+    assetPath: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80030.png
+  - name: Icon_hero_B80032
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80032.png
+    assetPath: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80032.png
+  - name: Icon_hero_B80034
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80034.png
+    assetPath: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80034.png
+  - name: Icon_hero_B80036
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80036.png
+    assetPath: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80036.png
+  - name: Icon_hero_B80039
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80039.png
+    assetPath: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80039.png
+  - name: Icon_hero_B80041
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80041.png
+    assetPath: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80041.png
+  - name: Icon_hero_B80046
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80046.png
+    assetPath: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80046.png
+  - name: Icon_hero_B80049
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80049.png
+    assetPath: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80049.png
+  - name: Icon_hero_B80050
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80050.png
+    assetPath: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80050.png
+  - name: Icon_hero_B80051
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80051.png
+    assetPath: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80051.png
+  - name: Icon_hero_B80052
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80052.png
+    assetPath: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80052.png
+  - name: Icon_hero_B80055
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80055.png
+    assetPath: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80055.png
+  - name: Icon_hero_B80057
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80057.png
+    assetPath: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80057.png
+  - name: Icon_hero_B80058
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80058.png
+    assetPath: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80058.png
+  - name: Icon_hero_B80059
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80059.png
+    assetPath: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80059.png
+  - name: Icon_hero_B80061
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80061.png
+    assetPath: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80061.png
+  - name: Icon_hero_B80062
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80062.png
+    assetPath: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80062.png
+  - name: Icon_hero_B80064
+    language: EN
+    atlasName: 
+    buildin: 0
+    path: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80064.png
+    assetPath: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80064.png

@@ -21,7 +21,7 @@ namespace XGameKit.Core.Editor
             if (config == null)
             {
                 config = ScriptableObject.CreateInstance<XDebugConfig>();
-                XUtilities.EnsurePath(assetPath);
+                XUtilities.MakePathExist(assetPath);
                 AssetDatabase.CreateAsset(config, assetPath);
             }
             Selection.activeObject = config;
