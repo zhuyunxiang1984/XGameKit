@@ -15,14 +15,13 @@ MonoBehaviour:
   AtlasFolder: {fileID: 102900000, guid: 280d9e0d19206bf4a9c3eeaafb120c8f, type: 3}
   AtlasFolderBuildIn: {fileID: 102900000, guid: 0f5bb393bcc3fb1448fb71ad671903fe,
     type: 3}
-  AtlasConfs:
+  AtlasConfsAB:
   - Name: Common
-    BuildIn: 0
     atlas: {fileID: 4343727234628468602, guid: b4b9b778507dd4540bd0562a2f534981, type: 2}
     Folders:
     - {fileID: 102900000, guid: c1f0c00bc32f23b4f9e7d88f662cb613, type: 3}
+  AtlasConfsBI:
   - Name: Circle
-    BuildIn: 1
     atlas: {fileID: 4343727234628468602, guid: 58c444aea85a30f4bbc7ee4072d1b92e, type: 2}
     Folders:
     - {fileID: 102900000, guid: 1f6f6692f024c554f9479ee1c4343fc7, type: 3}

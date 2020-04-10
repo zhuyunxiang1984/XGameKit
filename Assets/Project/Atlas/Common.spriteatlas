@@ -31,10 +31,30 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: c1f0c00bc32f23b4f9e7d88f662cb613, type: 3}
-    totalSpriteSurfaceArea: 0
+    totalSpriteSurfaceArea: 8250
     bindAsDefault: 0
   m_MasterAtlas: {fileID: 0}
-  m_PackedSprites: []
-  m_PackedSpriteNamesToIndex: []
+  m_PackedSprites:
+  - {fileID: 21300000, guid: aa7be520b80a3bd43889dad8c14fad15, type: 3}
+  - {fileID: 21300000, guid: 9f8ab8905d661db4f81be52ba34e1e90, type: 3}
+  - {fileID: 21300000, guid: 0bce5c900cb52994db83f7c88466b70c, type: 3}
+  - {fileID: 21300000, guid: aabdba66ab8f95548aa5f1e5ce1d2b86, type: 3}
+  - {fileID: 21300000, guid: 4edeac86040a7264ababadf53c66da82, type: 3}
+  - {fileID: 21300000, guid: f98231980efa75944ad6d987690c8703, type: 3}
+  - {fileID: 21300000, guid: 8924b20be2024224dbb27303fbff6501, type: 3}
+  - {fileID: 21300000, guid: 35d9851bc82468346a94cacd257ced55, type: 3}
+  - {fileID: 21300000, guid: ba35095e7020c69439c2ed4a037c6bba, type: 3}
+  - {fileID: 21300000, guid: ea3abf2fa33be63459191082af4b9ca0, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - NN_08
+  - NN_04
+  - NN_09
+  - NN_00
+  - NN_02
+  - NN_05
+  - NN_01
+  - NN_07
+  - NN_06
+  - NN_03
   m_Tag: Common
   m_IsVariant: 0

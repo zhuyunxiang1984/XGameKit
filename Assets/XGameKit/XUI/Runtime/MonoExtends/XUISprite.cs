@@ -45,7 +45,7 @@ namespace XGameKit.XUI
         {
             if (m_paramBundle.TextureManager == null)
                 return;
-            m_paramBundle.TextureManager.LoadTextureAsyn(name, delegate(Sprite sprite)
+            m_paramBundle.TextureManager.LoadSpriteAsyn(name, delegate(Sprite sprite)
             {
                 m_image.overrideSprite = sprite;
             });
@@ -61,15 +61,15 @@ namespace XGameKit.XUI
             if (m_image.sprite != null && m_image.sprite.name != whiteblockName)
             {
                 defaultTex = m_image.sprite.name;
-                m_image.overrideSprite = m_image.sprite;
                 m_image.sprite = null;
+                EditorUtility.SetDirty(this);
             }
             if (m_image.sprite == null)
                 m_image.sprite = AssetDatabase.LoadAssetAtPath<Sprite>(whiteblockPath);
 
             if (m_image.overrideSprite == null || m_image.overrideSprite.name != defaultTex)
             {
-                m_image.overrideSprite = XUITextureConfig.GetSprite(defaultTex);
+                m_image.overrideSprite = XUITextureManager.GetSpriteEditor(defaultTex);
             }
         }
 #endif

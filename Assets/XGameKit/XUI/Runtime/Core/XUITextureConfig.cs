@@ -13,7 +13,9 @@ namespace XGameKit.XUI
     public class XUITextureConfig : ScriptableObject
     {
         public const string Common = "common";
-        public const string configPath = "Assets/XGameKitSettings/Runtime/XUITextureConfig.asset";
+        public const string configPathAB = "Assets/XGameKitSettings/Runtime/XUITextureConfig.asset";
+        public const string configPathBI = "Assets/XGameKitSettings/Runtime/Resources/XUITextureConfig.asset";
+        public const string configPathBIRuntime = "XUITextureConfig";
 
         [Serializable]
         public class TextureInfo
@@ -31,9 +33,13 @@ namespace XGameKit.XUI
             public string path; //路径
             
 #if UNITY_EDITOR
-            //[HideInInspector]
+            [HideInInspector]
             public string assetPath; //用于开发模式
 #endif
+            public string ToLog()
+            {
+                return $"name:{name} path:{path} buildin:{buildin} atlasName:{atlasName}";
+            }
         }
 
 #if UNITY_EDITOR
@@ -61,12 +67,7 @@ namespace XGameKit.XUI
         
         [LabelText("图元信息"), HideIf("IsFilterWordExist")]
         public List<TextureInfo> configData = new List<TextureInfo>();
-
-        protected Dictionary<string, TextureInfo> m_commons = new Dictionary<string, TextureInfo>();
-
-        protected Dictionary<string, Dictionary<string, TextureInfo>> m_complex =
-            new Dictionary<string, Dictionary<string, TextureInfo>>();
-
+        
 #if UNITY_EDITOR
 
         public void Clear()
@@ -85,59 +86,7 @@ namespace XGameKit.XUI
             data.buildin = buildin;
             configData.Add(data);
         }
-
-        public static Sprite GetSprite(string name)
-        {
-            var textureConfig = AssetDatabase.LoadAssetAtPath<XUITextureConfig>(configPath);
-            if (textureConfig == null)
-                return null;
-            textureConfig.InitData();
-            var textureInfo = textureConfig.GetData(name);
-            if (textureInfo == null)
-                return null;
-            return AssetDatabase.LoadAssetAtPath<Sprite>(textureInfo.assetPath);
-        }
 #endif
 
-        public void InitData()
-        {
-            m_commons.Clear();
-            m_complex.Clear();
-            foreach (var data in configData)
-            {
-                var dict = _GetOrCreateDatas(data.language);
-                if (dict.ContainsKey(data.name))
-                {
-                    Debug.LogError($"texture名字重复 name:{data.name} language:{data.language}");
-                    continue;
-                }
-
-                dict.Add(data.name.ToLower(), data);
-            }
-        }
-
-        public TextureInfo GetData(string name, string language = Common)
-        {
-            name = name.ToLower();
-            var dict = _GetOrCreateDatas(language);
-            if (!dict.ContainsKey(name))
-            {
-                Debug.LogError($"texture 不存在 name:{name} language:{language}");
-                return null;
-            }
-
-            return dict[name];
-        }
-
-        Dictionary<string, TextureInfo> _GetOrCreateDatas(string language = Common)
-        {
-            if (language == Common)
-                return m_commons;
-            if (m_complex.ContainsKey(language))
-                return m_complex[language];
-            var datas = new Dictionary<string, TextureInfo>();
-            m_complex.Add(language, datas);
-            return datas;
-        }
     }
 }

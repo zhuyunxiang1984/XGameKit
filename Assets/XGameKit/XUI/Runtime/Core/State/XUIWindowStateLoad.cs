@@ -17,21 +17,12 @@ namespace XGameKit.XUI
         {
             m_name = obj.resName;
             m_asset = null;
-            obj.uiManager.AssetLoader.AddListener(_OnLoadAsset);
-            obj.uiManager.AssetLoader.LoadAsset(m_name);
+            obj.uiManager.AssetLoader.LoadAssetAsyn<GameObject>(m_name, (asset)=> m_asset = asset);
         }
 
         public override void OnLeave(XUIWindow obj)
         {
-            obj.uiManager.AssetLoader.DelListener(_OnLoadAsset);
             obj.uiManager.AssetLoader.UnloadAsset(m_name);
-        }
-
-        void _OnLoadAsset(string name, GameObject asset)
-        {
-            if (m_name != name)
-                return;
-            m_asset = asset;
         }
         public override void OnUpdate(XUIWindow obj, float elapsedTime)
         {

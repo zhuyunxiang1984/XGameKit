@@ -1,0 +1,149 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d970e76d7e3e9f40876a2453e8a8d40, type: 3}
+  m_Name: XUITextureConfig
+  m_EditorClassIdentifier: 
+  filterWord: 
+  filters:
+  - name: pic_basicbattle06
+    language: common
+    atlasName: Circle
+    buildin: 1
+    path: Atlas-build-in/Circle
+    assetPath: Assets/Project/Sprites/Cricle/pic_basicbattle06.png
+  - name: pic_basicbattle07
+    language: common
+    atlasName: Circle
+    buildin: 1
+    path: Atlas-build-in/Circle
+    assetPath: Assets/Project/Sprites/Cricle/pic_basicbattle07.png
+  - name: pic_basicbattle08
+    language: common
+    atlasName: Circle
+    buildin: 1
+    path: Atlas-build-in/Circle
+    assetPath: Assets/Project/Sprites/Cricle/pic_basicbattle08.png
+  - name: pic_basicbattle09
+    language: common
+    atlasName: Circle
+    buildin: 1
+    path: Atlas-build-in/Circle
+    assetPath: Assets/Project/Sprites/Cricle/pic_basicbattle09.png
+  - name: Icon_shuxing_dengji
+    language: common
+    atlasName: 
+    buildin: 1
+    path: Attribute/Icon_shuxing_dengji
+    assetPath: Assets/Resources/Attribute/Icon_shuxing_dengji.png
+  - name: Icon_shuxing_fangyu
+    language: common
+    atlasName: 
+    buildin: 1
+    path: Attribute/Icon_shuxing_fangyu
+    assetPath: Assets/Resources/Attribute/Icon_shuxing_fangyu.png
+  - name: Icon_shuxing_gongji
+    language: common
+    atlasName: 
+    buildin: 1
+    path: Attribute/Icon_shuxing_gongji
+    assetPath: Assets/Resources/Attribute/Icon_shuxing_gongji.png
+  - name: Icon_shuxing_liliang
+    language: common
+    atlasName: 
+    buildin: 1
+    path: Attribute/Icon_shuxing_liliang
+    assetPath: Assets/Resources/Attribute/Icon_shuxing_liliang.png
+  - name: Icon_shuxing_mingzhong
+    language: common
+    atlasName: 
+    buildin: 1
+    path: Attribute/Icon_shuxing_mingzhong
+    assetPath: Assets/Resources/Attribute/Icon_shuxing_mingzhong.png
+  - name: Icon_shuxing_shengming
+    language: common
+    atlasName: 
+    buildin: 1
+    path: Attribute/Icon_shuxing_shengming
+    assetPath: Assets/Resources/Attribute/Icon_shuxing_shengming.png
+  - name: Icon_shuxing_sudu
+    language: common
+    atlasName: 
+    buildin: 1
+    path: Attribute/Icon_shuxing_sudu
+    assetPath: Assets/Resources/Attribute/Icon_shuxing_sudu.png
+  configData:
+  - name: pic_basicbattle06
+    language: common
+    atlasName: Circle
+    buildin: 1
+    path: Atlas-build-in/Circle
+    assetPath: Assets/Resources/Atlas-build-in/Circle.spriteatlas
+  - name: pic_basicbattle07
+    language: common
+    atlasName: Circle
+    buildin: 1
+    path: Atlas-build-in/Circle
+    assetPath: Assets/Resources/Atlas-build-in/Circle.spriteatlas
+  - name: pic_basicbattle08
+    language: common
+    atlasName: Circle
+    buildin: 1
+    path: Atlas-build-in/Circle
+    assetPath: Assets/Resources/Atlas-build-in/Circle.spriteatlas
+  - name: pic_basicbattle09
+    language: common
+    atlasName: Circle
+    buildin: 1
+    path: Atlas-build-in/Circle
+    assetPath: Assets/Resources/Atlas-build-in/Circle.spriteatlas
+  - name: Icon_shuxing_dengji
+    language: common
+    atlasName: 
+    buildin: 1
+    path: Attribute/Icon_shuxing_dengji
+    assetPath: Assets/Resources/Attribute/Icon_shuxing_dengji.png
+  - name: Icon_shuxing_fangyu
+    language: common
+    atlasName: 
+    buildin: 1
+    path: Attribute/Icon_shuxing_fangyu
+    assetPath: Assets/Resources/Attribute/Icon_shuxing_fangyu.png
+  - name: Icon_shuxing_gongji
+    language: common
+    atlasName: 
+    buildin: 1
+    path: Attribute/Icon_shuxing_gongji
+    assetPath: Assets/Resources/Attribute/Icon_shuxing_gongji.png
+  - name: Icon_shuxing_liliang
+    language: common
+    atlasName: 
+    buildin: 1
+    path: Attribute/Icon_shuxing_liliang
+    assetPath: Assets/Resources/Attribute/Icon_shuxing_liliang.png
+  - name: Icon_shuxing_mingzhong
+    language: common
+    atlasName: 
+    buildin: 1
+    path: Attribute/Icon_shuxing_mingzhong
+    assetPath: Assets/Resources/Attribute/Icon_shuxing_mingzhong.png
+  - name: Icon_shuxing_shengming
+    language: common
+    atlasName: 
+    buildin: 1
+    path: Attribute/Icon_shuxing_shengming
+    assetPath: Assets/Resources/Attribute/Icon_shuxing_shengming.png
+  - name: Icon_shuxing_sudu
+    language: common
+    atlasName: 
+    buildin: 1
+    path: Attribute/Icon_shuxing_sudu
+    assetPath: Assets/Resources/Attribute/Icon_shuxing_sudu.png

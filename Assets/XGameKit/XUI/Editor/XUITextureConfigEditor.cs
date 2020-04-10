@@ -35,13 +35,10 @@ namespace XGameKit.XUI
         {
             [HorizontalGroup("1", Width = 0.2f), LabelText("名称"), LabelWidth(30)]
             public string Name;
-            [HorizontalGroup("1"), LabelText("build-in"), LabelWidth(50)]
-            public bool BuildIn;
             [HorizontalGroup("1"), HideLabel]
             public SpriteAtlas atlas;
             [HorizontalGroup("1", Width = 0.4f), HideLabel]
             public List<Object> Folders;
-            
         }
         
         [System.Serializable]
@@ -58,7 +55,9 @@ namespace XGameKit.XUI
         [LabelText("图集路径(build-in)")]
         public Object AtlasFolderBuildIn;
         [LabelText("图集配置")]
-        public List<AtlasConf> AtlasConfs = new List<AtlasConf>();
+        public List<AtlasConf> AtlasConfsAB = new List<AtlasConf>();
+        [LabelText("图集配置(build-in)")]
+        public List<AtlasConf> AtlasConfsBI = new List<AtlasConf>();
         [LabelText("图元配置")]
         public List<RawxxConf> RawxxConfs = new List<RawxxConf>();
         
@@ -85,29 +84,51 @@ namespace XGameKit.XUI
                 return;
             }
 
+            if (!_CheckAtlasName())
+                return;
             //生成Atlas
-            _GenerateSpriteAtlas(_GetAtlasFolders(false), atlasFolderPath, false);
-            _GenerateSpriteAtlas(_GetAtlasFolders(true), atlasFolderPathBuildIn, true);
+            _GenerateSpriteAtlas(_GetAtlasFolders(AtlasConfsAB), atlasFolderPath, false);
+            _GenerateSpriteAtlas(_GetAtlasFolders(AtlasConfsBI), atlasFolderPathBuildIn, true);
             
             //统计名字
-            _CollectSprite(atlasFolderPath);
+            _GenerateTextureConfig();
+            
+            //
+            XUITextureManager.InitEditor();
+        }
+        
+        //重名检测
+        bool _CheckAtlasName()
+        {
+            Dictionary<string, bool> flags = new Dictionary<string, bool>();
+            foreach (var temp in AtlasConfsAB)
+            {
+                if (flags.ContainsKey(temp.Name))
+                {
+                    XDebug.LogError($"图集命名重复 {name}");
+                    return false;
+                }
+                flags.Add(temp.Name, true);
+            }
+            foreach (var temp in AtlasConfsBI)
+            {
+                if (flags.ContainsKey(temp.Name))
+                {
+                    XDebug.LogError($"图集命名重复 {name}");
+                    return false;
+                }
+                flags.Add(temp.Name, true);
+            }
+            return true;
         }
         
         //--
-        Dictionary<string, AtlasConf> _GetAtlasFolders(bool buildIn)
+        Dictionary<string, AtlasConf> _GetAtlasFolders(List<AtlasConf> list)
         {
             //统计需要生成的图集
             Dictionary<string, AtlasConf> result = new Dictionary<string, AtlasConf>();
-            foreach (var atlasConf in AtlasConfs)
+            foreach (var atlasConf in list)
             {
-                if (atlasConf.BuildIn != buildIn)
-                    continue;
-                if (result.ContainsKey(atlasConf.Name))
-                {
-                    Debug.LogError($"图集名称重复 {atlasConf.Name}");
-                    continue;
-                }
-
                 var folderList = new List<Object>();
                 foreach (var folder in atlasConf.Folders)
                 {
@@ -119,10 +140,8 @@ namespace XGameKit.XUI
                         EditorUtility.DisplayDialog(string.Empty, $"{atlasConf.Name} path:{path} 不是文件夹", "OK");
                         continue;
                     }
-
                     folderList.Add(folder);
                 }
-
                 result.Add(atlasConf.Name, atlasConf);
             }
             return result;
@@ -187,17 +206,14 @@ namespace XGameKit.XUI
         }
         
         //统计sprite，生成运行时配置
-        void _CollectSprite(string atlasFolderPath)
+        void _GenerateTextureConfig()
         {
-            var config = AssetDatabase.LoadAssetAtPath<XUITextureConfig>(XUITextureConfig.configPath);
-            if (config == null)
-            {
-                config = ScriptableObject.CreateInstance<XUITextureConfig>();
-                AssetDatabase.CreateAsset(config, XUITextureConfig.configPath);
-            }
+            var configAB = _CreateTextureConfigAB();
+            var configBI = _CreateTextureConfigBI();
 
-            config.Clear();
-            foreach (var atlasInfo in AtlasConfs)
+            configAB.Clear();
+            configBI.Clear();
+            foreach (var atlasInfo in AtlasConfsAB)
             {
                 foreach (var folder in atlasInfo.Folders)
                 {
@@ -211,14 +227,30 @@ namespace XGameKit.XUI
                     {
                         var name = Path.GetFileNameWithoutExtension(file);
                         var assetPath = AssetDatabase.GetAssetPath(atlasInfo.atlas);
-                        config.AddData(name, _GetPath(assetPath, atlasInfo.BuildIn), 
-                            atlasInfo.Name, 
-                            _GetPath(file, false),
-                            atlasInfo.BuildIn);
+                        configAB.AddData(name, assetPath, 
+                            atlasInfo.Name,  assetPath, false);
                     }
                 }
             }
-
+            foreach (var atlasInfo in AtlasConfsBI)
+            {
+                foreach (var folder in atlasInfo.Folders)
+                {
+                    if (folder == null)
+                        continue;
+                    var path = AssetDatabase.GetAssetPath(folder);
+                    if (!AssetDatabase.IsValidFolder(path))
+                        continue;
+                    var files = Directory.GetFiles(path, "*.png", SearchOption.TopDirectoryOnly);
+                    foreach (var file in files)
+                    {
+                        var name = Path.GetFileNameWithoutExtension(file);
+                        var assetPath = AssetDatabase.GetAssetPath(atlasInfo.atlas);
+                        configBI.AddData(name, _GetResourcePath(assetPath), 
+                            atlasInfo.Name, assetPath,true);
+                    }
+                }
+            }
             foreach (var rawFolder in RawxxConfs)
             {
                 foreach (var folder in rawFolder.Folders)
@@ -230,35 +262,80 @@ namespace XGameKit.XUI
                     var files = Directory.GetFiles(path, "*.png", SearchOption.TopDirectoryOnly);
                     foreach (var file in files)
                     {
+                        //file = file.Replace("\\", "/");
                         var name = Path.GetFileNameWithoutExtension(file);
-                        config.AddData(name, _GetPath(file, buildIn),
-                            null, 
-                            _GetPath(file,false),
-                            buildIn, rawFolder.Language);
+                        if (buildIn)
+                        {
+                            configBI.AddData(name, _GetResourcePath(file),
+                                null, _GetAssetPath(file),true, rawFolder.Language);
+                        }
+                        else
+                        {
+                            configAB.AddData(name, _GetAssetPath(file),
+                                null, _GetAssetPath(file),false, rawFolder.Language);
+                        }
                     }
                 }
             }
-
-            EditorUtility.SetDirty(config);
+            EditorUtility.SetDirty(configAB);
+            EditorUtility.SetDirty(configBI);
             AssetDatabase.SaveAssets();
         }
 
+        XUITextureConfig _CreateTextureConfigAB()
+        {
+            var config = AssetDatabase.LoadAssetAtPath<XUITextureConfig>(XUITextureConfig.configPathAB);
+            if (config != null)
+                return config;
+            config = ScriptableObject.CreateInstance<XUITextureConfig>();
+            XUtilities.MakePathExist(XUITextureConfig.configPathAB);
+            AssetDatabase.CreateAsset(config, XUITextureConfig.configPathAB);
+            return config;
+        }
+        XUITextureConfig _CreateTextureConfigBI()
+        {
+            var config = AssetDatabase.LoadAssetAtPath<XUITextureConfig>(XUITextureConfig.configPathBI);
+            if (config != null)
+                return config;
+            config = ScriptableObject.CreateInstance<XUITextureConfig>();
+            XUtilities.MakePathExist(XUITextureConfig.configPathBI);
+            AssetDatabase.CreateAsset(config, XUITextureConfig.configPathBI);
+            return config;
+        }
+        
         string _MakeAtlasPath(string root, string atlasName)
         {
+            root = root.Replace("\\", "/");
             return $"{root}/{atlasName}.spriteatlas";
         }
 
-        string _GetPath(string assetPath, bool buildin)
+        string _GetAssetPath(string path)
         {
-            if (buildin)
+            path = path.Replace("\\", "/");
+            int index = path.IndexOf("Assets/");
+            if (index == -1)
             {
-                //resources下的路径,从resources开始，不包括扩展名
-                int start = assetPath.IndexOf("Resources/") + 10;
-                int end = assetPath.LastIndexOf(".");
-                return assetPath.Substring(start, end - start);
+                Debug.LogError($"{path}不是Asset目录");
+                return string.Empty;
             }
-            return assetPath.Substring(assetPath.IndexOf("Assets/"));
-            
+            return path.Substring(index).Replace("\\", "/");
+        }
+
+        string _GetResourcePath(string path)
+        {
+            path = path.Replace("\\", "/");
+            //resources下的路径,从resources开始，不包括扩展名
+            int start = path.IndexOf("Resources/") + 10;
+            if (start == -1)
+            {
+                Debug.LogError($"{path}不是Resources目录");
+                return string.Empty;
+            }
+
+            int end = path.LastIndexOf(".");
+            if (end == -1)
+                return path.Substring(start);
+            return path.Substring(start, end - start);
         }
     }
 }

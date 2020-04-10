@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
 using XGameKit.Core;
@@ -12,19 +13,41 @@ namespace XGameKit.XUI
 
     public interface IXUIAssetLoader
     {
-        void LoadAsset(string name, Action<GameObject> callback = null);
+        T LoadAsset<T>(string name) where T : Object;
+        void LoadAssetAsyn<T>(string name, Action<T> callback) where T : Object;
         void UnloadAsset(string name);
         void UnloadAllAssets();
-        void AddListener(Action<string, GameObject> callback);
-        void DelListener(Action<string, GameObject> callback);
     }
 
     public class XUIAssetLoaderDefault : IXUIAssetLoader
     {
         protected Dictionary<string, Object> m_caches = new Dictionary<string, Object>();
-        protected Action<string, GameObject> m_callback;
-        public void LoadAsset(string name, Action<GameObject> callback = null)
+
+        public T LoadAsset<T>(string name) where T : Object
         {
+#if UNITY_EDITOR
+            var asset = AssetDatabase.LoadAssetAtPath<T>(name);
+            if (asset == null)
+            {
+                Debug.LogError($"没有找到 {name}");
+                return null;
+            }
+            return asset;
+#endif
+            return null;
+        }
+        public void LoadAssetAsyn<T>(string name, Action<T> callback ) where T : Object
+        {
+#if UNITY_EDITOR
+            var asset = AssetDatabase.LoadAssetAtPath<T>(name);
+            if (asset == null)
+            {
+                Debug.LogError($"没有找到 {name}");
+                return;
+            }
+            callback.Invoke(asset);
+            return;
+#endif
             Object prefab = null;
             if (m_caches.ContainsKey(name))
             {
@@ -35,9 +58,7 @@ namespace XGameKit.XUI
                 prefab = Resources.Load(name);
                 m_caches.Add(name, prefab);
             }
-            callback?.Invoke(prefab as GameObject);
-
-            m_callback?.Invoke(name, prefab as GameObject);
+            callback.Invoke(prefab as T);
         }
 
         public void UnloadAsset(string name)
@@ -55,16 +76,6 @@ namespace XGameKit.XUI
 //                Resources.UnloadAsset(prefab);
 //            }
             m_caches.Clear();
-        }
-
-        public void AddListener(Action<string, GameObject> callback)
-        {
-            m_callback += callback;
-        }
-
-        public void DelListener(Action<string, GameObject> callback)
-        {
-            m_callback -= callback;
         }
     }
 

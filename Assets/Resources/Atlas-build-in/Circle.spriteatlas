@@ -31,10 +31,18 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 1f6f6692f024c554f9479ee1c4343fc7, type: 3}
-    totalSpriteSurfaceArea: 0
+    totalSpriteSurfaceArea: 197136
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
-  m_PackedSprites: []
-  m_PackedSpriteNamesToIndex: []
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 2f131630efcec3447982c94fd5735a0f, type: 3}
+  - {fileID: 21300000, guid: c70f4566f0613694c91f9ce35be9142c, type: 3}
+  - {fileID: 21300000, guid: 843593c64016dcd48a1352489d9f0f78, type: 3}
+  - {fileID: 21300000, guid: 99450d077c431224894bcc412069e48e, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - pic_basicbattle06
+  - pic_basicbattle08
+  - pic_basicbattle07
+  - pic_basicbattle09
   m_Tag: Circle
   m_IsVariant: 0

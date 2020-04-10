@@ -38,6 +38,7 @@ namespace XGameKit.XUI
         public XUIManager()
         {
             uiRoot = XUIRoot.CreateInstance("XUIRoot");
+            TextureManager.Init(AssetLoader, LocalizationLoader);
         }
         public void Dispose()
         {

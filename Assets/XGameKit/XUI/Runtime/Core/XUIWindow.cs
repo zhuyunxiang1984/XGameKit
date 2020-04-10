@@ -47,7 +47,7 @@ namespace XGameKit.XUI
             this.paramBundle = paramBundle;
             this.name = name;
             //临时
-            resName = name;
+            resName = $"Assets/XGameKitSamples/XUI/Resources/{name}.prefab";
             initParam = param;
             waitDestroy = false;
             stateMachine.Start();
