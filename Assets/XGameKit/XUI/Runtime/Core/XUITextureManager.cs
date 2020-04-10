@@ -33,7 +33,7 @@ namespace XGameKit.XUI
             var configAB = m_AssetLoader.LoadAsset<XUITextureConfig>(XUITextureConfig.configPathAB);
             AddConfig(configAB.configData);
 
-            SpriteAtlasManager.atlasRequested += _OnAtlasRequested;
+            //SpriteAtlasManager.atlasRequested += _OnAtlasRequested;
         }
 
         public void Term()
@@ -41,14 +41,14 @@ namespace XGameKit.XUI
             m_AssetLoader = null;
             m_LocalizationLoader = null;
             
-            SpriteAtlasManager.atlasRequested += _OnAtlasRequested;
+            //SpriteAtlasManager.atlasRequested += _OnAtlasRequested;
         }
 
         void _OnAtlasRequested(string path, Action<SpriteAtlas> callback)
         {
-            Debug.Log($"_OnAtlasRequested {path}");
-            var sa =  Resources.Load<SpriteAtlas>(path);
-            callback(sa);
+            //Debug.Log($"_OnAtlasRequested {path}");
+            //var sa =  Resources.Load<SpriteAtlas>(path);
+            //callback(sa);
         }
         public void Clear()
         {
@@ -197,7 +197,7 @@ namespace XGameKit.XUI
             {
                 m_AssetLoader.LoadAssetAsyn<SpriteAtlas>(textureInfo.path, spriteAtlas =>
                 {
-                    Debug.Log($"LoadAsset SpriteAtlas {textureInfo.path} {spriteAtlas}");
+                    //Debug.Log($"LoadAsset SpriteAtlas {textureInfo.path} {spriteAtlas}");
                     var sprite = spriteAtlas.GetSprite(textureInfo.name);
                     if (sprite == null)
                     {
