@@ -15,7 +15,7 @@ namespace XGameKit.Core
     {
         static Dictionary<string, Stack<Object>> _caches = new Dictionary<string, Stack<object>>();
     
-        public static T Alloc<T>() where T : class, IXPoolable, new()
+        public static T Alloc<T>() where T : class, new()
         {
             var className = typeof(T).FullName;
             if (string.IsNullOrEmpty(className))
@@ -34,7 +34,7 @@ namespace XGameKit.Core
             return stack.Pop() as T;
         }
 
-        public static void Free<T>(T obj) where T : class, IXPoolable
+        public static void Free<T>(T obj) where T : class
         {
             var className = obj.GetType().FullName;
             if (string.IsNullOrEmpty(className))
@@ -49,7 +49,6 @@ namespace XGameKit.Core
                 stack = new Stack<Object>();
                 _caches.Add(className, stack);
             }
-            obj.Reset();
             stack.Push(obj);
         }
 
