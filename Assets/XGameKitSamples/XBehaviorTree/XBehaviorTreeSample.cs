@@ -13,7 +13,7 @@ public class XBehaviorTreeSample : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //m_root = prefab.GetComponent<XBTNodeCompositeMono>().GetNode();
+        m_root = XBTUtilities.ParseMono(prefab.GetComponent<XBTNodeMono>());
         XBTClassFactory.Init();
     }
 

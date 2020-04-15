@@ -138,7 +138,6 @@ namespace XGameKit.Core
             }
             EditorGUILayout.EndHorizontal();
 
-            
             ValueEntry.SmartValue = target;
         }
 

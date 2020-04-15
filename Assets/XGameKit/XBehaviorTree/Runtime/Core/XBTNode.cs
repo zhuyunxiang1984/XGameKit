@@ -10,8 +10,11 @@ namespace XGameKit.XBehaviorTree
     public class XBTNode
     {
         public XBTNode parent;
+        public List<XBTNode> children;
+        
         public string taskClassName;
-        public XMonoVariables variables;
+        public Dictionary<string, XMonoVariable> variables;
+        
     }
 
 }

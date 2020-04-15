@@ -103,7 +103,7 @@ namespace XGameKit.XUI
         public override void Init(string windowName, XUIParamBundle paramBundle, XMonoVariables variables)
         {
             base.Init(windowName, paramBundle, variables);
-            variables.Inject(m_view);
+            XMonoVariableUtility.Inject(variables.values, ref m_view);
         }
 
         public override void ShowUI(object param)
@@ -122,7 +122,7 @@ namespace XGameKit.XUI
         public override void Init(string windowName, XUIParamBundle paramBundle, XMonoVariables variables)
         {
             base.Init(windowName, paramBundle, variables);
-            variables.Inject(variables);
+            XMonoVariableUtility.Inject(variables.values, ref m_view);
         }
 
         public override void Term()

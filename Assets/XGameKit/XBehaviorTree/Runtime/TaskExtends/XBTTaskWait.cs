@@ -5,14 +5,18 @@ using XGameKit.Core;
 
 namespace XGameKit.XBehaviorTree
 {
-    public class XBTTaskWait : XBTTask
+    public class XBTTaskWait : XBTCommonTask<XBTTaskWait.Param>
     {
+        public class Param
+        {
+            public float time;
+        }
         protected float m_time;
         protected float m_timecounter;
+        
         public override void OnEnter(object obj)
         {
-            
-            m_time = 3f;
+            m_time = m_param.time;
             m_timecounter = 0f;
             XDebug.Log(XBTConst.Tag, $"start wait {m_time}");
         }

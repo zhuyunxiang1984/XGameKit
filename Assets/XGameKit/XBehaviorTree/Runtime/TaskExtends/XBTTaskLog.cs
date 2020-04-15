@@ -5,8 +5,12 @@ using XGameKit.Core;
 
 namespace XGameKit.XBehaviorTree
 {
-    public class XBTTaskLog : XBTTask
+    public class XBTTaskLog : XBTCommonTask<XBTTaskLog.Param>
     {
+        public class Param
+        {
+            public string message;
+        }
         public override void OnEnter(object obj)
         {
         }
@@ -17,7 +21,7 @@ namespace XGameKit.XBehaviorTree
 
         public override EnumTaskStatus OnUpdate(object obj, float elapsedTime)
         {
-            XDebug.Log(XBTConst.Tag, "testtesttest!!");
+            XDebug.Log(XBTConst.Tag, m_param.message);
             return EnumTaskStatus.Success;
         }
     }

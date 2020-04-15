@@ -10,6 +10,7 @@ namespace XGameKit.XBehaviorTree
     public class XBTNodeMono : MonoBehaviour
     {
         public string className;
+        
         private void Update()
         {
             if (string.IsNullOrEmpty(className))

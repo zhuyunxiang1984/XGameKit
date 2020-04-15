@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 
 namespace XGameKit.Core
@@ -53,6 +54,127 @@ namespace XGameKit.Core
                 }
             }
             return string.Empty;
+        }
+        
+        //将变量注入制定对象
+        public static void Inject<T>(Dictionary<string, XMonoVariable> values, ref T obj) where T : class
+        {
+            Type type = obj.GetType();
+            //Debug.Log(type.FullName);
+            var fileds = type.GetFields(BindingFlags.Public | BindingFlags.Instance);
+            foreach (var fieldInfo in fileds)
+            {
+                //Debug.Log(fieldInfo.Name);
+                if (!values.ContainsKey(fieldInfo.Name))
+                {
+                    Debug.LogErrorFormat("注入失败！ 字段:{0} 类型:{1}", fieldInfo.Name, fieldInfo.FieldType);
+                    continue;
+                }
+                _Inject(obj, fieldInfo, values[fieldInfo.Name]);
+            }
+        }
+        public static void Inject<T>(List<XMonoVariable> values, ref T obj) where T : class
+        {
+            Inject(ConvertToDict(values), ref obj);
+        }
+        public static Dictionary<string, XMonoVariable> ConvertToDict(List<XMonoVariable> values)
+        {
+            var result = new Dictionary<string, XMonoVariable>();
+            foreach (var value in values)
+            {
+                if (string.IsNullOrEmpty(value.name))
+                    continue;
+                if (result.ContainsKey(value.name))
+                {
+                    Debug.LogError($"{value.name} 重复定义");
+                    continue;
+                }
+                result.Add(value.name, value);
+            }
+            return result;
+        }
+
+        static bool _Inject<T>(T obj, FieldInfo fieldInfo, XMonoVariable value)
+        {
+            switch (value.type)
+            {
+                case XMonoVariableType.GameObject:
+                case XMonoVariableType.Component:
+                    var objType = value.objData.GetType();
+                    if (fieldInfo.FieldType == objType || objType.IsSubclassOf(fieldInfo.FieldType))
+                    {
+                        fieldInfo.SetValue(obj, value.objData);
+                        return true;
+                    }
+
+                    break;
+                case XMonoVariableType.Bool:
+                    if (fieldInfo.FieldType == typeof(bool))
+                    {
+                        fieldInfo.SetValue(obj, XMonoVariableUtility.ToBool(value.valData));
+                        return true;
+                    }
+
+                    break;
+                case XMonoVariableType.Float:
+                    if (fieldInfo.FieldType == typeof(float))
+                    {
+                        fieldInfo.SetValue(obj, XMonoVariableUtility.ToSingle(value.valData));
+                        return true;
+                    }
+
+                    break;
+                case XMonoVariableType.Int:
+                    if (fieldInfo.FieldType == typeof(int))
+                    {
+                        fieldInfo.SetValue(obj, XMonoVariableUtility.ToInt32(value.valData));
+                        return true;
+                    }
+
+                    break;
+                case XMonoVariableType.String:
+                    if (fieldInfo.FieldType == typeof(string))
+                    {
+                        fieldInfo.SetValue(obj, value.valData);
+                        return true;
+                    }
+
+                    break;
+                case XMonoVariableType.Color:
+                    if (fieldInfo.FieldType == typeof(Color))
+                    {
+                        fieldInfo.SetValue(obj, XMonoVariableUtility.ToColor(value.valData));
+                        return true;
+                    }
+
+                    break;
+                case XMonoVariableType.Vector2:
+                    if (fieldInfo.FieldType == typeof(Vector2))
+                    {
+                        fieldInfo.SetValue(obj, XMonoVariableUtility.ToVector2(value.valData));
+                        return true;
+                    }
+
+                    break;
+                case XMonoVariableType.Vector3:
+                    if (fieldInfo.FieldType == typeof(Vector3))
+                    {
+                        fieldInfo.SetValue(obj, XMonoVariableUtility.ToVector3(value.valData));
+                        return true;
+                    }
+
+                    break;
+                case XMonoVariableType.Vector4:
+                    if (fieldInfo.FieldType == typeof(Vector4))
+                    {
+                        fieldInfo.SetValue(obj, XMonoVariableUtility.ToVector4(value.valData));
+                        return true;
+                    }
+
+                    break;
+            }
+
+            return false;
         }
         
         #region 数据转换

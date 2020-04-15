@@ -23,7 +23,7 @@ namespace XGameKit.XUI
 
         public void Init(XMonoVariables variables)
         {
-            variables.Inject<VIEW>(m_view);
+            XMonoVariableUtility.Inject(variables.values, ref m_view);
         }
         public void Term()
         {

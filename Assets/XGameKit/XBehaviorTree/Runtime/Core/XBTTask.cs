@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using XGameKit.Core;
 
 namespace XGameKit.XBehaviorTree
 {
@@ -12,8 +13,8 @@ namespace XGameKit.XBehaviorTree
         void Leave(object obj);
         EnumTaskStatus Update(object obj, float elapsedTime);
     }
-
-    public abstract class XBTTask : IXBTTask
+    //commontask 参数为object 需要自己强转
+    public abstract class XBTCommonTask : IXBTTask
     {
         protected XBTNode m_node;
         public virtual void SetNode(XBTNode node)
@@ -36,6 +37,17 @@ namespace XGameKit.XBehaviorTree
         public abstract void OnLeave(object obj);
         public abstract EnumTaskStatus OnUpdate(object obj, float elapsedTime);
     }
+    public abstract class XBTCommonTask<Param> : XBTCommonTask where Param : class, new()
+    {
+        protected Param m_param = new Param();
+        public override void SetNode(XBTNode node)
+        {
+            base.SetNode(node);
+            XMonoVariableUtility.Inject(node.variables, ref m_param);
+        }
+    }
+    
+    //参数为T 可以指定类型自动强转
     public abstract class XBTTask<T> : IXBTTask where T : class
     {
         protected XBTNode m_node;
@@ -79,5 +91,15 @@ namespace XGameKit.XBehaviorTree
         public abstract void OnLeave(T obj);
         public abstract EnumTaskStatus OnUpdate(T obj, float elapsedTime);
     }
-    
+    public abstract class XBTTask<T, Param> : XBTTask<T>
+        where T : class 
+        where Param : class, new()
+    {
+        protected Param m_param = new Param();
+        public override void SetNode(XBTNode node)
+        {
+            base.SetNode(node);
+            XMonoVariableUtility.Inject(node.variables, ref m_param);
+        }
+    }
 }
