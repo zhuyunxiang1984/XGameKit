@@ -1,5 +1,80 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1726058567312689903
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6124302140160960373}
+  - component: {fileID: 1134860433550053543}
+  - component: {fileID: 612882893607134484}
+  m_Layer: 0
+  m_Name: XBTTaskLog
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6124302140160960373
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1726058567312689903}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 24110564374915725}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1134860433550053543
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1726058567312689903}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4351ca298b3d7f4fbe96b60cceb0bec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  memo: 
+  className: XBTTaskLog
+--- !u!114 &612882893607134484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1726058567312689903}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df9ddac425f460447b5c36eeb8af5ce3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  values:
+  - name: message
+    type: 5
+    objData: {fileID: 0}
+    valData: 33
+    gameobject: {fileID: 0}
+    recorded: 0
+    isself: 0
+    relativePath: 
+    cacheBool: 0
+    cacheFloat: 0
+    cacheInt: 0
+    cacheString: 33
+    cacheColor: {r: 1, g: 1, b: 1, a: 1}
+    cacheVec2: {x: 0, y: 0}
+    cacheVec3: {x: 0, y: 0, z: 0}
+    cacheVec4: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &1768920467842356031
 GameObject:
   m_ObjectHideFlags: 0
@@ -183,6 +258,7 @@ Transform:
   - {fileID: 1768920469524907700}
   - {fileID: 2395418982616446745}
   - {fileID: 3558944376129108943}
+  - {fileID: 24110564374915725}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -334,7 +410,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   values:
-  - name: waitTime
+  - name: time
     type: 4
     objData: {fileID: 0}
     valData: AACAPw==
@@ -421,6 +497,310 @@ MonoBehaviour:
     cacheFloat: 0
     cacheInt: 0
     cacheString: "\u7ED3\u675F\u4E86"
+    cacheColor: {r: 1, g: 1, b: 1, a: 1}
+    cacheVec2: {x: 0, y: 0}
+    cacheVec3: {x: 0, y: 0, z: 0}
+    cacheVec4: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &2729522630922811890
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 124197547872701328}
+  - component: {fileID: 3319951569994723013}
+  - component: {fileID: 4620916016456140179}
+  m_Layer: 0
+  m_Name: XBTTaskLog
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &124197547872701328
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2729522630922811890}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 24110564374915725}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3319951569994723013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2729522630922811890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4351ca298b3d7f4fbe96b60cceb0bec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  memo: 
+  className: XBTTaskLog
+--- !u!114 &4620916016456140179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2729522630922811890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df9ddac425f460447b5c36eeb8af5ce3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  values:
+  - name: message
+    type: 5
+    objData: {fileID: 0}
+    valData: 11
+    gameobject: {fileID: 0}
+    recorded: 0
+    isself: 0
+    relativePath: 
+    cacheBool: 0
+    cacheFloat: 0
+    cacheInt: 0
+    cacheString: 11
+    cacheColor: {r: 1, g: 1, b: 1, a: 1}
+    cacheVec2: {x: 0, y: 0}
+    cacheVec3: {x: 0, y: 0, z: 0}
+    cacheVec4: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &2737380213769925990
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 24110564374915725}
+  - component: {fileID: 8381513456780644029}
+  - component: {fileID: 4767867218376893939}
+  m_Layer: 0
+  m_Name: XBTTaskSequence
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &24110564374915725
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2737380213769925990}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 4655154025803739697}
+  - {fileID: 124197547872701328}
+  - {fileID: 7589029264315826433}
+  - {fileID: 6124302140160960373}
+  m_Father: {fileID: 1768920468701516889}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8381513456780644029
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2737380213769925990}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4351ca298b3d7f4fbe96b60cceb0bec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  memo: 
+  className: XBTTaskSequence
+--- !u!114 &4767867218376893939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2737380213769925990}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df9ddac425f460447b5c36eeb8af5ce3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  values:
+  - name: message
+    type: 5
+    objData: {fileID: 0}
+    valData: 
+    gameobject: {fileID: 0}
+    recorded: 0
+    isself: 0
+    relativePath: 
+    cacheBool: 0
+    cacheFloat: 0
+    cacheInt: 0
+    cacheString: 
+    cacheColor: {r: 1, g: 1, b: 1, a: 1}
+    cacheVec2: {x: 0, y: 0}
+    cacheVec3: {x: 0, y: 0, z: 0}
+    cacheVec4: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &3731429841858963337
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4655154025803739697}
+  - component: {fileID: 6080220314428492483}
+  - component: {fileID: 5654614104139045141}
+  m_Layer: 0
+  m_Name: XBTTaskWait
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4655154025803739697
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3731429841858963337}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 24110564374915725}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6080220314428492483
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3731429841858963337}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4351ca298b3d7f4fbe96b60cceb0bec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  memo: 
+  className: XBTTaskWait
+--- !u!114 &5654614104139045141
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3731429841858963337}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df9ddac425f460447b5c36eeb8af5ce3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  values:
+  - name: time
+    type: 4
+    objData: {fileID: 0}
+    valData: AACAPw==
+    gameobject: {fileID: 0}
+    recorded: 0
+    isself: 0
+    relativePath: 
+    cacheBool: 0
+    cacheFloat: 1
+    cacheInt: 0
+    cacheString: 
+    cacheColor: {r: 1, g: 1, b: 1, a: 1}
+    cacheVec2: {x: 0, y: 0}
+    cacheVec3: {x: 0, y: 0, z: 0}
+    cacheVec4: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &4111862063323228603
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7589029264315826433}
+  - component: {fileID: 7681920119614198204}
+  - component: {fileID: 3141602648768611407}
+  m_Layer: 0
+  m_Name: XBTTaskLog
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7589029264315826433
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4111862063323228603}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 24110564374915725}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7681920119614198204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4111862063323228603}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4351ca298b3d7f4fbe96b60cceb0bec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  memo: 
+  className: XBTTaskLog
+--- !u!114 &3141602648768611407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4111862063323228603}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df9ddac425f460447b5c36eeb8af5ce3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  values:
+  - name: message
+    type: 5
+    objData: {fileID: 0}
+    valData: 22
+    gameobject: {fileID: 0}
+    recorded: 0
+    isself: 0
+    relativePath: 
+    cacheBool: 0
+    cacheFloat: 0
+    cacheInt: 0
+    cacheString: 22
     cacheColor: {r: 1, g: 1, b: 1, a: 1}
     cacheVec2: {x: 0, y: 0}
     cacheVec3: {x: 0, y: 0, z: 0}

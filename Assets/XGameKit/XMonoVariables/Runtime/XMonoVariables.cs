@@ -17,7 +17,7 @@ namespace XGameKit.Core
     public class XMonoVariables : MonoBehaviour
     {
         [CustomContextMenu("打印数据", "CheckValue")]
-        public List<XMonoVariable> values;
+        public List<XMonoVariable> values = new List<XMonoVariable>();
 
 #if UNITY_EDITOR
         [Button("记录引用", ButtonSizes.Large), HorizontalGroup()]
@@ -88,6 +88,16 @@ namespace XGameKit.Core
                 logger.Append($"{value.name}:{value.GetValue()}");
             }
             logger.Log();
+        }
+
+        public bool Exist(string name)
+        {
+            foreach (var val in values)
+            {
+                if (val.name == name)
+                    return true;
+            }
+            return false;
         }
 #endif
     }

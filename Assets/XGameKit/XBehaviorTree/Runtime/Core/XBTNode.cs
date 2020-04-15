@@ -6,7 +6,6 @@ using XGameKit.Core;
 
 namespace XGameKit.XBehaviorTree
 {
-    [System.Serializable]
     public class XBTNode
     {
         public XBTNode parent;
