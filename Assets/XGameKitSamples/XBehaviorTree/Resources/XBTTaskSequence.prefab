@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1768920467842356030}
   - component: {fileID: 6684724539616344181}
   m_Layer: 0
-  m_Name: XBTTaskLog
+  m_Name: "\u8F93\u51FALog"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,6 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4351ca298b3d7f4fbe96b60cceb0bec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  memo: "\u8F93\u51FALog"
   className: XBTTaskLog
 --- !u!114 &6684724539616344181
 MonoBehaviour:
@@ -86,7 +87,7 @@ GameObject:
   - component: {fileID: 1768920468644763629}
   - component: {fileID: 8708779795491775966}
   m_Layer: 0
-  m_Name: XBTTaskWait
+  m_Name: "\u7B49\u5F851\u79D2"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -118,6 +119,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4351ca298b3d7f4fbe96b60cceb0bec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  memo: "\u7B49\u5F851\u79D2"
   className: XBTTaskWait
 --- !u!114 &8708779795491775966
 MonoBehaviour:
@@ -196,6 +198,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4351ca298b3d7f4fbe96b60cceb0bec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  memo: 
   className: XBTTaskSequence
 --- !u!1 &1768920469524907701
 GameObject:
@@ -209,7 +212,7 @@ GameObject:
   - component: {fileID: 1768920469524907703}
   - component: {fileID: 3390419949407922057}
   m_Layer: 0
-  m_Name: XBTTaskLog
+  m_Name: "\u8F93\u51FALog"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -241,6 +244,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4351ca298b3d7f4fbe96b60cceb0bec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  memo: "\u8F93\u51FALog"
   className: XBTTaskLog
 --- !u!114 &3390419949407922057
 MonoBehaviour:
@@ -283,7 +287,7 @@ GameObject:
   - component: {fileID: 5613768442630057434}
   - component: {fileID: 201302478649157814}
   m_Layer: 0
-  m_Name: XBTTaskWait
+  m_Name: "\u7B49\u5F851\u79D2"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -315,6 +319,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4351ca298b3d7f4fbe96b60cceb0bec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  memo: "\u7B49\u5F851\u79D2"
   className: XBTTaskWait
 --- !u!114 &201302478649157814
 MonoBehaviour:
@@ -357,7 +362,7 @@ GameObject:
   - component: {fileID: 4436038031660012565}
   - component: {fileID: 86267131332127317}
   m_Layer: 0
-  m_Name: XBTTaskLog
+  m_Name: "\u8F93\u51FALog"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -389,6 +394,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4351ca298b3d7f4fbe96b60cceb0bec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  memo: "\u8F93\u51FALog"
   className: XBTTaskLog
 --- !u!114 &86267131332127317
 MonoBehaviour:
