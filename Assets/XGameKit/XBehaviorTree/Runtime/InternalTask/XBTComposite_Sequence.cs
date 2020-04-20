@@ -5,33 +5,37 @@ using XGameKit.Core;
 
 namespace XGameKit.XBehaviorTree
 {
-    public class XBTTaskSequence : XBTCommonTask
+    /// <summary>
+    /// 顺序节点
+    /// 逐个执行子节点
+    /// 全部成功，返回成功
+    /// 一个失败，返回失败
+    /// </summary>
+    public class XBTComposite_Sequence : XBTCommonTask
     {
         protected int m_index;
+        protected bool m_start;
         protected XBTBehavior m_beahvior = new XBTBehavior();
-
-        public override void SetNode(XBTNode node)
-        {
-            base.SetNode(node);
-        }
 
         public override void OnEnter(object obj)
         {
-            m_index = -1;
+            m_index = 0;
+            m_start = false;
         }
 
         public override void OnLeave(object obj)
         {
+            m_beahvior.Stop(obj);
         }
 
         public override EnumTaskStatus OnUpdate(object obj, float elapsedTime)
         {
             if (m_node.children == null || m_node.children.Count < 1)
                 return EnumTaskStatus.Success;
-            if (m_index == -1)
+            if (!m_start)
             {
-                m_index = 0;
                 m_beahvior.Start(m_node.children[m_index], obj);
+                m_start = true;
             }
             var status = m_beahvior.Update(obj, elapsedTime);
             if (status == EnumTaskStatus.Success)
@@ -41,8 +45,8 @@ namespace XGameKit.XBehaviorTree
                     return EnumTaskStatus.Success;
                 }
                 m_index = m_index + 1;
-                m_beahvior.Start(m_node.children[m_index], obj);
-                return EnumTaskStatus.Execute;
+                m_start = false;
+                return EnumTaskStatus.Running;
             }
             return status;
         }

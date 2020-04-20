@@ -9,6 +9,7 @@ namespace XGameKit.XBehaviorTree
         protected XBTNode m_node;
         protected IXBTTask m_task;
         protected EnumTaskStatus m_status;
+        protected bool m_start;
 
         public XBTBehavior()
         {
@@ -22,13 +23,12 @@ namespace XGameKit.XBehaviorTree
             m_node = node;
             m_task = XBTClassFactory.Alloc<IXBTTask>(m_node.taskClassName);
             m_task.SetNode(node);
-            m_task.Enter(obj);
-            m_status = EnumTaskStatus.Execute;
+            m_status = EnumTaskStatus.Running;
+            m_start = false;
         }
 
         public void Stop(object obj)
         {
-            //回收task
             if (m_task != null)
             {
                 m_task.Leave(obj);
@@ -39,24 +39,25 @@ namespace XGameKit.XBehaviorTree
         }
         public void Reset(object obj)
         {
+            Stop(obj);
             Start(m_node, obj);
         }
         public EnumTaskStatus Update(object obj, float elapsedTime)
         {
-            if (m_task == null)
+            if (m_status != EnumTaskStatus.Running)
                 return m_status;
-            switch (m_status)
+            if (!m_start)
             {
-                case EnumTaskStatus.Execute:
-                    m_status = m_task.Update(obj, elapsedTime);
-                    if (m_status == EnumTaskStatus.Success ||
-                        m_status == EnumTaskStatus.Failure)
-                    {
-                        m_task.Leave(obj);
-                        XBTClassFactory.Free(m_task);
-                        m_task = null;
-                    }
-                    break;
+                m_task.Enter(obj);
+                m_start = true;
+            }
+            m_status = m_task.Update(obj, elapsedTime);
+            if (m_status == EnumTaskStatus.Success ||
+                m_status == EnumTaskStatus.Failure)
+            {
+                m_task.Leave(obj);
+                XBTClassFactory.Free(m_task);
+                m_task = null;
             }
             return m_status;
         }

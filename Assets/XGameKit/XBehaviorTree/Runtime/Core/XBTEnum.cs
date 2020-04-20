@@ -8,7 +8,7 @@ namespace XGameKit.XBehaviorTree
     public enum EnumTaskStatus
     {
         None = 0,
-        Execute, //执行中
+        Running, //执行
         Success, //成功
         Failure, //失败
     }

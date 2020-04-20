@@ -30,7 +30,7 @@ namespace XGameKit.XBehaviorTree
         {
             m_timecounter += elapsedTime;
             if (m_timecounter < m_time)
-                return EnumTaskStatus.Execute;
+                return EnumTaskStatus.Running;
             return EnumTaskStatus.Success;
         }
     }

@@ -45,7 +45,7 @@ namespace XGameKit.XBehaviorTree
                 gameObject.transform.SetParent(mono.transform);
             }
         }
-        
+        /*
         #region 设置节点菜单
         
         private const string CommonNodeMenu = TreeNodeMenu + "设置节点/";
@@ -99,6 +99,6 @@ namespace XGameKit.XBehaviorTree
         }
         
         #endregion
-
+*/
     }
 }

@@ -38,7 +38,7 @@ namespace XGameKit.XBehaviorTree
         //测试
         public static void Init()
         {
-            Add("XBTTaskSequence",() =>{return XObjectPool.Alloc<XBTTaskSequence>();});
+            Add("XBTTaskSequence",() =>{return XObjectPool.Alloc<XBTComposite_Sequence>();});
             Add("XBTTaskLog",() =>{return XObjectPool.Alloc<XBTTaskLog>();});
             Add("XBTTaskWait",() =>{return XObjectPool.Alloc<XBTTaskWait>();});
         }
