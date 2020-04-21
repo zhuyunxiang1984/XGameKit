@@ -11,6 +11,7 @@ namespace XGameKit.XBehaviorTree
     /// 一个成功，返回成功
     /// 全部失败，返回失败
     /// </summary>
+    [BTTaskMemo("[组合]选择节点")]
     public class XBTComposite_Selector : XBTCommonTask
     {
         protected int m_index;

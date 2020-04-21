@@ -5,6 +5,7 @@ using XGameKit.Core;
 
 namespace XGameKit.XBehaviorTree
 {
+    [BTTaskMemo("等待time(秒)")]
     public class XBTTaskWait : XBTCommonTask<XBTTaskWait.Param>
     {
         public class Param

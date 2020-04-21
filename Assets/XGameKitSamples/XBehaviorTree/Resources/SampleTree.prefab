@@ -1,5 +1,50 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &208061271059294685
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3144941027125397857}
+  - component: {fileID: 202902789703927045}
+  m_Layer: 0
+  m_Name: "\u6253\u5370Log\u8BB0\u5F55"
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3144941027125397857
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 208061271059294685}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3219428049276385006}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &202902789703927045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 208061271059294685}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4351ca298b3d7f4fbe96b60cceb0bec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  memo: "\u6253\u5370Log\u8BB0\u5F55"
+  className: XBTTaskLog
 --- !u!1 &1726058567312689903
 GameObject:
   m_ObjectHideFlags: 0
@@ -12,7 +57,7 @@ GameObject:
   - component: {fileID: 1134860433550053543}
   - component: {fileID: 612882893607134484}
   m_Layer: 0
-  m_Name: XBTTaskLog
+  m_Name: "\u6253\u5370Log\u8BB0\u5F55"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,7 +89,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4351ca298b3d7f4fbe96b60cceb0bec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  memo: 
+  memo: "\u6253\u5370Log\u8BB0\u5F55"
   className: XBTTaskLog
 --- !u!114 &612882893607134484
 MonoBehaviour:
@@ -75,6 +120,51 @@ MonoBehaviour:
     cacheVec2: {x: 0, y: 0}
     cacheVec3: {x: 0, y: 0, z: 0}
     cacheVec4: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &1743252072377264168
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7048807956065390096}
+  - component: {fileID: 8443951365619209314}
+  m_Layer: 0
+  m_Name: "\u6253\u5370Log\u8BB0\u5F55"
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7048807956065390096
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1743252072377264168}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3219428049276385006}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8443951365619209314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1743252072377264168}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4351ca298b3d7f4fbe96b60cceb0bec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  memo: "\u6253\u5370Log\u8BB0\u5F55"
+  className: XBTTaskLog
 --- !u!1 &1768920467842356031
 GameObject:
   m_ObjectHideFlags: 0
@@ -87,7 +177,7 @@ GameObject:
   - component: {fileID: 1768920467842356030}
   - component: {fileID: 6684724539616344181}
   m_Layer: 0
-  m_Name: "\u8F93\u51FALog"
+  m_Name: "\u6253\u5370Log\u8BB0\u5F55"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -119,7 +209,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4351ca298b3d7f4fbe96b60cceb0bec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  memo: "\u8F93\u51FALog"
+  memo: "\u6253\u5370Log\u8BB0\u5F55"
   className: XBTTaskLog
 --- !u!114 &6684724539616344181
 MonoBehaviour:
@@ -162,7 +252,7 @@ GameObject:
   - component: {fileID: 1768920468644763629}
   - component: {fileID: 8708779795491775966}
   m_Layer: 0
-  m_Name: "\u7B49\u5F851\u79D2"
+  m_Name: "\u7B49\u5F85time(\u79D2)"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -194,7 +284,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4351ca298b3d7f4fbe96b60cceb0bec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  memo: "\u7B49\u5F851\u79D2"
+  memo: "\u7B49\u5F85time(\u79D2)"
   className: XBTTaskWait
 --- !u!114 &8708779795491775966
 MonoBehaviour:
@@ -236,7 +326,7 @@ GameObject:
   - component: {fileID: 1768920468701516889}
   - component: {fileID: 1768920468701516891}
   m_Layer: 0
-  m_Name: XBTTaskSequence
+  m_Name: SampleTree
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -275,7 +365,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   memo: 
-  className: XBTTaskSequence
+  className: XBTComposite_Sequence
 --- !u!1 &1768920469524907701
 GameObject:
   m_ObjectHideFlags: 0
@@ -288,7 +378,7 @@ GameObject:
   - component: {fileID: 1768920469524907703}
   - component: {fileID: 3390419949407922057}
   m_Layer: 0
-  m_Name: "\u8F93\u51FALog"
+  m_Name: "\u6253\u5370Log\u8BB0\u5F55"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -320,7 +410,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4351ca298b3d7f4fbe96b60cceb0bec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  memo: "\u8F93\u51FALog"
+  memo: "\u6253\u5370Log\u8BB0\u5F55"
   className: XBTTaskLog
 --- !u!114 &3390419949407922057
 MonoBehaviour:
@@ -363,7 +453,7 @@ GameObject:
   - component: {fileID: 5613768442630057434}
   - component: {fileID: 201302478649157814}
   m_Layer: 0
-  m_Name: "\u7B49\u5F851\u79D2"
+  m_Name: "\u7B49\u5F85time(\u79D2)"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -395,7 +485,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4351ca298b3d7f4fbe96b60cceb0bec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  memo: "\u7B49\u5F851\u79D2"
+  memo: "\u7B49\u5F85time(\u79D2)"
   className: XBTTaskWait
 --- !u!114 &201302478649157814
 MonoBehaviour:
@@ -438,7 +528,7 @@ GameObject:
   - component: {fileID: 4436038031660012565}
   - component: {fileID: 86267131332127317}
   m_Layer: 0
-  m_Name: "\u8F93\u51FALog"
+  m_Name: "\u6253\u5370Log\u8BB0\u5F55"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -470,7 +560,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4351ca298b3d7f4fbe96b60cceb0bec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  memo: "\u8F93\u51FALog"
+  memo: "\u6253\u5370Log\u8BB0\u5F55"
   className: XBTTaskLog
 --- !u!114 &86267131332127317
 MonoBehaviour:
@@ -501,6 +591,53 @@ MonoBehaviour:
     cacheVec2: {x: 0, y: 0}
     cacheVec3: {x: 0, y: 0, z: 0}
     cacheVec4: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &2504982466681424076
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3219428049276385006}
+  - component: {fileID: 5806325997883880141}
+  m_Layer: 0
+  m_Name: "\u9009\u62E9\u8282\u70B9"
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3219428049276385006
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2504982466681424076}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 7048807956065390096}
+  - {fileID: 3144941027125397857}
+  m_Father: {fileID: 24110564374915725}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5806325997883880141
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2504982466681424076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4351ca298b3d7f4fbe96b60cceb0bec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  memo: "\u9009\u62E9\u8282\u70B9"
+  className: XBTComposite_Selector
 --- !u!1 &2729522630922811890
 GameObject:
   m_ObjectHideFlags: 0
@@ -513,7 +650,7 @@ GameObject:
   - component: {fileID: 3319951569994723013}
   - component: {fileID: 4620916016456140179}
   m_Layer: 0
-  m_Name: XBTTaskLog
+  m_Name: "\u6253\u5370Log\u8BB0\u5F55"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -545,7 +682,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4351ca298b3d7f4fbe96b60cceb0bec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  memo: 
+  memo: "\u6253\u5370Log\u8BB0\u5F55"
   className: XBTTaskLog
 --- !u!114 &4620916016456140179
 MonoBehaviour:
@@ -588,7 +725,7 @@ GameObject:
   - component: {fileID: 8381513456780644029}
   - component: {fileID: 4767867218376893939}
   m_Layer: 0
-  m_Name: XBTTaskSequence
+  m_Name: "\u987A\u5E8F\u8282\u70B9"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -609,6 +746,7 @@ Transform:
   - {fileID: 124197547872701328}
   - {fileID: 7589029264315826433}
   - {fileID: 6124302140160960373}
+  - {fileID: 3219428049276385006}
   m_Father: {fileID: 1768920468701516889}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -624,8 +762,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4351ca298b3d7f4fbe96b60cceb0bec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  memo: 
-  className: XBTTaskSequence
+  memo: "\u987A\u5E8F\u8282\u70B9"
+  className: XBTComposite_Sequence
 --- !u!114 &4767867218376893939
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -667,7 +805,7 @@ GameObject:
   - component: {fileID: 6080220314428492483}
   - component: {fileID: 5654614104139045141}
   m_Layer: 0
-  m_Name: XBTTaskWait
+  m_Name: "\u7B49\u5F85time(\u79D2)"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -699,7 +837,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4351ca298b3d7f4fbe96b60cceb0bec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  memo: 
+  memo: "\u7B49\u5F85time(\u79D2)"
   className: XBTTaskWait
 --- !u!114 &5654614104139045141
 MonoBehaviour:
@@ -742,7 +880,7 @@ GameObject:
   - component: {fileID: 7681920119614198204}
   - component: {fileID: 3141602648768611407}
   m_Layer: 0
-  m_Name: XBTTaskLog
+  m_Name: "\u6253\u5370Log\u8BB0\u5F55"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -774,7 +912,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4351ca298b3d7f4fbe96b60cceb0bec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  memo: 
+  memo: "\u6253\u5370Log\u8BB0\u5F55"
   className: XBTTaskLog
 --- !u!114 &3141602648768611407
 MonoBehaviour:

@@ -8,6 +8,7 @@ namespace XGameKit.XBehaviorTree
     /// <summary>
     /// 子节点结果取反
     /// </summary>
+    [BTTaskMemo("[装饰]结果取反")]
     public class XBTDecorator_Not : XBTCommonTask
     {
         protected bool m_start;

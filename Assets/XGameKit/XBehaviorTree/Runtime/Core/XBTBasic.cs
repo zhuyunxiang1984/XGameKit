@@ -27,20 +27,13 @@ namespace XGameKit.XBehaviorTree
         {
             XObjectPool.Free(obj);
         }
-
-        public static void Add(string className, Func<object> method)
+        public static void Init(Dictionary<string, Func<object>> datas)
         {
-            if (m_datas.ContainsKey(className))
-                return;
-            m_datas.Add(className, method);
-        }
-        
-        //测试
-        public static void Init()
-        {
-            Add("XBTTaskSequence",() =>{return XObjectPool.Alloc<XBTComposite_Sequence>();});
-            Add("XBTTaskLog",() =>{return XObjectPool.Alloc<XBTTaskLog>();});
-            Add("XBTTaskWait",() =>{return XObjectPool.Alloc<XBTTaskWait>();});
+            m_datas.Clear();
+            foreach (var pairs in datas)
+            {
+                m_datas.Add(pairs.Key, pairs.Value);
+            }
         }
     }
 

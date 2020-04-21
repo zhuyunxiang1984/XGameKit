@@ -5,6 +5,7 @@ using XGameKit.Core;
 
 namespace XGameKit.XBehaviorTree
 {
+    [BTTaskMemo("输出Log")]
     public class XBTTaskLog : XBTCommonTask<XBTTaskLog.Param>
     {
         public class Param

@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 using XGameKit.Core;
 
@@ -32,6 +34,58 @@ namespace XGameKit.XBehaviorTree
                 }
             }
             return node;
+        }
+        
+#if UNITY_EDITOR
+        public static List<(string, string, Type)> listAllTaskClass;
+        public static Dictionary<string, (string, string, Type)> dictAllTaskClass;
+
+        public static List<(string, string, Type)> GetAllTaskClassListEditor()
+        {
+            if (listAllTaskClass == null)
+                listAllTaskClass = GetAllTaskClass();
+            return listAllTaskClass;
+        }
+        public static Dictionary<string, (string, string, Type)> GetAllTaskClassDictEditor()
+        {
+            if (dictAllTaskClass == null)
+            {
+                dictAllTaskClass = new Dictionary<string, (string, string, Type)>();
+                var listAllTaskClass = GetAllTaskClassListEditor();
+                dictAllTaskClass.Clear();
+                foreach (var data in listAllTaskClass)
+                {
+                    dictAllTaskClass.Add(data.Item1, data);
+                }
+            }
+            return dictAllTaskClass;
+        }
+#endif
+        
+        //获取程序集中所有的task实现类
+        public static List<(string, string, Type)> GetAllTaskClass()
+        {
+            var result = new List<(string, string, Type)>();
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            foreach (var assembly in assemblies)
+            {
+                foreach (var type in assembly.GetTypes())
+                {
+                    if (type.GetInterface("IXBTTask") == null)
+                        continue;
+                    if (!type.IsClass || type.IsAbstract)
+                        continue;
+                    //Debug.Log(type.Name);
+                    var memo = string.Empty;
+                    var attribute = type.GetCustomAttribute<BTTaskMemoAttribute>();
+                    if (attribute != null)
+                    {
+                        memo = attribute.memo;
+                    }
+                    result.Add((type.Name, memo, type));
+                }
+            }
+            return result;
         }
     }
 }

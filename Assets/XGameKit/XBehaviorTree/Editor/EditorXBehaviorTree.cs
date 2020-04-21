@@ -10,95 +10,55 @@ namespace XGameKit.XBehaviorTree
 {
     public static class EditorXBehaviorTree
     {
-        private const string TreeNodeMenu = "GameObject/行为树/";
-
-        #region 新增节点菜单
-
-        private const string AddNodeMenu = TreeNodeMenu + "新增节点/";
-
-        #endregion
-        [MenuItem(AddNodeMenu + "子节点", priority = 49)]
-        static void AddNodeMenu_Child()
-        {
-            foreach (var gameObject in Selection.gameObjects)
+        private const string XBTMenu = "XGameKit/行为树";
+        /* 创建模板
+            public static class AutoClass_TaskClassReflect
             {
-                var mono = new GameObject().AddComponent<XBTNodeMono>();
-                mono.transform.SetParent(gameObject.transform);
-            }
-        }
-        [MenuItem(AddNodeMenu + "兄节点", priority = 49)]
-        static void AddNodeMenu_Sibling()
-        {
-            foreach (var gameObject in Selection.gameObjects)
-            {
-                var mono = new GameObject().AddComponent<XBTNodeMono>();
-                mono.transform.SetParent(gameObject.transform.parent);
-            }
-        }
-        [MenuItem(AddNodeMenu + "父节点", priority = 49)]
-        static void AddNodeMenu_Parent()
-        {
-            foreach (var gameObject in Selection.gameObjects)
-            {
-                var mono = new GameObject().AddComponent<XBTNodeMono>();
-                mono.transform.SetParent(gameObject.transform.parent);
-                gameObject.transform.SetParent(mono.transform);
-            }
-        }
-        /*
-        #region 设置节点菜单
-        
-        private const string CommonNodeMenu = TreeNodeMenu + "设置节点/";
-        [MenuItem(CommonNodeMenu + "顺序节点", priority = 49)]
-        static void CommonNodeMenu_XBTTaskSequence()
-        {
-            foreach (var gameObject in Selection.gameObjects)
-            {
-                var mono = gameObject.GetComponent<XBTNodeMono>();
-                mono.className = typeof(XBTTaskSequence).Name;
-                EditorUtility.SetDirty(gameObject);
-            }
-        }
-        
-        [MenuItem(CommonNodeMenu + "等待", priority = 49)]
-        static void CommonNodeMenu_XBTTaskWait()
-        {
-            foreach (var gameObject in Selection.gameObjects)
-            {
-                var mono = gameObject.GetComponent<XBTNodeMono>();
-                mono.className = typeof(XBTTaskWait).Name;
-                var vals = gameObject.GetComponent<XMonoVariables>();
-                if (vals == null)
-                    vals = gameObject.AddComponent<XMonoVariables>();
-                if (!vals.Exist("time"))
+                public static Dictionary<string, Func<object>> datas = new Dictionary<string, Func<object>>()
                 {
-                    vals.values.Clear();
-                    vals.values.Add(new XMonoVariable(){name = "time", type = XMonoVariableType.Float});
-                }
-                EditorUtility.SetDirty(gameObject);
+                    {"aa", () => { return XObjectPool.Alloc<XBTComposite_Sequence>();}},
+                    {"aa", () => { return XObjectPool.Alloc<XBTComposite_Sequence>();}},
+                };
             }
-        }
-        
-        [MenuItem(CommonNodeMenu + "打印LOG", priority = 49)]
-        static void CommonNodeMenu_XBTTaskLog()
+         */
+        const string TaskClassPath = "Assets/XGameKitSettings/Runtime/AutoClass_TaskClassReflect.cs";
+        [MenuItem(XBTMenu + "/生成task类数据集")]
+        static void GenerateTaskClassData()
         {
-            foreach (var gameObject in Selection.gameObjects)
+            XUtilities.MakePathExist(TaskClassPath);
+            var contents = string.Empty;
+            var result = XBTUtilities.GetAllTaskClass();
+            //contents += "\n";
+            contents += "using System;\n";
+            contents += "using System.Collections.Generic;\n";
+            contents += "using XGameKit.Core;\n";
+            contents += "using XGameKit.XBehaviorTree;\n";
+            contents += "\n";
+            contents += "public static class AutoClass_TaskClassReflect\n";
+            contents += "{\n";
+            contents += "\tpublic static Dictionary<string, Func<object>> datas = new Dictionary<string, Func<object>>()\n";
+            contents += "\t{\n";
+            foreach (var data in result)
             {
-                var mono = gameObject.GetComponent<XBTNodeMono>();
-                mono.className = typeof(XBTTaskLog).Name;
-                var vals = gameObject.GetComponent<XMonoVariables>();
-                if (vals == null)
-                    vals = gameObject.AddComponent<XMonoVariables>();
-                if (!vals.Exist("message"))
-                {
-                    vals.values.Clear();
-                    vals.values.Add(new XMonoVariable(){name = "message", type = XMonoVariableType.String});
-                }
-                EditorUtility.SetDirty(gameObject);
+                contents += $"\t\t{{\"{data.Item1}\", () => {{ return XObjectPool.Alloc<{data.Item1}>();}}}},\n";
             }
+            contents += "\t};\n";
+            contents += "}\n";
+            File.WriteAllText(TaskClassPath, contents);
+            AssetDatabase.Refresh();
         }
-        
-        #endregion
-*/
+
+        [MenuItem(XBTMenu + "/清空task类数据集")]
+        static void ClearTaskClassData()
+        {
+            AssetDatabase.DeleteAsset(TaskClassPath);
+        }
+
+        [MenuItem(XBTMenu + "/task节点编辑")]
+        static void EditTreeNode()
+        {
+            EditorWindow window = EditorWindow.GetWindow<EditorXBehaviorTreeWindow>();
+            window.Show();
+        }
     }
 }

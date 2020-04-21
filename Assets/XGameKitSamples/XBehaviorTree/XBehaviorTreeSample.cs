@@ -14,7 +14,7 @@ public class XBehaviorTreeSample : MonoBehaviour
     void Start()
     {
         m_root = XBTUtilities.ParseMono(prefab.GetComponent<XBTNodeMono>());
-        XBTClassFactory.Init();
+        XBTClassFactory.Init(AutoClass_TaskClassReflect.datas);
     }
 
     // Update is called once per frame

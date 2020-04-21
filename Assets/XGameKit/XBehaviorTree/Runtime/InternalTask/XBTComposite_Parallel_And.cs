@@ -11,6 +11,7 @@ namespace XGameKit.XBehaviorTree
     /// 全部成功，返回成功
     /// 一个失败，返回失败
     /// </summary>
+    [BTTaskMemo("[组合]平行节点（与门）")]
     public class XBTComposite_Parallel_And : XBTCommonTask
     {
         protected int m_index;

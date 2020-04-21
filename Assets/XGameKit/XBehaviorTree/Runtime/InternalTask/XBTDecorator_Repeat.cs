@@ -8,6 +8,7 @@ namespace XGameKit.XBehaviorTree
     /// <summary>
     /// 循环执行子节点
     /// </summary>
+    [BTTaskMemo("[装饰]循环执行子节点")]
     public class XBTDecorator_Repeat : XBTCommonTask
     {
         protected bool m_start;
