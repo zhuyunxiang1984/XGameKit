@@ -57,30 +57,45 @@ public class EditorXBehaviorTreeWindow : EditorWindow
         {
             _Filter();
         }
-        foreach (var data in _FilterList)
+        GUILayout.BeginHorizontal();
+        int count = Mathf.CeilToInt(_FilterList.Count / 2f);
+        for (int col = 0; col < 2; ++col)
         {
-            string text = string.Empty;
-            if (string.IsNullOrEmpty(data.Item2))
+            GUILayout.BeginVertical();
+            for (int row = 0; row < count; ++row)
             {
-                text = data.Item1;
-            }
-            else
-            {
-                text = data.Item2;
-            }
-            if (GUILayout.Button(text))
-            {
-                _RunMethodForEveryOne((go) =>
+                int index = col + 2 * row;
+                if (index >= _FilterList.Count)
                 {
-                    var mono = go.GetComponent<XBTNodeMono>();
-                    if (mono == null)
-                        return;
-                    Undo.RecordObject(mono, "change TaskClassName");
-                    mono.className = data.Item1;
-                    EditorUtility.SetDirty(mono);
-                });
+                    continue;
+                }
+                var data = _FilterList[index];
+                string text = string.Empty;
+                if (string.IsNullOrEmpty(data.Item2))
+                {
+                    text = data.Item1;
+                }
+                else
+                {
+                    text = data.Item2;
+                }
+                if (GUILayout.Button(text))
+                {
+                    _RunMethodForEveryOne((go) =>
+                    {
+                        var mono = go.GetComponent<XBTNodeMono>();
+                        if (mono == null)
+                            return;
+                        Undo.RecordObject(mono, "change TaskClassName");
+                        mono.className = data.Item1;
+                        EditorUtility.SetDirty(mono);
+                    });
+                }
             }
+            GUILayout.EndVertical();
+            
         }
+        GUILayout.EndHorizontal();
     }
 
     void _Filter()

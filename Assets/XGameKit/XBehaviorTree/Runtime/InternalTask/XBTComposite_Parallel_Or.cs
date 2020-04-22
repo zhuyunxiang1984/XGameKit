@@ -14,18 +14,16 @@ namespace XGameKit.XBehaviorTree
     [BTTaskMemo("[组合]平行节点（或门）")]
     public class XBTComposite_Parallel_Or : XBTCommonTask
     {
-        protected int m_index;
-        protected bool m_start;
         protected List<XBTBehavior> m_hehaviors = new List<XBTBehavior>();
+        protected bool m_runEnter;
 
         public override void OnEnter(object obj)
         {
-            m_index = 0;
-            m_start = false;
             for (int i = 0; i < m_node.children.Count; ++i)
             {
                 m_hehaviors.Add(XObjectPool.Alloc<XBTBehavior>());
             }
+            m_runEnter = true;
         }
         public override void OnLeave(object obj)
         {
@@ -40,13 +38,14 @@ namespace XGameKit.XBehaviorTree
         {
             if (m_node.children == null || m_node.children.Count < 1)
                 return EnumTaskStatus.Success;
-            if (!m_start)
+            if (m_runEnter)
             {
-                foreach (var behavior in m_hehaviors)
+                for (int i = 0; i < m_node.children.Count; ++i)
                 {
-                    behavior.Start(m_node.children[m_index], obj);
+                    XDebug.Log(XBTConst.Tag,$"平行节点（或门） {i} {m_node.children[i].taskClassName}");
+                    m_hehaviors[i].Start(m_node.children[i], obj);
                 }
-                m_start = true;
+                m_runEnter = false;
             }
             bool complete = true;
             foreach (var behavior in m_hehaviors)

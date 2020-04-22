@@ -43,7 +43,10 @@ namespace XGameKit.XBehaviorTree
         public override void SetNode(XBTNode node)
         {
             base.SetNode(node);
-            XMonoVariableUtility.Inject(node.variables, ref m_param);
+            if (node.variables != null)
+            {
+                XMonoVariableUtility.Inject(node.variables, ref m_param);
+            }
         }
     }
     

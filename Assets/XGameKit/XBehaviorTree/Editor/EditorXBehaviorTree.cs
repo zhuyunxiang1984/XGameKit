@@ -32,7 +32,6 @@ namespace XGameKit.XBehaviorTree
             contents += "using System;\n";
             contents += "using System.Collections.Generic;\n";
             contents += "using XGameKit.Core;\n";
-            contents += "using XGameKit.XBehaviorTree;\n";
             contents += "\n";
             contents += "public static class AutoClass_TaskClassReflect\n";
             contents += "{\n";
@@ -40,7 +39,7 @@ namespace XGameKit.XBehaviorTree
             contents += "\t{\n";
             foreach (var data in result)
             {
-                contents += $"\t\t{{\"{data.Item1}\", () => {{ return XObjectPool.Alloc<{data.Item1}>();}}}},\n";
+                contents += $"\t\t{{\"{data.Item1}\", () => {{ return XObjectPool.Alloc<{data.Item3.FullName}>();}}}},\n";
             }
             contents += "\t};\n";
             contents += "}\n";

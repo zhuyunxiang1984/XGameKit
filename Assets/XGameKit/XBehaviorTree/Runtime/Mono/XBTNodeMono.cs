@@ -12,10 +12,20 @@ namespace XGameKit.XBehaviorTree
         public string className;
         
 #if UNITY_EDITOR
+        public string memo;
+        
         private void Update()
         {
             //根节点不做强制设置名字
             if (transform.parent == null)
+                return;
+            if (!string.IsNullOrEmpty(memo))
+            {
+                gameObject.name = memo;
+                return;
+            }
+
+            if (string.IsNullOrEmpty(className))
                 return;
             var dictAllTaskClass = XBTUtilities.GetAllTaskClassDictEditor();
             if (!dictAllTaskClass.ContainsKey(className))

@@ -29,10 +29,15 @@ namespace XGameKit.XBehaviorTree
 
         public override EnumTaskStatus OnUpdate(object obj, float elapsedTime)
         {
-            m_timecounter += elapsedTime;
-            if (m_timecounter < m_time)
-                return EnumTaskStatus.Running;
-            return EnumTaskStatus.Success;
+            if (m_time > 0)
+            {
+                m_timecounter += elapsedTime;
+                if (m_timecounter >= m_time)
+                {
+                    return EnumTaskStatus.Success;
+                }
+            }
+            return EnumTaskStatus.Running;
         }
     }
 

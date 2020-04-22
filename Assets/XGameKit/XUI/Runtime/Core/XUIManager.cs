@@ -57,7 +57,7 @@ namespace XGameKit.XUI
             foreach (var window in m_listWindows)
             {
                 window.Tick(step);
-                if (window.waitDestroy)
+                if (window.CurState == XUIWindow.EnumState.Remove)
                 {
                     m_listDestroy.Add(window.name);
                 }
@@ -83,7 +83,7 @@ namespace XGameKit.XUI
         {
             if (!m_dictWindows.ContainsKey(name))
                 return false;
-            return m_dictWindows[name].isShow;
+            return m_dictWindows[name].CurState == XUIWindow.EnumState.Show;
         }
         public void ShowWindow(string name, object param = null)
         {
@@ -108,7 +108,7 @@ namespace XGameKit.XUI
                 m_listWindows.Add(window);
                 m_dictWindows.Add(name, window);
             }
-            window.isShow = true;
+            window.DstState = XUIWindow.EnumState.Show;
             window.openTick = Time.realtimeSinceStartup;
         }
 
@@ -118,7 +118,7 @@ namespace XGameKit.XUI
             if (!m_dictWindows.ContainsKey(name))
                 return;
             XUIWindow window = m_dictWindows[name];
-            window.isShow = false;
+            window.DstState = XUIWindow.EnumState.Hide;
         }
 
         //销毁窗口对象
@@ -202,11 +202,13 @@ namespace XGameKit.XUI
                 m_ltSort.Add(window);
             }
             m_ltSortChanged = true;
+            Debug.Log("addslot" + m_ltSort.Count);
         }
         public void DelSort(XUIWindow window)
         {
             m_ltSort.Remove(window);
             m_ltSortChanged = true;
+            Debug.Log("delslot" + m_ltSort.Count);
         }
     }
 }

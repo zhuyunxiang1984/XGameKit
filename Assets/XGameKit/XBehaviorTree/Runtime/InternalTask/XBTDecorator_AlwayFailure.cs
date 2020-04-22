@@ -6,10 +6,10 @@ using XGameKit.Core;
 namespace XGameKit.XBehaviorTree
 {
     /// <summary>
-    /// 循环执行子节点
+    /// 总是返回失败
     /// </summary>
-    [BTTaskMemo("[装饰]循环执行")]
-    public class XBTDecorator_Repeat : XBTCommonTask
+    [BTTaskMemo("[装饰]总是返回失败")]
+    public class XBTDecorator_AlwayFailure : XBTCommonTask
     {
         protected bool m_start;
         protected XBTBehavior m_beahvior = new XBTBehavior();
@@ -29,16 +29,15 @@ namespace XGameKit.XBehaviorTree
                 return EnumTaskStatus.Success;
             if (!m_start)
             {
-                XDebug.Log(XBTConst.Tag,$"循环执行 {m_node.children[0].taskClassName}");
                 m_beahvior.Start(m_node.children[0], obj);
                 m_start = true;
             }
             var status = m_beahvior.Update(obj, elapsedTime);
-            if (status != EnumTaskStatus.Running)
+            if (status == EnumTaskStatus.Running)
             {
-                m_start = false;
+                return status;
             }
-            return EnumTaskStatus.Running;
+            return EnumTaskStatus.Failure;
         }
     }
 

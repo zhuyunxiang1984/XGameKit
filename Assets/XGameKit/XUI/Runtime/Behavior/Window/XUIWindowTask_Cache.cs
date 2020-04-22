@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using XGameKit.Core;
+using XGameKit.XBehaviorTree;
 
 namespace XGameKit.XUI
 {
-    
-//缓存状态
-    public class XUIWindowStateCache : XState<XUIWindow>
+    [BTTaskMemo("[XUI]缓存窗口")]
+    public class XUIWindowTask_Cache : XBTTask<XUIWindow>
     {
         protected float m_time;
         protected float m_timeCounter;
@@ -22,22 +20,17 @@ namespace XGameKit.XUI
         {
         }
 
-        public override void OnUpdate(XUIWindow obj, float elapsedTime)
+        public override EnumTaskStatus OnUpdate(XUIWindow obj, float elapsedTime)
         {
             if (m_time > 0)
             {
                 m_timeCounter += elapsedTime;
                 if (m_timeCounter >= m_time)
                 {
-                    obj.stateMachine.ChangeState(XUIWindowStateMachine.stUnload);
+                    return EnumTaskStatus.Success;
                 }
             }
-        }
-        public override string Transition(XUIWindow obj)
-        {
-            if (obj.isShow)
-                return XUIWindowStateMachine.stShow;
-            return String.Empty;
+            return EnumTaskStatus.Running;
         }
     }
 }
