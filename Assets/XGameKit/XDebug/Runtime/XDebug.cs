@@ -72,7 +72,6 @@ namespace XGameKit.Core
         };
         private static Dictionary<string, XDebugLogger> _Loggers = new Dictionary<string, XDebugLogger>();
 
-#if UNITY_EDITOR
         public static void Reset()
         {
             _DefaultLogger = new XDebugLogger()
@@ -83,6 +82,8 @@ namespace XGameKit.Core
             };
             _Loggers.Clear();
         }
+#if UNITY_EDITOR
+        
         public static void AddLogger(string tag, XDebugLogger logger)
         {
             if (tag == DefaultLogName)

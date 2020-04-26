@@ -2,12 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
-using UnityEditor.U2D;
 using UnityEngine;
+using UnityEngine.U2D;
 
 #if UNITY_EDITOR
+
 using UnityEditor;
-using UnityEngine.U2D;
+
 
 #endif
 

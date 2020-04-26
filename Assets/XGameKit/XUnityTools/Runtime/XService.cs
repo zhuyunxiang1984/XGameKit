@@ -8,7 +8,7 @@ namespace XGameKit.Core
     public interface IXService
     {
         void Dispose();
-        void Tick(float step);
+        void Tick(float deltaTime);
     }
     public class XService : MonoBehaviour
     {

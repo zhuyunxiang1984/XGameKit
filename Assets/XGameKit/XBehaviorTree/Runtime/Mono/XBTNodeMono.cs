@@ -44,6 +44,7 @@ namespace XGameKit.XBehaviorTree
                 gameObject.name = data.Item2;
             }
         }
-    }
 #endif
+    }
+
 }
