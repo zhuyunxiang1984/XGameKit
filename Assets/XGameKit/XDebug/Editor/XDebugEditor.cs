@@ -28,7 +28,7 @@ namespace XGameKit.Core.Editor
         }
 
         
-        static List<string> _IngoreScriptNames = new List<string>() { "XDebug.cs", "XDebugLogger.cs" };
+        static List<string> _IngoreScriptNames = new List<string>() { "XDebug.cs", "XDebugLogger.cs", "XDebugMutiLogger.cs" };
 
         [OnOpenAsset]
         public static bool OnOpenAsset(int instanceId, int line)

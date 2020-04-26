@@ -10,16 +10,20 @@ using XGameKit.Core;
 namespace XGameKit.XAssetManager
 {
     //包名设置
-    public class EditorXAssetBundleSettingSO : ScriptableObject
+    public class EditorXABSettingConfig : ScriptableObject
     {
+        public const string AssetPath = "Assets/XGameKitSettings/Editor/EditorXABSettingConfig.asset";
+            
         [System.Serializable]
         public class Data
         {
-            [HorizontalGroup(Width = 0.4f), HideLabel]
-            public string BundleName;
-            [HorizontalGroup(Width = 0.4f), HideLabel]
+            [HorizontalGroup(Width = 0.1f), LabelText("跟包"), LabelWidth(30)]
+            public bool isStatic;
+            [HorizontalGroup(Width = 0), HideLabel]
             public Object Object;
-            [HorizontalGroup(Width = 0.2f), LabelText("分割"), LabelWidth(40)]
+            [HorizontalGroup(Width = 0), HideLabel]
+            public string BundleName;
+            [HorizontalGroup(Width = 0.1f), LabelText("分割"), LabelWidth(30)]
             public bool SplitChildren;
         }
         public List<Data> Datas = new List<Data>();
@@ -28,16 +32,37 @@ namespace XGameKit.XAssetManager
         public void UpdateBundleName()
         {
             ClearBundleName();
-
+            
             var settings = _CollectSettingList(Datas);
+            //设置包名
+            foreach (var setting in settings)
+            {
+                _SetBundleName(setting.assetPath, setting.bundleName);
+            }
+
+            //设置资源与包名的关系
+            var relationShipStaticConfig = EditorXAssetBundle.GetOrCreateConfig<XABRelationShipConfig>(XABRelationShipConfig.AssetPathStatic);
+            var relationShipHotfixConfig = EditorXAssetBundle.GetOrCreateConfig<XABRelationShipConfig>(XABRelationShipConfig.AssetPathHotfix);
+            relationShipStaticConfig.Clear();
+            relationShipHotfixConfig.Clear();
+            foreach (var setting in settings)
+            {
+                if (setting.isStatic)
+                    relationShipStaticConfig.AddData(setting.assetPath, setting.bundleName);
+                else
+                    relationShipHotfixConfig.AddData(setting.assetPath, setting.bundleName);
+            }
+
+            //打印log
             var logger = XDebug.CreateMutiLogger(XABConst.Tag);
             logger.Append($"==包名设置== 总共:{settings.Count}条");
             foreach (var setting in settings)
             {
                 _SetBundleName(setting.assetPath, setting.bundleName);
-                logger.Append($"{setting.assetPath}\t=>\t{setting.bundleName}");
             }
             logger.Log();
+            
+            
         }
 
         //清除所有包名
@@ -52,6 +77,7 @@ namespace XGameKit.XAssetManager
 
         struct SettingData
         {
+            public bool isStatic;
             public string assetPath;
             public string bundleName;
         }
@@ -96,14 +122,15 @@ namespace XGameKit.XAssetManager
                         continue;
                     }
                     var settingData = new SettingData();
+                    settingData.isStatic = data.isStatic;
                     settingData.assetPath = childAssetPath;
                     if (string.IsNullOrEmpty(data.BundleName))
                     {
-                        settingData.bundleName = Path.GetFileNameWithoutExtension(childAssetPath);
+                        settingData.bundleName = Path.GetFileNameWithoutExtension(childAssetPath) + ".assetbundle";
                     }
                     else
                     {
-                        settingData.bundleName = data.BundleName;
+                        settingData.bundleName = data.BundleName+ ".assetbundle";
                     }
                     result.Add(settingData);
                     flags.Add(childAssetPath, settingData);
@@ -118,7 +145,7 @@ namespace XGameKit.XAssetManager
             AssetImporter importer = AssetImporter.GetAtPath(assetPath);
             if (importer == null)
                 return;
-            importer.assetBundleName = bundleName + ".assetbundle";
+            importer.assetBundleName = bundleName;
             importer.SaveAndReimport();
         }
     }

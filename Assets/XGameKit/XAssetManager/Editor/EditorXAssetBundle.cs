@@ -2,27 +2,14 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using XGameKit.Core;
 using XGameKit.XAssetManager;
 
 namespace XGameKit.XAssetManager
 {
     public class EditorXAssetBundle
     {
-        public const string configPathEditor = "Assets/XGameKitSettings/Editor/EditorXAssetBundleSettingSO.asset";
-        
         #region 工具菜单
-
-        [MenuItem("XGameKit/XAssetManager/创建EditorXAssetBundleSettingSO")]
-        static void CreateUISpriteConfigAsset()
-        {
-            var config = AssetDatabase.LoadAssetAtPath<EditorXAssetBundleSettingSO>(configPathEditor);
-            if (config == null)
-            {
-                config = ScriptableObject.CreateInstance<EditorXAssetBundleSettingSO>();
-                AssetDatabase.CreateAsset(config, configPathEditor);
-            }
-            Selection.activeObject = config;
-        }
         
         [MenuItem("XGameKit/XAssetManager/打包资源")]
         static void BuildAssetBundle()
@@ -38,9 +25,29 @@ namespace XGameKit.XAssetManager
         //输出路径
         public static string GetOutput(BuildTarget target)
         {
-            return $"{Application.dataPath}/../AssetBundles/{target.ToString()}";
+            return $"{Application.dataPath}/../AssetBundles/{target.ToString()}/Build";
         }
 
+        public static string GetOutputStatic(BuildTarget target)
+        {
+            return $"{Application.dataPath}/../AssetBundles/{target.ToString()}/Static";
+        }
+        public static string GetOutputHotfix(BuildTarget target)
+        {
+            return $"{Application.dataPath}/../AssetBundles/{target.ToString()}/Hotfix";
+        }
+        
+        //获取或创建一个配置
+        public static T GetOrCreateConfig<T>(string assetPath) where T : ScriptableObject
+        {
+            var config = AssetDatabase.LoadAssetAtPath<T>(assetPath);
+            if (config != null)
+                return config;
+            config = ScriptableObject.CreateInstance<T>();
+            XUtilities.MakePathExist(assetPath);
+            AssetDatabase.CreateAsset(config, assetPath);
+            return config;
+        }
         #endregion
     }
 }
