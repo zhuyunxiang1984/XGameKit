@@ -20,6 +20,15 @@ namespace XGameKit.XAssetManager
         
         //是否存在于document下
         protected Dictionary<string, bool> m_dictAssetBundleFlags = new Dictionary<string, bool>();
+
+        protected XABManifest m_staticManifest = new XABManifest();
+        protected XABManifest m_hotfixManifest = new XABManifest();
+
+        public XAssetManager()
+        {
+            
+            //XABUtilities.ReadFile("A")
+        }
         
         public void Dispose()
         {
@@ -75,7 +84,7 @@ namespace XGameKit.XAssetManager
         }
 
         //获取依赖项
-        public List<string> GetDependents(string name)
+        public List<string> GetDependencies(string name)
         {
             return null;
         }
@@ -108,6 +117,7 @@ namespace XGameKit.XAssetManager
         //同步加载
         public T LoadAsset<T>(string name) where T : Object
         {
+            name = name.ToLower();
             var obj = _GetOrCreateAO(name);
             obj.Retain();
             if (obj.State == EnumLoadState.Done)
@@ -125,6 +135,7 @@ namespace XGameKit.XAssetManager
         //异步加载
         public void LoadAssetAsyn<T>(string name, Action<string, T> callback) where T : Object
         {
+            name = name.ToLower();
             var obj = _GetOrCreateAO(name);
             obj.Retain();
             if (obj.State == EnumLoadState.Done)
@@ -148,6 +159,7 @@ namespace XGameKit.XAssetManager
         //卸载
         public void UnloadAsset(string name)
         {
+            name = name.ToLower();
             if (!m_dictAssetObjects.ContainsKey(name))
                 return;
             m_dictAssetObjects[name].Release();
@@ -170,6 +182,7 @@ namespace XGameKit.XAssetManager
         //同步加载
         public AssetBundle LoadBundle(string name)
         {
+            name = name.ToLower();
             var obj = _GetOrCreateAB(name);
             obj.Retain();
             if (obj.State == EnumLoadState.Done)
@@ -188,6 +201,7 @@ namespace XGameKit.XAssetManager
         //异步加载
         public void LoadBundleAsync(string name, Action<string, AssetBundle> callback = null)
         {
+            name = name.ToLower();
             var obj = _GetOrCreateAB(name);
             obj.Retain();
             if (obj.State == EnumLoadState.Done)
@@ -205,6 +219,7 @@ namespace XGameKit.XAssetManager
         //卸载
         public void UnloadBundle(string name)
         {
+            name = name.ToLower();
             if (!m_dictAssetBundles.ContainsKey(name))
                 return;
             m_dictAssetBundles[name].Release();

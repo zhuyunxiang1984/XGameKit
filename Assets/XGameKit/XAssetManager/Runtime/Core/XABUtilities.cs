@@ -6,6 +6,10 @@ using System.Net;
 using UnityEngine;
 using XGameKit.Core;
 
+#if UNITY_EDITOR
+using UnityEditor;       
+#endif
+
 namespace XGameKit.XAssetManager
 {
     public static class XABUtilities
@@ -66,6 +70,16 @@ namespace XGameKit.XAssetManager
                 XDebug.LogError(XABConst.Tag, $"ReadFile失败 {fullPath}\n{e.ToString()}");
             }
             return data;
+        }
+        
+        //是不是本地模拟模式
+        public static bool IsSimulatMode()
+        {
+#if UNITY_EDITOR
+            var mode = (EnumEditorRunMode) EditorPrefs.GetInt(XABConst.EditorRunModeKey);
+            return mode == EnumEditorRunMode.Simulate;
+#endif
+            return false;
         }
     }
 }

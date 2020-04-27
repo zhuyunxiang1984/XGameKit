@@ -41,17 +41,13 @@ namespace XGameKit.XAssetManager
             }
 
             //设置资源与包名的关系
-            var relationShipStaticConfig = EditorXAssetBundle.GetOrCreateConfig<XABRelationShipConfig>(XABRelationShipConfig.AssetPathStatic);
-            var relationShipHotfixConfig = EditorXAssetBundle.GetOrCreateConfig<XABRelationShipConfig>(XABRelationShipConfig.AssetPathHotfix);
-            relationShipStaticConfig.Clear();
-            relationShipHotfixConfig.Clear();
+            var assetNameConfig = XUtilities.GetOrCreateConfig<XABAssetNameConfig>(XABAssetNameConfig.AssetPath);
+            assetNameConfig.Clear();
             foreach (var setting in settings)
             {
-                if (setting.isStatic)
-                    relationShipStaticConfig.AddData(setting.assetPath, setting.bundleName);
-                else
-                    relationShipHotfixConfig.AddData(setting.assetPath, setting.bundleName);
+                assetNameConfig.AddData(setting.assetPath, setting.bundleName, setting.isStatic);
             }
+            AssetDatabase.SaveAssets();
 
             //打印log
             var logger = XDebug.CreateMutiLogger(XABConst.Tag);

@@ -14,14 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Datas:
   - isStatic: 0
-    Object: {fileID: 11400000, guid: 09b4bdd3e8b0cc64289f85e5f58718fb, type: 2}
-    BundleName: 
-    SplitChildren: 0
-  - isStatic: 1
-    Object: {fileID: 11400000, guid: 4505519e4261376428d747923a28ecee, type: 2}
-    BundleName: 
-    SplitChildren: 0
-  - isStatic: 0
     Object: {fileID: 102900000, guid: 1f6f6692f024c554f9479ee1c4343fc7, type: 3}
     BundleName: 
     SplitChildren: 0
@@ -50,6 +42,11 @@ MonoBehaviour:
     SplitChildren: 0
   - isStatic: 1
     Object: {fileID: 4861138329389913545, guid: 0d919319598792840aced351daade9cd,
+      type: 3}
+    BundleName: 
+    SplitChildren: 0
+  - isStatic: 1
+    Object: {fileID: 6370101970596815866, guid: f3f0c59b55d6dca4f80e62206b5b97c5,
       type: 3}
     BundleName: 
     SplitChildren: 0

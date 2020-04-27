@@ -11,10 +11,17 @@ namespace XGameKit.XAssetManager
     {
         #region 工具菜单
         
-        [MenuItem("XGameKit/XAssetManager/打包资源")]
+        [MenuItem("XGameKit/XAssetManager/开发配置")]
+        static void RuntimeSetting()
+        {
+            EditorWindow window = EditorWindow.GetWindow<EditorXAssetBundleEditSettingWindow>("开发配置");
+            window.Show();
+        }
+        
+        [MenuItem("XGameKit/XAssetManager/资源打包")]
         static void BuildAssetBundle()
         {
-            EditorWindow window = EditorWindow.GetWindow<EditorXAssetBundleBuildWindow>();
+            EditorWindow window = EditorWindow.GetWindow<EditorXAssetBundleBuildWindow>("资源打包");
             window.Show();
         }
         
@@ -25,29 +32,24 @@ namespace XGameKit.XAssetManager
         //输出路径
         public static string GetOutput(BuildTarget target)
         {
-            return $"{Application.dataPath}/../AssetBundles/{target.ToString()}/Build";
+            return $"{Application.dataPath}/../AssetBundles/{target.ToString()}";
+        }
+        
+        public static string GetOutputBuild(BuildTarget target)
+        {
+            return $"{GetOutput(target)}/Build";
         }
 
         public static string GetOutputStatic(BuildTarget target)
         {
-            return $"{Application.dataPath}/../AssetBundles/{target.ToString()}/Static";
+            return $"{GetOutput(target)}/Static";
         }
         public static string GetOutputHotfix(BuildTarget target)
         {
-            return $"{Application.dataPath}/../AssetBundles/{target.ToString()}/Hotfix";
+            return $"{GetOutput(target)}/Hotfix";
         }
         
-        //获取或创建一个配置
-        public static T GetOrCreateConfig<T>(string assetPath) where T : ScriptableObject
-        {
-            var config = AssetDatabase.LoadAssetAtPath<T>(assetPath);
-            if (config != null)
-                return config;
-            config = ScriptableObject.CreateInstance<T>();
-            XUtilities.MakePathExist(assetPath);
-            AssetDatabase.CreateAsset(config, assetPath);
-            return config;
-        }
+        
         #endregion
     }
 }

@@ -27,14 +27,44 @@ namespace XGameKit.XAssetManager
             RefZeroTime = 0;
         }
 
+        protected XAOLoader m_AOLoader;
+
         protected XAssetManager m_AssetManger;
-        protected AssetBundleRequest m_Request;
         protected Object m_AssetObject;
         protected Action<string, Object> m_Callback;
 
         public T GetValue<T>() where T : Object
         {
             return m_AssetObject as T;
+        }
+        public void SetValue(Object value)
+        {
+            if (value != null)
+            {
+                State = EnumLoadState.Done;
+            }
+            else
+            {
+                State = EnumLoadState.None;
+            }
+            m_AssetObject = value;
+            if (m_Callback != null)
+            {
+                m_Callback.Invoke(Name, m_AssetObject);
+                m_Callback = null;
+            }
+        }
+        
+        public XAssetObject()
+        {
+            if (XABUtilities.IsSimulatMode())
+            {
+                m_AOLoader = new XAOLoaderSimulate();
+            }
+            else
+            {
+                m_AOLoader = new XAOLoaderNormal();
+            }
         }
 
         public void Dispose()
@@ -43,8 +73,11 @@ namespace XGameKit.XAssetManager
             {
                 m_AssetManger.UnloadBundle(BundleName);
             }
+            if (State == EnumLoadState.Loading)
+            {
+                m_AOLoader.StopAsync();
+            }
             State = EnumLoadState.None;
-            m_Request = null;
             m_AssetObject = null;
             m_Callback = null;
             RefCount = 0;
@@ -62,8 +95,8 @@ namespace XGameKit.XAssetManager
             BundleName = manager.GetAssetBundleName(name);
 
             var assetBundle = manager.LoadBundle(BundleName);
-            m_AssetObject = assetBundle.LoadAsset<T>(name);
-            State = EnumLoadState.Done;
+            var assetObject = m_AOLoader.Load<T>(assetBundle, name);
+            SetValue(assetObject);
         }
         public void LoadAsync<T>(XAssetManager manager, string name, Action<string, Object> callback = null) where T : Object
         {
@@ -73,9 +106,9 @@ namespace XGameKit.XAssetManager
             
             manager.LoadBundleAsync(BundleName, (p1,p2)=>
             {
-                if (Name != p1)
+                if (this.BundleName != p1)
                     return;
-                m_Request = p2.LoadAssetAsync<T>(name);
+                m_AOLoader.LoadAsync<T>(p2, name);
             });
             State = EnumLoadState.Loading;
             m_Callback += callback;
@@ -87,7 +120,7 @@ namespace XGameKit.XAssetManager
             {
                 m_AssetManger.UnloadBundle(BundleName);
             }
-            m_Request = null;
+            m_AOLoader.StopAsync();
             State = EnumLoadState.None;
         }
         public void Tick(float deltaTime)
@@ -95,14 +128,11 @@ namespace XGameKit.XAssetManager
             switch (State)
             {
                 case EnumLoadState.Loading:
-                    if (m_Request == null || !m_Request.isDone)
-                        return;
-                    m_AssetObject = m_Request.asset;
-                    State = EnumLoadState.Done;
-                    if (m_Callback != null)
+                    m_AOLoader.Tick(deltaTime);
+                    if (m_AOLoader.IsDone)
                     {
-                        m_Callback.Invoke(Name, m_AssetObject);
-                        m_Callback = null;
+                        SetValue(m_AOLoader.GetValue());
+                        State = EnumLoadState.Done;
                     }
                     break;
                 case EnumLoadState.Done:

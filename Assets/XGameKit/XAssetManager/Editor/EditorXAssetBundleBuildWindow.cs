@@ -5,31 +5,39 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 using XGameKit.Core;
+using XGameKit.XUI;
 
 namespace XGameKit.XAssetManager
 {
     
     public class EditorXAssetBundleBuildWindow : EditorWindow
     {
-        private BuildTarget m_BuildTarget = BuildTarget.NoTarget;
         private void OnGUI()
         {
-            m_BuildTarget = (BuildTarget)EditorGUILayout.EnumPopup(m_BuildTarget);
+            var buildTarget = (BuildTarget)EditorPrefs.GetInt(XABConst.BuildTargetKey);
+            EditorGUI.BeginChangeCheck();
+            buildTarget = (BuildTarget)EditorGUILayout.EnumPopup(buildTarget);
+            if (EditorGUI.EndChangeCheck())
+            {
+                EditorPrefs.SetInt(XABConst.BuildTargetKey, (int)buildTarget);
+            }
+            
 
             if (GUILayout.Button("设置包名"))
             {
-                var config = EditorXAssetBundle.GetOrCreateConfig<EditorXABSettingConfig>(EditorXABSettingConfig.AssetPath);
+                var config = XUtilities.GetOrCreateConfig<EditorXABSettingConfig>(EditorXABSettingConfig.AssetPath);
                 Selection.activeObject = config;
             }
             if (GUILayout.Button("打包"))
             {
-                if (m_BuildTarget == BuildTarget.NoTarget)
+                if (buildTarget == BuildTarget.NoTarget)
                 {
                     return;
                 }
-                var output = EditorXAssetBundle.GetOutput(m_BuildTarget);
-                XUtilities.MakePathExist(output);
-                var manifest = BuildPipeline.BuildAssetBundles(output, BuildAssetBundleOptions.ChunkBasedCompression, m_BuildTarget);
+                var outputBuild = EditorXAssetBundle.GetOutputBuild(buildTarget);
+                XUtilities.MakePathExist(outputBuild);
+                var manifest = BuildPipeline.BuildAssetBundles(outputBuild, BuildAssetBundleOptions.ChunkBasedCompression, buildTarget);
+                
                 var logger = XDebug.CreateMutiLogger(XABConst.Tag);
                 logger.Append("===打包完成===");
                 foreach (var assetBundle in manifest.GetAllAssetBundles())
@@ -43,49 +51,86 @@ namespace XGameKit.XAssetManager
                  * 最好能在设置包名的时候就检测，但是没有找到简便的方式去检测依赖项，
                  * 这里使用打包完成后的manifest做依赖项检测，以后再说
                  */
-                var relationShipStaticConfig = EditorXAssetBundle.GetOrCreateConfig<XABRelationShipConfig>(XABRelationShipConfig.AssetPathStatic);
-                var relationShipHotfixConfig = EditorXAssetBundle.GetOrCreateConfig<XABRelationShipConfig>(XABRelationShipConfig.AssetPathHotfix);
+                var assetNameConfig = XUtilities.GetOrCreateConfig<XABAssetNameConfig>(XABAssetNameConfig.AssetPath);
                 
-                var dictStaticBundleNames = relationShipStaticConfig.GetBundleNames();
-                var dictHotfixBundleNames = relationShipHotfixConfig.GetBundleNames();
-                foreach (var bundleName in dictStaticBundleNames.Keys)
-                {
-                    var dependencies = manifest.GetAllDependencies(bundleName);
-                    //Debug.Log($"{bundleName} 依赖数量 {dependencies.Length}");
-                    foreach (var dependency in dependencies)
-                    {
-                        //Debug.Log("check " + dependency);
-                        if (dictHotfixBundleNames.ContainsKey(dependency))
-                        {
-                            XDebug.LogError(XABConst.Tag, $"static:{bundleName} 依赖 hotfix:{dependency}");
-                            EditorUtility.DisplayDialog("错误", "跟包资源不允许依赖更新资源！！", "OK");
-                            return;
-                        }
-                    }
-                }
+//                var dictStaticBundleNames = relationShipStaticConfig.GetBundleNames();
+//                var dictHotfixBundleNames = relationShipHotfixConfig.GetBundleNames();
+//                foreach (var bundleName in dictStaticBundleNames.Keys)
+//                {
+//                    var dependencies = manifest.GetAllDependencies(bundleName);
+//                    //Debug.Log($"{bundleName} 依赖数量 {dependencies.Length}");
+//                    foreach (var dependency in dependencies)
+//                    {
+//                        //Debug.Log("check " + dependency);
+//                        if (dictHotfixBundleNames.ContainsKey(dependency))
+//                        {
+//                            XDebug.LogError(XABConst.Tag, $"static:{bundleName} 依赖 hotfix:{dependency}");
+//                            EditorUtility.DisplayDialog("错误", "跟包资源不允许依赖更新资源！！", "OK");
+//                            return;
+//                        }
+//                    }
+//                }
                 
+                //--
                 //打包完成后，将static和hotfix分开目录
-                var outputStatic = EditorXAssetBundle.GetOutputStatic(m_BuildTarget);
-                foreach (var bundleName in dictStaticBundleNames.Keys)
+                XABManifest manifestStatic = new XABManifest();
+                XABManifest manifestHotfix = new XABManifest();
+
+                var outputStatic = EditorXAssetBundle.GetOutputStatic(buildTarget);
+                var outputHotfix = EditorXAssetBundle.GetOutputHotfix(buildTarget);
+                
+                List<string> staticBundleNames = new List<string>();
+                List<string> hotfixBundleNames = new List<string>();
+                
+                foreach (var data in assetNameConfig.StaticDatas)
                 {
-                    var src = $"{output}/{bundleName}";
+                    manifestStatic.SetAssetNameLink(data.AssetName, data.AssetBundleName);
+                    if(!staticBundleNames.Contains(data.AssetBundleName))
+                        staticBundleNames.Add(data.AssetBundleName);
+                }
+                foreach (var data in assetNameConfig.HotfixDatas)
+                {
+                    manifestHotfix.SetAssetNameLink(data.AssetName, data.AssetBundleName);
+                    if(!hotfixBundleNames.Contains(data.AssetBundleName))
+                        hotfixBundleNames.Add(data.AssetBundleName);
+                }
+                XUtilities.CleanFolder(outputStatic);
+                XUtilities.CleanFolder(outputHotfix);
+                XUtilities.MakePathExist(outputStatic);
+                XUtilities.MakePathExist(outputHotfix);
+                foreach (var bundleName in staticBundleNames)
+                {
+                    var src = $"{outputBuild}/{bundleName}";
                     var dst = $"{outputStatic}/{bundleName}";
-                    XUtilities.MakePathExist(dst);
+                    
                     File.Copy(src, dst);
+                    
+                    manifestStatic.SetDependency(bundleName,  manifest.GetAllDependencies(bundleName));
                 }
-                var outputHotfix = EditorXAssetBundle.GetOutputHotfix(m_BuildTarget);
-                foreach (var bundleName in dictHotfixBundleNames.Keys)
+                foreach (var bundleName in hotfixBundleNames)
                 {
-                    var src = $"{output}/{bundleName}";
+
+                    var src = $"{outputBuild}/{bundleName}";
                     var dst = $"{outputHotfix}/{bundleName}";
-                    XUtilities.MakePathExist(dst);
+                    
                     File.Copy(src, dst);
+                    
+                    manifestHotfix.SetDependency(bundleName, manifest.GetAllDependencies(bundleName));
                 }
+
+                //将依赖关系写入文件夹
+                var jsonStatic = JsonUtility.ToJson(manifestStatic);
+                var pathStatic = $"{outputStatic}/manifest.json";
+                File.WriteAllText(pathStatic, jsonStatic);
+                
+                var jsonHotfix = JsonUtility.ToJson(manifestHotfix);
+                var pathHotfix = $"{outputHotfix}/manifest.json";
+                File.WriteAllText(pathHotfix, jsonHotfix);
             }
 
             if (GUILayout.Button("打开目录"))
             {
-                var output = EditorXAssetBundle.GetOutput(m_BuildTarget);
+                var output = EditorXAssetBundle.GetOutput(buildTarget);
                 Debug.Log(output);
                 output = output.Replace("/","\\");
                 System.Diagnostics.Process.Start("explorer.exe", output);
