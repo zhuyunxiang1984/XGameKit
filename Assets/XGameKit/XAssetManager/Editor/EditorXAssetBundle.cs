@@ -29,24 +29,42 @@ namespace XGameKit.XAssetManager
 
         #region 编辑函数
 
-        //输出路径
-        public static string GetOutput(BuildTarget target)
+        public static BuildTarget GetBuildTarget(EnumPlatform platform)
         {
-            return $"{Application.dataPath}/../AssetBundles/{target.ToString()}";
-        }
-        
-        public static string GetOutputBuild(BuildTarget target)
-        {
-            return $"{GetOutput(target)}/Build";
+            var buildTarget = BuildTarget.NoTarget;
+            switch (platform)
+            {
+                case EnumPlatform.Android:
+                    buildTarget = BuildTarget.Android;
+                    break;
+                case EnumPlatform.Windows:
+                    buildTarget = BuildTarget.StandaloneWindows64;
+                    break;
+                case EnumPlatform.iOS:
+                    buildTarget = BuildTarget.iOS;
+                    break;
+            }
+            return buildTarget;
         }
 
-        public static string GetOutputStatic(BuildTarget target)
+        //输出路径
+        public static string GetOutput(EnumPlatform platform)
         {
-            return $"{GetOutput(target)}/Static";
+            return $"{Application.dataPath}/../AssetBundles/{platform.ToString()}";
         }
-        public static string GetOutputHotfix(BuildTarget target)
+        
+        public static string GetOutputBuild(EnumPlatform platform)
         {
-            return $"{GetOutput(target)}/Hotfix";
+            return $"{GetOutput(platform)}/Build";
+        }
+
+        public static string GetOutputStatic(EnumPlatform platform)
+        {
+            return $"{GetOutput(platform)}/Static";
+        }
+        public static string GetOutputHotfix(EnumPlatform platform)
+        {
+            return $"{GetOutput(platform)}/Hotfix";
         }
         
         

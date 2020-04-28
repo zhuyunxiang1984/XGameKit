@@ -3,9 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Text;
 using UnityEngine;
 using XGameKit.Core;
-
+using Object = System.Object;
 #if UNITY_EDITOR
 using UnityEditor;       
 #endif
@@ -14,42 +15,6 @@ namespace XGameKit.XAssetManager
 {
     public static class XABUtilities
     {
-        //获取路径
-        public static string GetAssetBundleFullPath(EnumLocation location, string name)
-        {
-            var fullPath = string.Empty;
-            switch (location)
-            {
-                case EnumLocation.Download:
-                    fullPath = $"{XABConst.DownloadPath}/{name}";
-                    break;
-                case EnumLocation.StreamingAssetsHotfix:
-                    fullPath = $"{XABConst.StreamingAssetsHotfixPath}/{name}";
-                    break;
-                case EnumLocation.StreamingAssetsStatic:
-                    fullPath = $"{XABConst.StreamingAssetsStaticPath}/{name}";
-                    break;
-            }
-            return fullPath;
-        }
-        
-        //加载AssetBundle(同步)
-        public static AssetBundle LoadAssetBundle(string fullPath)
-        {
-            try
-            {
-                byte[] data = ReadFile(fullPath);
-                //解密
-                //读取AssetBundle
-                return AssetBundle.LoadFromMemory(data);
-            }
-            catch (Exception e)
-            {
-                XDebug.Log(XABConst.Tag, $"加载assetbundle失败 {fullPath}\n{e.ToString()}");
-            }
-            return null;
-        }
-
         //从文件读取
         public static byte[] ReadFile(string fullPath)
         {
@@ -71,15 +36,33 @@ namespace XGameKit.XAssetManager
             }
             return data;
         }
-        
-        //是不是本地模拟模式
-        public static bool IsSimulatMode()
+
+        public static XABManifest ReadManifest(string path)
         {
-#if UNITY_EDITOR
-            var mode = (EnumEditorRunMode) EditorPrefs.GetInt(XABConst.EditorRunModeKey);
-            return mode == EnumEditorRunMode.Simulate;
-#endif
-            return false;
+            var fullPath = path + "/manifest.json";
+            var fileData = ReadFile(fullPath);
+            if (fileData == null)
+                return null;
+            var fileText = Encoding.UTF8.GetString(fileData);
+            return JsonUtility.FromJson<XABManifest>(fileText);
         }
+
+        public static string GetBundleFullPath(string path, string bundleName)
+        {
+            return $"{path}/{bundleName}";
+        }
+
+        public static string AppendPath(this string path, EnumBundleType bundleType)
+        {
+            return $"{path}/{bundleType.ToString()}";
+        }
+        public static string AppendPath(this string path, EnumPlatform platform)
+        {
+            return $"{path}/{platform.ToString()}";
+        }
+        
+#if UNITY_EDITOR
+        
+#endif
     }
 }

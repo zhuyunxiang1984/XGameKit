@@ -12,5 +12,140 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6234735095736d94199cc483fe5444c4, type: 3}
   m_Name: EditorXABAssetNameConfig
   m_EditorClassIdentifier: 
-  StaticDatas: []
-  HotfixDatas: []
+  StaticDatas:
+  - AssetName: prefab1
+    AssetBundleName: prefab1.assetbundle
+    AssetPath: Assets/Project/Prefabs/Prefab1.prefab
+  - AssetName: prefab3
+    AssetBundleName: prefab3.assetbundle
+    AssetPath: Assets/Project/Prefabs/Prefab3.prefab
+  - AssetName: box1
+    AssetBundleName: box1.assetbundle
+    AssetPath: Assets/Project/Prefabs/Box1.prefab
+  HotfixDatas:
+  - AssetName: pic_basicbattle06
+    AssetBundleName: cricle.assetbundle
+    AssetPath: Assets/Project/Sprites/Cricle\pic_basicbattle06.png
+  - AssetName: pic_basicbattle07
+    AssetBundleName: cricle.assetbundle
+    AssetPath: Assets/Project/Sprites/Cricle\pic_basicbattle07.png
+  - AssetName: pic_basicbattle08
+    AssetBundleName: cricle.assetbundle
+    AssetPath: Assets/Project/Sprites/Cricle\pic_basicbattle08.png
+  - AssetName: pic_basicbattle09
+    AssetBundleName: cricle.assetbundle
+    AssetPath: Assets/Project/Sprites/Cricle\pic_basicbattle09.png
+  - AssetName: icon_hero_b80002
+    AssetBundleName: hero.assetbundle
+    AssetPath: Assets/Project/Sprites/Hero\Icon_hero_B80002.png
+  - AssetName: icon_hero_b80006
+    AssetBundleName: hero.assetbundle
+    AssetPath: Assets/Project/Sprites/Hero\Icon_hero_B80006.png
+  - AssetName: icon_hero_b80010
+    AssetBundleName: hero.assetbundle
+    AssetPath: Assets/Project/Sprites/Hero\Icon_hero_B80010.png
+  - AssetName: icon_hero_b80011
+    AssetBundleName: hero.assetbundle
+    AssetPath: Assets/Project/Sprites/Hero\Icon_hero_B80011.png
+  - AssetName: icon_hero_b80015
+    AssetBundleName: hero.assetbundle
+    AssetPath: Assets/Project/Sprites/Hero\Icon_hero_B80015.png
+  - AssetName: icon_hero_b80018
+    AssetBundleName: hero.assetbundle
+    AssetPath: Assets/Project/Sprites/Hero\Icon_hero_B80018.png
+  - AssetName: icon_hero_b80019
+    AssetBundleName: hero.assetbundle
+    AssetPath: Assets/Project/Sprites/Hero\Icon_hero_B80019.png
+  - AssetName: icon_hero_b80020
+    AssetBundleName: hero.assetbundle
+    AssetPath: Assets/Project/Sprites/Hero\Icon_hero_B80020.png
+  - AssetName: icon_hero_b80022
+    AssetBundleName: hero.assetbundle
+    AssetPath: Assets/Project/Sprites/Hero\Icon_hero_B80022.png
+  - AssetName: icon_hero_b80023
+    AssetBundleName: hero.assetbundle
+    AssetPath: Assets/Project/Sprites/Hero\Icon_hero_B80023.png
+  - AssetName: icon_hero_b80024
+    AssetBundleName: hero.assetbundle
+    AssetPath: Assets/Project/Sprites/Hero\Icon_hero_B80024.png
+  - AssetName: icon_hero_b80026
+    AssetBundleName: hero.assetbundle
+    AssetPath: Assets/Project/Sprites/Hero\Icon_hero_B80026.png
+  - AssetName: icon_hero_b80028
+    AssetBundleName: hero.assetbundle
+    AssetPath: Assets/Project/Sprites/Hero\Icon_hero_B80028.png
+  - AssetName: icon_hero_b80030
+    AssetBundleName: hero.assetbundle
+    AssetPath: Assets/Project/Sprites/Hero\Icon_hero_B80030.png
+  - AssetName: icon_hero_b80032
+    AssetBundleName: hero.assetbundle
+    AssetPath: Assets/Project/Sprites/Hero\Icon_hero_B80032.png
+  - AssetName: icon_hero_b80034
+    AssetBundleName: hero.assetbundle
+    AssetPath: Assets/Project/Sprites/Hero\Icon_hero_B80034.png
+  - AssetName: icon_hero_b80036
+    AssetBundleName: hero.assetbundle
+    AssetPath: Assets/Project/Sprites/Hero\Icon_hero_B80036.png
+  - AssetName: icon_hero_b80039
+    AssetBundleName: hero.assetbundle
+    AssetPath: Assets/Project/Sprites/Hero\Icon_hero_B80039.png
+  - AssetName: icon_hero_b80041
+    AssetBundleName: hero.assetbundle
+    AssetPath: Assets/Project/Sprites/Hero\Icon_hero_B80041.png
+  - AssetName: icon_hero_b80046
+    AssetBundleName: hero.assetbundle
+    AssetPath: Assets/Project/Sprites/Hero\Icon_hero_B80046.png
+  - AssetName: icon_hero_b80049
+    AssetBundleName: hero.assetbundle
+    AssetPath: Assets/Project/Sprites/Hero\Icon_hero_B80049.png
+  - AssetName: icon_hero_b80050
+    AssetBundleName: hero.assetbundle
+    AssetPath: Assets/Project/Sprites/Hero\Icon_hero_B80050.png
+  - AssetName: icon_hero_b80051
+    AssetBundleName: hero.assetbundle
+    AssetPath: Assets/Project/Sprites/Hero\Icon_hero_B80051.png
+  - AssetName: icon_hero_b80052
+    AssetBundleName: hero.assetbundle
+    AssetPath: Assets/Project/Sprites/Hero\Icon_hero_B80052.png
+  - AssetName: icon_hero_b80055
+    AssetBundleName: hero.assetbundle
+    AssetPath: Assets/Project/Sprites/Hero\Icon_hero_B80055.png
+  - AssetName: icon_hero_b80057
+    AssetBundleName: hero.assetbundle
+    AssetPath: Assets/Project/Sprites/Hero\Icon_hero_B80057.png
+  - AssetName: icon_hero_b80058
+    AssetBundleName: hero.assetbundle
+    AssetPath: Assets/Project/Sprites/Hero\Icon_hero_B80058.png
+  - AssetName: icon_hero_b80059
+    AssetBundleName: hero.assetbundle
+    AssetPath: Assets/Project/Sprites/Hero\Icon_hero_B80059.png
+  - AssetName: icon_hero_b80061
+    AssetBundleName: hero.assetbundle
+    AssetPath: Assets/Project/Sprites/Hero\Icon_hero_B80061.png
+  - AssetName: icon_hero_b80062
+    AssetBundleName: hero.assetbundle
+    AssetPath: Assets/Project/Sprites/Hero\Icon_hero_B80062.png
+  - AssetName: icon_hero_b80064
+    AssetBundleName: hero.assetbundle
+    AssetPath: Assets/Project/Sprites/Hero\Icon_hero_B80064.png
+  - AssetName: icon_hero_b80002[en]
+    AssetBundleName: hero[en].assetbundle
+    AssetPath: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80002[EN].png
+  - AssetName: icon_hero_b80006[en]
+    AssetBundleName: hero[en].assetbundle
+    AssetPath: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80006[EN].png
+  - AssetName: icon_hero_b80010[en]
+    AssetBundleName: hero[en].assetbundle
+    AssetPath: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80010[EN].png
+  - AssetName: icon_hero_b80011[en]
+    AssetBundleName: hero[en].assetbundle
+    AssetPath: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80011[EN].png
+  - AssetName: icon_hero_b80015[en]
+    AssetBundleName: hero[en].assetbundle
+    AssetPath: Assets/Project/Sprites/Hero[EN]\Icon_hero_B80015[EN].png
+  - AssetName: common
+    AssetBundleName: common.assetbundle
+    AssetPath: Assets/Project/Atlas/Common.spriteatlas
+  - AssetName: prefab2
+    AssetBundleName: prefab2.assetbundle
+    AssetPath: Assets/Project/Prefabs/Prefab2.prefab

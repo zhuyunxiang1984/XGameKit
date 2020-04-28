@@ -2,230 +2,64 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 using XGameKit.Core;
 using Object = UnityEngine.Object;
 
 namespace XGameKit.XAssetManager
 {
-    public class XAssetManager : IXService
+    
+    public class XAssetManager : IXAssetManager, IXService
     {
-        //AssetBundle数据
-        protected Dictionary<string, XAssetBundle> m_dictAssetBundles = new Dictionary<string, XAssetBundle>();
-        //AssetObject数据
-        protected Dictionary<string, XAssetObject> m_dictAssetObjects = new Dictionary<string, XAssetObject>();
-        
-        protected List<string> m_listDestroyAssetBundles = new List<string>();
-        protected List<string> m_listDestroyAssetObjects = new List<string>();
-        
-        //是否存在于document下
-        protected Dictionary<string, bool> m_dictAssetBundleFlags = new Dictionary<string, bool>();
-
-        protected XABManifest m_staticManifest = new XABManifest();
-        protected XABManifest m_hotfixManifest = new XABManifest();
-
+        protected IXAssetManager m_instance;
         public XAssetManager()
         {
-            
-            //XABUtilities.ReadFile("A")
+#if UNITY_EDITOR
+            var mode = (EnumResMode) UnityEditor.EditorPrefs.GetInt(XABConst.EKResMode, XABConst.EKResModeDefaultValue);
+            if (mode == EnumResMode.Simulate)
+            {
+                m_instance = new XAssetManagerSimulate();
+            }
+            else
+#endif
+            {
+                m_instance = new XAssetManagerOrdinary();
+            }
         }
-        
         public void Dispose()
         {
-            foreach (var assetBundle in m_dictAssetBundles.Values)
-            {
-                assetBundle.Dispose();
-            }
-            m_dictAssetBundles.Clear();
-            
-            foreach (var assetObject in m_dictAssetObjects.Values)
-            {
-                assetObject.Dispose();
-            }
-            m_dictAssetObjects.Clear();
+            m_instance.Dispose();
         }
-        public void Tick(float deltaTime)
+        public void Tick(float deltaTime){
+            m_instance.Tick(deltaTime);
+        }
+        public List<string> GetDependencies(string bundleName)
         {
-            foreach (var assetBundle in m_dictAssetBundles.Values)
-            {
-                assetBundle.Tick(deltaTime);
-                if (assetBundle.RefCount == 0 && assetBundle.RefZeroTime > 5)
-                {
-                    m_listDestroyAssetBundles.Add(assetBundle.Name);
-                }
-            }
-            foreach (var assetObject in m_dictAssetObjects.Values)
-            {
-                assetObject.Tick(deltaTime);
-                if (assetObject.RefCount == 0 && assetObject.RefZeroTime > 5)
-                {
-                    m_listDestroyAssetObjects.Add(assetObject.Name);
-                }
-            }
-
-            if (m_listDestroyAssetBundles.Count > 0)
-            {
-                foreach (var name in m_listDestroyAssetBundles)
-                {
-                    m_dictAssetBundles[name].Dispose();
-                    m_dictAssetBundles.Remove(name);
-                }
-                m_listDestroyAssetBundles.Clear();
-            }
-            if (m_listDestroyAssetObjects.Count > 0)
-            {
-                foreach (var name in m_listDestroyAssetObjects)
-                {
-                    m_dictAssetObjects[name].Dispose();
-                    m_dictAssetObjects.Remove(name);
-                }
-                m_listDestroyAssetObjects.Clear();
-            }
+            return m_instance.GetDependencies(bundleName);
         }
-
-        //获取依赖项
-        public List<string> GetDependencies(string name)
+        public string GetBundleNameByAssetName(string assetName)
         {
-            return null;
+            return m_instance.GetBundleNameByAssetName(assetName);
         }
-        //获取包名
-        public string GetAssetBundleName(string assetName)
+        public AssetBundle LoadBundle(string bundleName)
         {
-            return string.Empty;
+            return m_instance.LoadBundle(bundleName);
         }
-        //获取标记
-        public bool GetFlag(string name)
+        public void LoadBundleAsync(string bundleName, Action<string, AssetBundle> callback = null){
+            m_instance.LoadAssetAsync(bundleName, callback);
+        }
+        public void UnloadBundle(string bundleName){
+            m_instance.UnloadBundle(bundleName);
+        }
+        public T LoadAsset<T>(string assetName) where T : Object
         {
-            if (m_dictAssetBundleFlags.ContainsKey(name))
-                return m_dictAssetBundleFlags[name];
-            return false;
+            return m_instance.LoadAsset<T>(assetName);
         }
-
-        
-        
-        #region AssetObject
-
-        XAssetObject _GetOrCreateAO(string name)
-        {
-            if (m_dictAssetObjects.ContainsKey(name))
-                return m_dictAssetObjects[name];
-            var obj = new XAssetObject();
-            m_dictAssetObjects.Add(name, obj);
-            return obj;
+        public void LoadAssetAsync<T>(string assetName, Action<string, T> callback = null) where T : Object{
+            m_instance.LoadAssetAsync<T>(assetName, callback);
         }
-        
-        //同步加载
-        public T LoadAsset<T>(string name) where T : Object
-        {
-            name = name.ToLower();
-            var obj = _GetOrCreateAO(name);
-            obj.Retain();
-            if (obj.State == EnumLoadState.Done)
-            {
-                return obj.GetValue<T>();
-            }
-            if (obj.State == EnumLoadState.Loading)
-            {
-                //正在执行异步加载，那么停止异步加载，直接同步加载
-                obj.StopAsync();
-            }
-            obj.Load<T>(this, name);
-            return obj.GetValue<T>();
+        public void UnloadAsset(string assetName){
+            m_instance.UnloadAsset(assetName);
         }
-        //异步加载
-        public void LoadAssetAsyn<T>(string name, Action<string, T> callback) where T : Object
-        {
-            name = name.ToLower();
-            var obj = _GetOrCreateAO(name);
-            obj.Retain();
-            if (obj.State == EnumLoadState.Done)
-            {
-                callback?.Invoke(name, obj.GetValue<T>());
-                return;
-            }
-            if (obj.State == EnumLoadState.Loading)
-            {
-                obj.AddCallback((p1, p2) =>
-                {
-                    callback?.Invoke(p1, p2 as T);
-                });
-                return;
-            }
-            obj.LoadAsync<T>(this, name, (p1, p2) =>
-            {
-                callback?.Invoke(p1, p2 as T);
-            });
-        }
-        //卸载
-        public void UnloadAsset(string name)
-        {
-            name = name.ToLower();
-            if (!m_dictAssetObjects.ContainsKey(name))
-                return;
-            m_dictAssetObjects[name].Release();
-        }
-        
-        #endregion
-        
-        
-        #region AssetBundle
-
-        XAssetBundle _GetOrCreateAB(string name)
-        {
-            if (m_dictAssetBundles.ContainsKey(name))
-                return m_dictAssetBundles[name];
-            var obj = new XAssetBundle();
-            m_dictAssetBundles.Add(name, obj);
-            return obj;
-        }
-        
-        //同步加载
-        public AssetBundle LoadBundle(string name)
-        {
-            name = name.ToLower();
-            var obj = _GetOrCreateAB(name);
-            obj.Retain();
-            if (obj.State == EnumLoadState.Done)
-            {
-                return obj.GetValue();
-            }
-            if (obj.State == EnumLoadState.Loading)
-            {
-                //正在执行异步加载，那么停止异步加载，直接同步加载
-                obj.StopAsync();
-            }
-            //这里会通过其他数据获取location类型
-            obj.Load(this, EnumLocation.Download, name);
-            return obj.GetValue();
-        }
-        //异步加载
-        public void LoadBundleAsync(string name, Action<string, AssetBundle> callback = null)
-        {
-            name = name.ToLower();
-            var obj = _GetOrCreateAB(name);
-            obj.Retain();
-            if (obj.State == EnumLoadState.Done)
-            {
-                callback?.Invoke(name, obj.GetValue());
-                return;
-            }
-            if (obj.State == EnumLoadState.Loading)
-            {
-                obj.AddCallback(callback);
-                return;
-            }
-            obj.LoadAsync(this, EnumLocation.Download, name, callback);
-        }
-        //卸载
-        public void UnloadBundle(string name)
-        {
-            name = name.ToLower();
-            if (!m_dictAssetBundles.ContainsKey(name))
-                return;
-            m_dictAssetBundles[name].Release();
-        }
-        
-        #endregion
     }
-}
 
+}

@@ -8,137 +8,129 @@ namespace XGameKit.XAssetManager
 {
     public class XAssetObject
     {
-        public string Name { get; protected set; }
-        public string BundleName { get; protected set; }
-
-        public EnumLoadState State { get; protected set; }
+        protected IXAssetManager m_AssetManger;
+        protected string m_BundleName;
+        protected string m_AssetXName;
+        protected EnumLoadState m_state;
+        protected Object m_AssetObject;
+        protected Action<string, Object> m_callback;
+        protected int m_RefCount;
+        protected float m_CacheTime = 5f;
+        protected float m_CacheTimeCounter;
+        protected AssetBundleRequest m_LoadAssetRequest;
         
-        //引用计数
-        public int RefCount{ get; protected set; }
-        public float RefZeroTime { get; protected set; }
-        
+        public EnumLoadState State
+        {
+            get{return m_state;}
+        }
         public void Retain()
         {
-            ++RefCount;
+            ++m_RefCount;
         }
         public void Release()
         {
-            --RefCount;
-            RefZeroTime = 0;
+            --m_RefCount;
+            m_CacheTimeCounter = 0;
         }
-
-        protected XAOLoader m_AOLoader;
-
-        protected XAssetManager m_AssetManger;
-        protected Object m_AssetObject;
-        protected Action<string, Object> m_Callback;
-
+        public bool CanDestroy()
+        {
+            return m_RefCount <= 0 && m_CacheTimeCounter >= m_CacheTime;
+        }
+        public string Name
+        {
+            get { return m_AssetXName; }
+        }
         public T GetValue<T>() where T : Object
         {
             return m_AssetObject as T;
         }
         public void SetValue(Object value)
         {
-            if (value != null)
-            {
-                State = EnumLoadState.Done;
-            }
-            else
-            {
-                State = EnumLoadState.None;
-            }
+            m_state = value != null ? EnumLoadState.Done : EnumLoadState.None;
             m_AssetObject = value;
-            if (m_Callback != null)
-            {
-                m_Callback.Invoke(Name, m_AssetObject);
-                m_Callback = null;
-            }
+            m_callback?.Invoke(m_AssetXName, m_AssetObject);
+            m_callback = null;
         }
-        
-        public XAssetObject()
-        {
-            if (XABUtilities.IsSimulatMode())
-            {
-                m_AOLoader = new XAOLoaderSimulate();
-            }
-            else
-            {
-                m_AOLoader = new XAOLoaderNormal();
-            }
-        }
-
         public void Dispose()
         {
-            if (m_AssetManger != null && State != EnumLoadState.None)
+            if (m_state != EnumLoadState.None)
             {
-                m_AssetManger.UnloadBundle(BundleName);
+                m_AssetManger?.UnloadBundle(m_BundleName);
             }
-            if (State == EnumLoadState.Loading)
+            if (m_state == EnumLoadState.Loading)
             {
-                m_AOLoader.StopAsync();
+                _StopLoadAsync();
             }
-            State = EnumLoadState.None;
             m_AssetObject = null;
-            m_Callback = null;
-            RefCount = 0;
+            m_callback = null;
+            m_state = EnumLoadState.None;
         }
         public void AddCallback(Action<string, Object> callback)
         {
             if (callback == null)
                 return;
-            m_Callback += callback;
+            m_callback += callback;
         }
-        public void Load<T>(XAssetManager manager, string name) where T : Object
+        public void Load<T>(IXAssetManager manager, string name) where T : Object
         {
             m_AssetManger = manager;
-            Name = name;
-            BundleName = manager.GetAssetBundleName(name);
-
-            var assetBundle = manager.LoadBundle(BundleName);
-            var assetObject = m_AOLoader.Load<T>(assetBundle, name);
+            m_BundleName = manager.GetBundleNameByAssetName(name);
+            m_AssetXName = name;
+            
+            var assetBundle = manager.LoadBundle(m_BundleName);
+            var assetObject = assetBundle.LoadAsset<T>(m_AssetXName);
             SetValue(assetObject);
         }
-        public void LoadAsync<T>(XAssetManager manager, string name, Action<string, Object> callback = null) where T : Object
+
+        public void LoadAsync<T>(IXAssetManager manager, string name, Action<string, Object> callback = null)
+            where T : Object
         {
             m_AssetManger = manager;
-            Name = name;
-            BundleName = manager.GetAssetBundleName(name);
+            m_BundleName = manager.GetBundleNameByAssetName(name);
+            m_AssetXName = name;
             
-            manager.LoadBundleAsync(BundleName, (p1,p2)=>
+            manager.LoadBundleAsync(m_BundleName, (bundleName, assetBundle) =>
             {
-                if (this.BundleName != p1)
+                if (m_BundleName != bundleName)
                     return;
-                m_AOLoader.LoadAsync<T>(p2, name);
+                if (assetBundle == null)
+                {
+                    SetValue(null);
+                    return;
+                }
+                m_LoadAssetRequest = assetBundle.LoadAssetAsync<T>(m_AssetXName);
             });
-            State = EnumLoadState.Loading;
-            m_Callback += callback;
+            m_state = EnumLoadState.Loading;
+            m_callback += callback;
+        }
+
+        void _StopLoadAsync()
+        {
+            m_LoadAssetRequest = null;
         }
 
         public void StopAsync()
         {
-            if (m_AssetManger != null && State == EnumLoadState.Loading)
-            {
-                m_AssetManger.UnloadBundle(BundleName);
-            }
-            m_AOLoader.StopAsync();
-            State = EnumLoadState.None;
+            if (m_state != EnumLoadState.Loading)
+                return;
+            m_AssetManger?.UnloadBundle(m_BundleName);
+            _StopLoadAsync();
+            m_state = EnumLoadState.None;
         }
         public void Tick(float deltaTime)
         {
-            switch (State)
+            switch (m_state)
             {
                 case EnumLoadState.Loading:
-                    m_AOLoader.Tick(deltaTime);
-                    if (m_AOLoader.IsDone)
+                    if (m_LoadAssetRequest != null && m_LoadAssetRequest.isDone)
                     {
-                        SetValue(m_AOLoader.GetValue());
-                        State = EnumLoadState.Done;
+                        SetValue(m_LoadAssetRequest.asset);
                     }
                     break;
                 case EnumLoadState.Done:
-                    if (RefCount <= 0)
+                    if (m_RefCount <= 0 && m_CacheTimeCounter < m_CacheTime)
                     {
-                        RefZeroTime += deltaTime;
+                        m_CacheTimeCounter += deltaTime;
                     }
                     break;
             }

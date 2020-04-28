@@ -47,6 +47,7 @@ namespace XGameKit.XAssetManager
             {
                 assetNameConfig.AddData(setting.assetPath, setting.bundleName, setting.isStatic);
             }
+            EditorUtility.SetDirty(assetNameConfig);
             AssetDatabase.SaveAssets();
 
             //打印log

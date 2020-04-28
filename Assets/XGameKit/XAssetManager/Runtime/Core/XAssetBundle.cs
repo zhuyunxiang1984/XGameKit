@@ -11,72 +11,70 @@ namespace XGameKit.XAssetManager
 {
     public class XAssetBundle
     {
-        public string Name { get; protected set; }
-        public EnumLoadState State { get; protected set; }
+        protected IXAssetManager m_AssetManager;
+        protected string m_BundleName;
+        protected List<string> m_dependencies = new List<string>();
+        protected int m_dependencyCurCount = 0;//依赖包加载计数
+        protected int m_dependencyMaxCount = 0;
+        protected EnumLoadState m_state;
+        protected AssetBundle m_AssetBundle;//Bundle缓存
+        protected Action<string, AssetBundle> m_callback;//完成回调
+        protected int m_RefCount;
+        protected float m_CacheTime = 5f;
+        protected float m_CacheTimeCounter;
 
-        //引用计数
-        public int RefCount{ get; protected set; }
-        public float RefZeroTime { get; protected set; }
-
+        public enum EnumLoadStep
+        {
+            None = 0,
+            Step1,
+            Step2,
+            Step3,
+            Step4,
+            Complete,
+        }
+        protected EnumLoadStep m_step;
+        protected string m_fullPath;
+        protected byte[] m_fileData;
+        protected AssetBundleCreateRequest m_CreateRequest;
+        
+        
         public void Retain()
         {
-            ++RefCount;
+            ++m_RefCount;
         }
         public void Release()
         {
-            --RefCount;
-            RefZeroTime = 0;
+            --m_RefCount;
+            m_CacheTimeCounter = 0;
+        }
+        public bool CanDestroy()
+        {
+            return m_RefCount <= 0 && m_CacheTimeCounter >= m_CacheTime;
         }
 
-        protected XAssetManager m_AssetManager;
-        protected XABLoader m_ABLoader;
-        protected List<string> m_dependencies = new List<string>();
+        public string Name
+        {
+            get { return m_BundleName; }
+        }
 
-        //完成回调
-        protected Action<string, AssetBundle> m_Callback;
-        //依赖包加载计数
-        protected int m_DependentCurCount = 0;
-        protected int m_DependentMaxCount = 0;
-
-        //Bundle缓存
-        protected AssetBundle m_AssetBundle;
-        
+        public EnumLoadState State
+        {
+            get{return m_state;}
+        }
         public AssetBundle GetValue()
         {
             return m_AssetBundle;
         }
         public void SetValue(AssetBundle value)
         {
-            if (value != null)
-            {
-                State = EnumLoadState.Done;
-            }
-            else
-            {
-                State = EnumLoadState.None;
-            }
+            m_state = value != null ? EnumLoadState.Done : EnumLoadState.None;
             m_AssetBundle = value;
-            if (m_Callback != null)
-            {
-                m_Callback.Invoke(Name, m_AssetBundle);
-                m_Callback = null;
-            }
+            m_callback?.Invoke(m_BundleName, m_AssetBundle);
+            m_callback = null;
         }
-        public XAssetBundle()
-        {
-            if (XABUtilities.IsSimulatMode())
-            {
-                m_ABLoader = new XABLoaderSimulate();
-            }
-            else
-            {
-                m_ABLoader = new XABLoaderNormal();
-            }
-        }
-        
         public void Dispose()
         {
-            if (m_AssetManager != null && State != EnumLoadState.None)
+            if (m_AssetManager != null && m_state != EnumLoadState.None)
             {
                 foreach (var dependent in m_dependencies)
                 {
@@ -88,100 +86,174 @@ namespace XGameKit.XAssetManager
                 m_AssetBundle.Unload(true);
                 m_AssetBundle = null;
             }
-            if (State == EnumLoadState.Loading)
+            if (m_state == EnumLoadState.Loading)
             {
-                m_ABLoader.StopAsync();
+                _StopLoadAsync();
             }
-            m_Callback = null;
-            State = EnumLoadState.None;
+            m_AssetBundle = null;
+            m_callback = null;
+            m_state = EnumLoadState.None;
         }
-
         public void AddCallback(Action<string, AssetBundle> callback)
         {
             if (callback == null)
                 return;
-            m_Callback += callback;
+            m_callback += callback;
         }
         //同步加载
-        public void Load(XAssetManager manager, EnumLocation location, string name)
+        public void Load(IXAssetManager manager, string path, string name)
         {
             m_AssetManager = manager;
-            Name = name;
-            m_dependencies.Clear();
+            m_BundleName = name;
             
-            var dependencies = manager.GetDependencies(Name);
+            m_dependencies.Clear();
+            var dependencies = manager.GetDependencies(m_BundleName);
             if (dependencies != null)
             {
                 m_dependencies.AddRange(dependencies);
-                foreach (var dependent in dependencies)
+                foreach (var dependency in dependencies)
                 {
-                    manager.LoadBundle(dependent);
+                    manager.LoadBundle(dependency);
                 }
             }
-            var fullPath = XABUtilities.GetAssetBundleFullPath(location, name);
+            var fullPath = XABUtilities.GetBundleFullPath(path, name);
             XDebug.Log(XABConst.Tag, $"加载 {fullPath}");
-            SetValue(m_ABLoader.Load(fullPath));
+            SetValue(_LoadInternal(fullPath));
+        }
+        AssetBundle _LoadInternal(string fullPath)
+        {
+            try
+            {
+                byte[] data = XABUtilities.ReadFile(fullPath);
+                //解密
+                //读取AssetBundle
+                return AssetBundle.LoadFromMemory(data);
+            }
+            catch (Exception e)
+            {
+                XDebug.Log(XABConst.Tag, $"加载assetbundle失败 {fullPath}\n{e.ToString()}");
+            }
+            return null;
         }
         //异步加载
-        public void LoadAsync(XAssetManager manager, EnumLocation location, string name, Action<string, AssetBundle> callback = null)
+        public void LoadAsync(IXAssetManager manager, string path, string name, Action<string, AssetBundle> callback = null)
         {
             m_AssetManager = manager;
-            Name = name;
+            m_BundleName = name;
             m_dependencies.Clear();
             
-            var dependencies = manager.GetDependencies(Name);
+            var dependencies = manager.GetDependencies(m_BundleName);
             if (dependencies != null)
             {
                 m_dependencies.AddRange(dependencies);
-                m_DependentCurCount = 0;
-                m_DependentMaxCount = dependencies.Count;
+                m_dependencyCurCount = 0;
+                m_dependencyMaxCount = dependencies.Count;
                 foreach (var dependent in dependencies)
                 {
                     manager.LoadBundleAsync(dependent, _OnLoadedDependent);
                 }
             }
-            var fullPath = XABUtilities.GetAssetBundleFullPath(location, name);
+            var fullPath = XABUtilities.GetBundleFullPath(path, name);
             XDebug.Log(XABConst.Tag, $"加载 {fullPath}");
-            m_ABLoader.LoadAsync(fullPath);
-            State = EnumLoadState.Loading;
-            
-            m_Callback += callback;
+            _StartLoadAsync(fullPath);
+            m_state = EnumLoadState.Loading;
+            m_callback += callback;
+        }
+        void _StartLoadAsync(string fullPath)
+        {
+            m_fullPath = fullPath;
+            m_step = EnumLoadStep.Step1;
+        }
+
+        void _StopLoadAsync()
+        {
+            m_CreateRequest = null;
+            m_step = EnumLoadStep.None;
+        }
+        void _OnLoadedDependent(string name, AssetBundle assetBundle)
+        {
+            m_dependencyCurCount += 1;
+        }
+        bool _CheckDependenciesCompleted()
+        {
+            return (m_dependencyMaxCount == 0 || m_dependencyCurCount == m_dependencyMaxCount);
         }
         public void StopAsync()
         {
-            if (m_AssetManager != null && State == EnumLoadState.Loading)
+            if (m_state != EnumLoadState.Loading)
+                return;
+            if (m_AssetManager != null)
             {
                 foreach (var dependent in m_dependencies)
                 {
                     m_AssetManager.UnloadBundle(dependent);
                 }
             }
-            m_ABLoader.StopAsync();
-            State = EnumLoadState.None;
+            _StopLoadAsync();
+            m_state = EnumLoadState.None;
         }
         public void Tick(float deltaTime)
         {
-            switch (State)
+            switch (m_state)
             {
                 case EnumLoadState.Loading:
-                    m_ABLoader.Tick(deltaTime);
-                    if (m_ABLoader.IsDone && (m_DependentMaxCount == 0 || m_DependentCurCount == m_DependentMaxCount))
+                    switch (m_step)
                     {
-                        SetValue(m_ABLoader.GetValue());
+                        case EnumLoadStep.Step1:
+                            _ExecuteStep1();
+                            break;
+                        case EnumLoadStep.Step2:
+                            _ExecuteStep2();
+                            break;
+                        case EnumLoadStep.Step3:
+                            _ExecuteStep3();
+                            break;
+                        case EnumLoadStep.Step4:
+                            _ExecuteStep4();
+                            break;
                     }
                     break;
                 case EnumLoadState.Done:
-                    if (RefCount <= 0)
+                    if (m_RefCount <= 0 && m_CacheTimeCounter < m_CacheTime)
                     {
-                        RefZeroTime += deltaTime;
+                        m_CacheTimeCounter += deltaTime;
                     }
                     break;
             }
         }
-        void _OnLoadedDependent(string name, AssetBundle assetBundle)
+        //读取文件
+        void _ExecuteStep1()
         {
-            m_DependentCurCount += 1;
+            m_fileData = XABUtilities.ReadFile(m_fullPath);
+            m_step = EnumLoadStep.Step2;
         }
+        //解密
+        void _ExecuteStep2()
+        {
+            //m_fileData
+            m_step = EnumLoadStep.Step3;
+        }
+        //读取AssetBundle
+        void _ExecuteStep3()
+        {
+            m_CreateRequest = AssetBundle.LoadFromMemoryAsync(m_fileData);
+            m_step = EnumLoadStep.Step4;
+        }
+        //等待Request完成
+        void _ExecuteStep4()
+        {
+            if (m_CreateRequest == null)
+            {
+                m_step = EnumLoadStep.Complete;
+                SetValue(null);
+                return;
+            }
+            if (!m_CreateRequest.isDone || !_CheckDependenciesCompleted())
+                return;
+            m_step = EnumLoadStep.Complete;
+            SetValue(m_CreateRequest.assetBundle);
+        }
+        
     }
 }
 

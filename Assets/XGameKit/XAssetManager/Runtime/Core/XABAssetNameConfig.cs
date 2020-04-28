@@ -12,7 +12,6 @@ using UnityEditor;
 
 namespace XGameKit.XAssetManager
 {
-    [System.Serializable]
     public class XABAssetNameConfig : ScriptableObject
     {
         public const string AssetPath = "Assets/XGameKitSettings/Editor/EditorXABAssetNameConfig.asset";

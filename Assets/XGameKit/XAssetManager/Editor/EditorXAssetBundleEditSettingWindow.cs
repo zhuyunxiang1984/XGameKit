@@ -12,65 +12,65 @@ namespace XGameKit.XAssetManager
         private void OnGUI()
         {
             //选择模式
-            var mode = (EnumEditorRunMode)EditorPrefs.GetInt(XABConst.EditorRunModeKey);
+            var mode = (EnumResMode)EditorPrefs.GetInt(XABConst.EKResMode, XABConst.EKResModeDefaultValue);
             EditorGUI.BeginChangeCheck();
-            mode = (EnumEditorRunMode)EditorGUILayout.EnumPopup("选择模式", mode);
+            mode = (EnumResMode)EditorGUILayout.EnumPopup("选择模式", mode);
             if (EditorGUI.EndChangeCheck())
             {
-                EditorPrefs.SetInt(XABConst.EditorRunModeKey, (int)mode);
+                EditorPrefs.SetInt(XABConst.EKResMode, (int)mode);
             }
 
-            if (mode == EnumEditorRunMode.Local)
+            if (mode == EnumResMode.Local)
             {
                 //设置路径
-                var path = EditorPrefs.GetString(XABConst.EditorRunPathKey);
+                var path = EditorPrefs.GetString(XABConst.EKResPath, XABConst.EKResPathDefaultValue);
                 GUILayout.BeginHorizontal();
                 GUILayout.TextField(path);
                 if (GUILayout.Button("选择路径"))
                 {
                     path = EditorUtility.OpenFolderPanel("选择路径", path, string.Empty);
                     Debug.Log(path);
-                    EditorPrefs.SetString(XABConst.EditorRunPathKey, path);
+                    EditorPrefs.SetString(XABConst.EKResPath, path);
                 }
                 GUILayout.EndHorizontal();
                 GUILayout.Space(2);
             }
 
-            if (mode == EnumEditorRunMode.Remote)
+            if (mode == EnumResMode.Remote)
             {
                 //设置网址
-                var url = EditorPrefs.GetString(XABConst.EditorRunUrlKey);
+                var url = EditorPrefs.GetString(XABConst.EKResUrl);
                 EditorGUI.BeginChangeCheck();
                 url = EditorGUILayout.TextField("网址", url);
                 if (EditorGUI.EndChangeCheck())
                 {
-                    EditorPrefs.SetString(XABConst.EditorRunUrlKey, url);
+                    EditorPrefs.SetString(XABConst.EKResUrl, url);
                 }
             }
 
             //选择平台
-            var buildTarget = (BuildTarget)EditorPrefs.GetInt(XABConst.EditorRunTargetKey);
+            var plarform = (EnumPlatform)EditorPrefs.GetInt(XABConst.EKResRunPlatform, XABConst.EKResRunPlatformDefaultValue);
             EditorGUI.BeginChangeCheck();
-            buildTarget = (BuildTarget)EditorGUILayout.EnumPopup("选择平台",buildTarget);
+            plarform = (EnumPlatform)EditorGUILayout.EnumPopup("选择平台",plarform);
             if (EditorGUI.EndChangeCheck())
             {
-                EditorPrefs.SetInt(XABConst.EditorRunTargetKey, (int)buildTarget);
+                EditorPrefs.SetInt(XABConst.EKResRunPlatform, (int)plarform);
             }
             
             //设置秘钥
-            var enableEncryptKey = EditorPrefs.GetBool(XABConst.EditorRunEnableEncryptKey);
+            var enableEncryptKey = EditorPrefs.GetBool(XABConst.EKResEnableEncrypt);
             EditorGUI.BeginChangeCheck();
             enableEncryptKey = EditorGUILayout.Toggle("启用加密",enableEncryptKey);
             if (EditorGUI.EndChangeCheck())
             {
-                EditorPrefs.SetBool(XABConst.EditorRunEnableEncryptKey, enableEncryptKey);
+                EditorPrefs.SetBool(XABConst.EKResEnableEncrypt, enableEncryptKey);
             }
-            var encryptKey = EditorPrefs.GetString(XABConst.EditorRunEncryptKey);
+            var encryptKey = EditorPrefs.GetString(XABConst.EKResEncryptKey);
             EditorGUI.BeginChangeCheck();
             encryptKey = EditorGUILayout.TextField("设置秘钥",encryptKey);
             if (EditorGUI.EndChangeCheck())
             {
-                EditorPrefs.SetString(XABConst.EditorRunEncryptKey, encryptKey);
+                EditorPrefs.SetString(XABConst.EKResEncryptKey, encryptKey);
             }
 
         }

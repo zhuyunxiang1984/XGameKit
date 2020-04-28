@@ -6,7 +6,7 @@ using XGameKit.XAssetManager;
 
 public class XAssetManagerSample : MonoBehaviour
 {
-    protected XAssetManager m_assetManager;
+    protected IXAssetManager m_assetManager;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,17 +19,21 @@ public class XAssetManagerSample : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            m_assetManager.LoadAssetAsyn<GameObject>("Box1", (name, asset) =>
+            m_assetManager.LoadAssetAsync<GameObject>("Box1", (name, asset) =>
             {
                 Debug.Log($"complete {name} {asset}");
+                if (asset == null)
+                    return;
                 GameObject.Instantiate(asset, Random.insideUnitSphere * 50f, Quaternion.identity);
             });
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            m_assetManager.LoadAssetAsyn<GameObject>("Box2", (name, asset) =>
+            m_assetManager.LoadAssetAsync<GameObject>("Box2", (name, asset) =>
             {
                 Debug.Log($"complete {name} {asset}");
+                if (asset == null)
+                    return;
             });
         }
     }

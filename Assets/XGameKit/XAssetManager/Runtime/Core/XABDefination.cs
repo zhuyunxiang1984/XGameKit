@@ -1,8 +1,13 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using XGameKit.Core;
+using Object = UnityEngine.Object;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 namespace XGameKit.XAssetManager
 {
     #region 常量定义
@@ -12,36 +17,45 @@ namespace XGameKit.XAssetManager
         public const string Tag = "XAssetBundle";
 
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
-        public static string DownloadPath = $"{Application.dataPath}/../Documents/Res";
+        public static string DocumentPath = $"{Application.dataPath}/../Documents/Res";
 #else
-            public static string DownloadPath = $"{Application.persistentDataPath}/Documents/Res";
+        public static string DocumentPath = $"{Application.persistentDataPath}/Documents/Res";
 #endif
-        public static string StreamingAssetsStaticPath = $"{Application.streamingAssetsPath}/Res/Static";
-        public static string StreamingAssetsHotfixPath = $"{Application.streamingAssetsPath}/Res/Hotfix";
+        public static string StreamingAssetsPath = $"{Application.streamingAssetsPath}/Res";
 
 #if UNITY_EDITOR
 
         //编译平台
-        public const string BuildTargetKey = "BuildTargetKey";
+        public const string EKResBuildPlatform = "EKResBuildPlatform";
+        public const int EKResBuildPlatformDefaultValue = (int)EnumPlatform.Windows;
+        
+        //编译路径
+        public const string EKResBuildPath = "EKResBuildPath";
+        public static string EKResBuildPathDefaultValue = $"{Application.dataPath}/../AssetBundles";
 
         //运行平台
-        public const string EditorRunTargetKey = "RunXXTargetKey";
+        public const string EKResRunPlatform = "EKResRunPlatform";
+        public const int EKResRunPlatformDefaultValue = (int)EnumPlatform.Windows;
 
         //模式
-        public const string EditorRunModeKey = "EditorRunModeKey";
-
+        public const string EKResMode = "EKResMode";
+        public const int EKResModeDefaultValue = (int)EnumResMode.Simulate;
         //路径
-        public const string EditorRunPathKey = "EditorRunPathKey";
+        public const string EKResPath = "EKResPath";
+        public static string EKResPathDefaultValue = $"{Application.dataPath}/../AssetBundles";
 
         //网址
-        public const string EditorRunUrlKey = "EditorRunUrlKey";
+        public const string EKResUrl = "EKResUrl";
+        
+        //下载地址
+        public const string EKResDownloadPath = "EKResDownloadPath";
+        public static string EKResDownloadPathDefaultValue = $"{Application.dataPath}/../Downloads";
 
         //是否启用加密
-        public const string EditorRunEnableEncryptKey = "EditorRunEnableEncryptKey";
+        public const string EKResEnableEncrypt = "EKResEnableEncrypt";
 
         //加密秘钥
-        public const string EditorRunEncryptKey = "EditorRunEncryptKey";
-
+        public const string EKResEncryptKey = "EKResEncryptKey";
 
 #endif
     }
@@ -51,11 +65,26 @@ namespace XGameKit.XAssetManager
 
     #region 枚举定义
 
-    public enum EnumLocation
+    //平台定义
+    public enum EnumPlatform
     {
-        Download, //下载目录
-        StreamingAssetsStatic, //StreamingAssets跟包目录
-        StreamingAssetsHotfix, //StreamingAssets热更目录
+        Windows,
+        iOS,
+        Android,
+    }
+    //文件定位
+    public enum EnumFileLocation
+    {
+        Document,        //可写目录
+        StreamingAssets, //应用包内
+    }
+    
+    //资源包类型
+    public enum EnumBundleType
+    {
+        None = 0,
+        Static,//跟包资源
+        Hotfix,//热更资源
     }
 
     public enum EnumLoadState
@@ -65,21 +94,32 @@ namespace XGameKit.XAssetManager
         Done, //已完成
     }
 
-#if UNITY_EDITOR
-
-    public enum EnumEditorRunMode
+    public enum EnumResMode
     {
-        Simulate, //本地模拟
-        Local, //本地资源
-        Remote, //远程资源
+        Simulate = 0, //本地模拟
+        Local,        //本地资源
+        Remote,       //远程资源
     }
-
-#endif
 
     #endregion
 
     #region 其他定义
 
+    //资源管理接口
+    public interface IXAssetManager
+    {
+        void Dispose();
+        void Tick(float deltaTime);
+        List<string> GetDependencies(string bundleName);
+        string GetBundleNameByAssetName(string assetName);
+        AssetBundle LoadBundle(string bundleName);
+        void LoadBundleAsync(string bundleName, Action<string, AssetBundle> callback = null);
+        void UnloadBundle(string bundleName);
+        T LoadAsset<T>(string assetName) where T : Object;
+        void LoadAssetAsync<T>(string assetName, Action<string, T> callback = null) where T : Object;
+        void UnloadAsset(string assetName);
+    }
+    
     /// <summary>
     /// 自定义的清单文件
     /// 依赖关系
@@ -130,7 +170,7 @@ namespace XGameKit.XAssetManager
             }
         }
 
-        public List<string> GetDependency(string name)
+        public List<string> GetDependencies(string name)
         {
             if (m_dictDependencies.ContainsKey(name))
                 return m_dictDependencies[name].values;
@@ -150,18 +190,24 @@ namespace XGameKit.XAssetManager
                 return string.Empty;
             return m_dictAssetNameLinkBundleName[assetName];
         }
-    }
 
+        public bool IsBundleExist(string bundleName)
+        {
+            return m_dictDependencies.ContainsKey(bundleName);
+        }
+        public bool IsAssetExist(string assetName)
+        {
+            return m_dictAssetNameLinkBundleName.ContainsKey(assetName);
+        }
+    }
     
     /*
      * 启动参数
      */
     public class XAssetManagerParam
     {
-#if UNITY_EDITOR
         //模式
-        public EnumEditorRunMode mode;
-#endif
+        public EnumResMode mode;
         //本地路径
         public string localAddress;
         //远程网址

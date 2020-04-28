@@ -14,27 +14,40 @@ namespace XGameKit.XAssetManager
     {
         private void OnGUI()
         {
-            var buildTarget = (BuildTarget)EditorPrefs.GetInt(XABConst.BuildTargetKey);
+            var platform = (EnumPlatform)EditorPrefs.GetInt(XABConst.EKResBuildPlatform, XABConst.EKResBuildPlatformDefaultValue);
             EditorGUI.BeginChangeCheck();
-            buildTarget = (BuildTarget)EditorGUILayout.EnumPopup(buildTarget);
+            platform = (EnumPlatform)EditorGUILayout.EnumPopup(platform);
             if (EditorGUI.EndChangeCheck())
             {
-                EditorPrefs.SetInt(XABConst.BuildTargetKey, (int)buildTarget);
+                EditorPrefs.SetInt(XABConst.EKResBuildPlatform, (int)platform);
             }
-            
-
             if (GUILayout.Button("设置包名"))
             {
                 var config = XUtilities.GetOrCreateConfig<EditorXABSettingConfig>(EditorXABSettingConfig.AssetPath);
                 Selection.activeObject = config;
             }
+            
+            //设置打包路径
+            var buildPath = EditorPrefs.GetString(XABConst.EKResBuildPath, XABConst.EKResBuildPathDefaultValue);
+            GUILayout.BeginHorizontal();
+            GUILayout.TextField(buildPath);
+            if (GUILayout.Button("选择路径"))
+            {
+                buildPath = EditorUtility.OpenFolderPanel("选择路径", buildPath, string.Empty);
+                EditorPrefs.SetString(XABConst.EKResBuildPath, buildPath);
+            }
+            GUILayout.EndHorizontal();
+            GUILayout.Space(2);
+            
+            
             if (GUILayout.Button("打包"))
             {
+                var buildTarget = EditorXAssetBundle.GetBuildTarget(platform);
                 if (buildTarget == BuildTarget.NoTarget)
                 {
                     return;
                 }
-                var outputBuild = EditorXAssetBundle.GetOutputBuild(buildTarget);
+                var outputBuild = EditorXAssetBundle.GetOutputBuild(platform);
                 XUtilities.MakePathExist(outputBuild);
                 var manifest = BuildPipeline.BuildAssetBundles(outputBuild, BuildAssetBundleOptions.ChunkBasedCompression, buildTarget);
                 
@@ -76,8 +89,8 @@ namespace XGameKit.XAssetManager
                 XABManifest manifestStatic = new XABManifest();
                 XABManifest manifestHotfix = new XABManifest();
 
-                var outputStatic = EditorXAssetBundle.GetOutputStatic(buildTarget);
-                var outputHotfix = EditorXAssetBundle.GetOutputHotfix(buildTarget);
+                var outputStatic = EditorXAssetBundle.GetOutputStatic(platform);
+                var outputHotfix = EditorXAssetBundle.GetOutputHotfix(platform);
                 
                 List<string> staticBundleNames = new List<string>();
                 List<string> hotfixBundleNames = new List<string>();
@@ -130,7 +143,7 @@ namespace XGameKit.XAssetManager
 
             if (GUILayout.Button("打开目录"))
             {
-                var output = EditorXAssetBundle.GetOutput(buildTarget);
+                var output = EditorXAssetBundle.GetOutput(platform);
                 Debug.Log(output);
                 output = output.Replace("/","\\");
                 System.Diagnostics.Process.Start("explorer.exe", output);
