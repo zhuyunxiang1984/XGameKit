@@ -29,6 +29,11 @@ public class XAssetManagerSample : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
+            m_assetManager.UnloadAsset("Box1");
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
             m_assetManager.LoadAssetAsync<GameObject>("Box2", (name, asset) =>
             {
                 Debug.Log($"complete {name} {asset}");

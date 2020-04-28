@@ -66,24 +66,6 @@ namespace XGameKit.XAssetManager
                  */
                 var assetNameConfig = XUtilities.GetOrCreateConfig<XABAssetNameConfig>(XABAssetNameConfig.AssetPath);
                 
-//                var dictStaticBundleNames = relationShipStaticConfig.GetBundleNames();
-//                var dictHotfixBundleNames = relationShipHotfixConfig.GetBundleNames();
-//                foreach (var bundleName in dictStaticBundleNames.Keys)
-//                {
-//                    var dependencies = manifest.GetAllDependencies(bundleName);
-//                    //Debug.Log($"{bundleName} 依赖数量 {dependencies.Length}");
-//                    foreach (var dependency in dependencies)
-//                    {
-//                        //Debug.Log("check " + dependency);
-//                        if (dictHotfixBundleNames.ContainsKey(dependency))
-//                        {
-//                            XDebug.LogError(XABConst.Tag, $"static:{bundleName} 依赖 hotfix:{dependency}");
-//                            EditorUtility.DisplayDialog("错误", "跟包资源不允许依赖更新资源！！", "OK");
-//                            return;
-//                        }
-//                    }
-//                }
-                
                 //--
                 //打包完成后，将static和hotfix分开目录
                 XABManifest manifestStatic = new XABManifest();
@@ -107,6 +89,29 @@ namespace XGameKit.XAssetManager
                     if(!hotfixBundleNames.Contains(data.AssetBundleName))
                         hotfixBundleNames.Add(data.AssetBundleName);
                 }
+                
+                //检测依赖关系，不允许跟包资源依赖热更资源
+                bool dependencyError = false;
+                foreach (var bundleName in staticBundleNames)
+                {
+                    var dependencies = manifest.GetAllDependencies(bundleName);
+                    //Debug.Log($"{bundleName} 依赖数量 {dependencies.Length}");
+                    foreach (var dependency in dependencies)
+                    {
+                        //Debug.Log("check " + dependency);
+                        if (hotfixBundleNames.Contains(dependency))
+                        {
+                            XDebug.LogError(XABConst.Tag, $"static:{bundleName} 依赖 hotfix:{dependency}");
+                            dependencyError = true;
+                        }
+                    }
+                }
+                if (dependencyError)
+                {
+                    EditorUtility.DisplayDialog("错误", "跟包资源不允许依赖更新资源！！\n错误依赖请看控制台打印！！", "OK");
+                    return;
+                }
+                
                 XUtilities.CleanFolder(outputStatic);
                 XUtilities.CleanFolder(outputHotfix);
                 XUtilities.MakePathExist(outputStatic);

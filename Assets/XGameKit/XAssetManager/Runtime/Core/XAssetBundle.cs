@@ -67,7 +67,16 @@ namespace XGameKit.XAssetManager
         }
         public void SetValue(AssetBundle value)
         {
-            m_state = value != null ? EnumLoadState.Done : EnumLoadState.None;
+            if (value != null)
+            {
+                XDebug.Log(XABConst.Tag, $"加载成功！！ bundle:{m_BundleName}");
+                m_state = EnumLoadState.Done;
+            }
+            else
+            {
+                XDebug.LogError(XABConst.Tag, $"加载失败！！ bundle:{m_BundleName}");
+                m_state = EnumLoadState.None;
+            }
             m_AssetBundle = value;
             m_callback?.Invoke(m_BundleName, m_AssetBundle);
             m_callback = null;

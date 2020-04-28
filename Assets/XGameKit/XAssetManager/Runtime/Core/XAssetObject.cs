@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using XGameKit.Core;
 using Object = UnityEngine.Object;
 
 namespace XGameKit.XAssetManager
@@ -46,7 +47,16 @@ namespace XGameKit.XAssetManager
         }
         public void SetValue(Object value)
         {
-            m_state = value != null ? EnumLoadState.Done : EnumLoadState.None;
+            if (value != null)
+            {
+                XDebug.Log(XABConst.Tag, $"加载成功！！ bundle:{m_BundleName} asset:{m_AssetXName}");
+                m_state = EnumLoadState.Done;
+            }
+            else
+            {
+                XDebug.LogError(XABConst.Tag, $"加载失败！！ bundle:{m_BundleName} asset:{m_AssetXName}");
+                m_state = EnumLoadState.None;
+            }
             m_AssetObject = value;
             m_callback?.Invoke(m_AssetXName, m_AssetObject);
             m_callback = null;

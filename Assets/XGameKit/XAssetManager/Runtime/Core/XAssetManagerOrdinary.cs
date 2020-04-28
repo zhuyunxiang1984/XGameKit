@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using XGameKit.Core;
 using Object = UnityEngine.Object;
 
 namespace XGameKit.XAssetManager
@@ -141,6 +142,7 @@ namespace XGameKit.XAssetManager
         //同步加载
         public AssetBundle LoadBundle(string bundleName)
         {
+            XDebug.Log(XABConst.Tag, $"--加载AssetBundle(同步) {bundleName}");
             bundleName = bundleName.ToLower();
             var bundleType = GetBundleType(bundleName);
             if (bundleType == EnumBundleType.None)
@@ -163,6 +165,7 @@ namespace XGameKit.XAssetManager
         //异步加载
         public void LoadBundleAsync(string bundleName, Action<string, AssetBundle> callback = null)
         {
+            XDebug.Log(XABConst.Tag, $"--加载AssetBundle(异步) {bundleName}");
             bundleName = bundleName.ToLower();
             var bundleType = GetBundleType(bundleName);
             if (bundleType == EnumBundleType.None)
@@ -188,6 +191,7 @@ namespace XGameKit.XAssetManager
         //卸载
         public void UnloadBundle(string bundleName)
         {
+            XDebug.Log(XABConst.Tag, $"--卸载AssetBundle {bundleName}");
             bundleName = bundleName.ToLower();
             if (!m_dictAssetBundles.ContainsKey(bundleName))
                 return;
@@ -196,6 +200,7 @@ namespace XGameKit.XAssetManager
         //同步加载
         public T LoadAsset<T>(string assetName) where T : Object
         {
+            XDebug.Log(XABConst.Tag, $"--加载AssetObject(同步) {assetName}");
             assetName = assetName.ToLower();
             var assetType = GetAssetType(assetName);
             if (assetType == EnumBundleType.None)
@@ -220,6 +225,7 @@ namespace XGameKit.XAssetManager
         //异步加载
         public void LoadAssetAsync<T>(string assetName, Action<string, T> callback = null) where T : Object
         {
+            XDebug.Log(XABConst.Tag, $"--加载AssetObject(异步) {assetName}");
             assetName = assetName.ToLower();
             var assetType = GetAssetType(assetName);
             if (assetType == EnumBundleType.None)
@@ -250,6 +256,7 @@ namespace XGameKit.XAssetManager
         //卸载
         public void UnloadAsset(string assetName)
         {
+            XDebug.Log(XABConst.Tag, $"--卸载AssetObject {assetName}");
             assetName = assetName.ToLower();
             if (!m_dictAssetObjects.ContainsKey(assetName))
                 return;
