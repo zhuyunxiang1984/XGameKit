@@ -22,18 +22,32 @@ namespace XGameKit.XAssetManager
 
             if (mode == EnumResMode.Local)
             {
-                //设置路径
+                //本地路径
                 var path = EditorPrefs.GetString(XABConst.EKResPath, XABConst.EKResPathDefaultValue);
+                
+                EditorGUI.BeginChangeCheck();
                 GUILayout.BeginHorizontal();
-                GUILayout.TextField(path);
-                if (GUILayout.Button("选择路径"))
+                EditorGUILayout.TextField("本地路径", path);
+                if (GUILayout.Button("选择路径", GUILayout.Width(80)))
                 {
-                    path = EditorUtility.OpenFolderPanel("选择路径", path, string.Empty);
-                    Debug.Log(path);
-                    EditorPrefs.SetString(XABConst.EKResPath, path);
+                    var sel = EditorUtility.OpenFolderPanel("选择路径", path, string.Empty);
+                    if (!string.IsNullOrEmpty(sel))
+                    {
+                        path = sel;
+                    }
+                }
+                if (GUILayout.Button("默认路径", GUILayout.Width(80)))
+                {
+                    path = XABConst.EKResPathDefaultValue;
                 }
                 GUILayout.EndHorizontal();
                 GUILayout.Space(2);
+                if (EditorGUI.EndChangeCheck())
+                {
+                    EditorPrefs.SetString(XABConst.EKResPath, path);
+                }
+                
+                
             }
 
             if (mode == EnumResMode.Remote)
@@ -46,33 +60,60 @@ namespace XGameKit.XAssetManager
                 {
                     EditorPrefs.SetString(XABConst.EKResUrl, url);
                 }
+                //下载路径
+                var path = EditorPrefs.GetString(XABConst.EKResDownloadPath, XABConst.EKResDownloadPathDefaultValue);
+                EditorGUI.BeginChangeCheck();
+                GUILayout.BeginHorizontal();
+                EditorGUILayout.TextField("下载路径", path);
+                if (GUILayout.Button("选择路径", GUILayout.Width(80)))
+                {
+                    var sel = EditorUtility.OpenFolderPanel("选择路径", path, string.Empty);
+                    if (!string.IsNullOrEmpty(sel))
+                    {
+                        path = sel;
+                    }
+                }
+                if (GUILayout.Button("默认路径", GUILayout.Width(80)))
+                {
+                    path = XABConst.EKResDownloadPathDefaultValue;
+                }
+                GUILayout.EndHorizontal();
+                GUILayout.Space(2);
+                if (EditorGUI.EndChangeCheck())
+                {
+                    EditorPrefs.SetString(XABConst.EKResDownloadPath, path);
+                }
+                
+                
             }
 
-            //选择平台
-            var plarform = (EnumPlatform)EditorPrefs.GetInt(XABConst.EKResRunPlatform, XABConst.EKResRunPlatformDefaultValue);
-            EditorGUI.BeginChangeCheck();
-            plarform = (EnumPlatform)EditorGUILayout.EnumPopup("选择平台",plarform);
-            if (EditorGUI.EndChangeCheck())
+            if (mode != EnumResMode.Simulate)
             {
-                EditorPrefs.SetInt(XABConst.EKResRunPlatform, (int)plarform);
-            }
+                //选择平台
+                var plarform = (EnumPlatform)EditorPrefs.GetInt(XABConst.EKResRunPlatform, XABConst.EKResRunPlatformDefaultValue);
+                EditorGUI.BeginChangeCheck();
+                plarform = (EnumPlatform)EditorGUILayout.EnumPopup("选择平台",plarform);
+                if (EditorGUI.EndChangeCheck())
+                {
+                    EditorPrefs.SetInt(XABConst.EKResRunPlatform, (int)plarform);
+                }
             
-            //设置秘钥
-            var enableEncryptKey = EditorPrefs.GetBool(XABConst.EKResEnableEncrypt);
-            EditorGUI.BeginChangeCheck();
-            enableEncryptKey = EditorGUILayout.Toggle("启用加密",enableEncryptKey);
-            if (EditorGUI.EndChangeCheck())
-            {
-                EditorPrefs.SetBool(XABConst.EKResEnableEncrypt, enableEncryptKey);
+                //设置秘钥
+                var enableEncryptKey = EditorPrefs.GetBool(XABConst.EKResEnableEncrypt);
+                EditorGUI.BeginChangeCheck();
+                enableEncryptKey = EditorGUILayout.Toggle("启用加密",enableEncryptKey);
+                if (EditorGUI.EndChangeCheck())
+                {
+                    EditorPrefs.SetBool(XABConst.EKResEnableEncrypt, enableEncryptKey);
+                }
+                var encryptKey = EditorPrefs.GetString(XABConst.EKResEncryptKey);
+                EditorGUI.BeginChangeCheck();
+                encryptKey = EditorGUILayout.TextField("设置秘钥",encryptKey);
+                if (EditorGUI.EndChangeCheck())
+                {
+                    EditorPrefs.SetString(XABConst.EKResEncryptKey, encryptKey);
+                }
             }
-            var encryptKey = EditorPrefs.GetString(XABConst.EKResEncryptKey);
-            EditorGUI.BeginChangeCheck();
-            encryptKey = EditorGUILayout.TextField("设置秘钥",encryptKey);
-            if (EditorGUI.EndChangeCheck())
-            {
-                EditorPrefs.SetString(XABConst.EKResEncryptKey, encryptKey);
-            }
-
         }
     }
 
