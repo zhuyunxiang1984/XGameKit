@@ -12,6 +12,7 @@ public class XAssetManagerSample : MonoBehaviour
     {
         XDebug.Initialize();
         m_assetManager = XService.AddService<XAssetManager>();
+        m_assetManager.Initialize();
     }
 
     // Update is called once per frame
@@ -40,6 +41,10 @@ public class XAssetManagerSample : MonoBehaviour
                 if (asset == null)
                     return;
             });
+        }
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+        
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -12,6 +13,27 @@ namespace XGameKit.Core
 {
     public static class XUtilities
     {
+        //从文件读取
+        public static byte[] ReadFile(string fullPath)
+        {
+            byte[] data = null;
+            try
+            {
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+                data = File.ReadAllBytes(fullPath);
+#elif UNITY_ANDROID
+                data = null;
+                
+#elif UNITY_IPHONE || UNITY_IOS
+                data = null;
+#endif
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"ReadFile失败 {fullPath}\n{e.ToString()}");
+            }
+            return data;
+        }
         //是否是文件夹
         public static bool IsFolder(string fullPath)
         {

@@ -30,7 +30,7 @@ MonoBehaviour:
       type: 2}
     BundleName: 
     SplitChildren: 0
-  - isStatic: 1
+  - isStatic: 0
     Object: {fileID: 3875767104821364736, guid: e5191bbabb2011c4b9d806d18e55c2e8,
       type: 3}
     BundleName: 
@@ -40,12 +40,12 @@ MonoBehaviour:
       type: 3}
     BundleName: 
     SplitChildren: 0
-  - isStatic: 1
+  - isStatic: 0
     Object: {fileID: 4861138329389913545, guid: 0d919319598792840aced351daade9cd,
       type: 3}
     BundleName: 
     SplitChildren: 0
-  - isStatic: 1
+  - isStatic: 0
     Object: {fileID: 6370101970596815866, guid: f3f0c59b55d6dca4f80e62206b5b97c5,
       type: 3}
     BundleName: 

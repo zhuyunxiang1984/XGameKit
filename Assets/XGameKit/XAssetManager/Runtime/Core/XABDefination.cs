@@ -43,13 +43,8 @@ namespace XGameKit.XAssetManager
         //路径
         public const string EKResPath = "EKResPath";
         public static string EKResPathDefaultValue = $"{Application.dataPath}/../AssetBundles";
-
         //网址
         public const string EKResUrl = "EKResUrl";
-        
-        //下载地址
-        public const string EKResDownloadPath = "EKResDownloadPath";
-        public static string EKResDownloadPathDefaultValue = $"{Application.dataPath}/../Downloads";
 
         //是否启用加密
         public const string EKResEnableEncrypt = "EKResEnableEncrypt";
@@ -75,8 +70,8 @@ namespace XGameKit.XAssetManager
     //文件定位
     public enum EnumFileLocation
     {
-        Document,        //可写目录
-        StreamingAssets, //应用包内
+        Client, //可写目录
+        Stream, //应用包内
     }
     
     //资源包类型
@@ -108,6 +103,7 @@ namespace XGameKit.XAssetManager
     //资源管理接口
     public interface IXAssetManager
     {
+        void Initialize(string serverAddress = "");
         void Dispose();
         void Tick(float deltaTime);
         List<string> GetDependencies(string bundleName);
@@ -199,24 +195,6 @@ namespace XGameKit.XAssetManager
         {
             return m_dictAssetNameLinkBundleName.ContainsKey(assetName);
         }
-    }
-    
-    /*
-     * 启动参数
-     */
-    public class XAssetManagerParam
-    {
-        //模式
-        public EnumResMode mode;
-        //本地路径
-        public string localAddress;
-        //远程网址
-        public string remoteAddress;
-        //是否加密
-        public bool enableEncrypt;
-        //秘钥
-        public string encryptKey;
-
     }
     
     #endregion

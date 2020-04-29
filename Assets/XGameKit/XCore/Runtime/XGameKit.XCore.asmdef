@@ -1,6 +1,8 @@
 {
     "name": "XGameKit.XCore",
-    "references": [],
+    "references": [
+        "GUID:d40c917facb28c449a9148c911fdc029"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

@@ -1,8 +1,6 @@
 {
     "name": "XGameKit.XDebug",
-    "references": [
-        "GUID:d3b93e382db1a184287579722f4e93c5"
-    ],
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using XGameKit.Core;
 using Object = UnityEngine.Object;
 
@@ -18,30 +19,48 @@ namespace XGameKit.XAssetManager
         protected List<string> m_listDestroyAssetObjects = new List<string>();
         
         //路径环境
-        protected XABDirEnv m_DirEnv;
+        public XABPathEnv PathEnv { get; protected set; }
+        //
+        public XABAssetInfoManager AssetInfoManager
+        {
+            get { return m_AssetInfoManager; }
+        }
+
         //清单数据
         protected XABManifest m_staticManifest;
         protected XABManifest m_hotfixManifest;
-        //
-
+        
+        //资源信息管理
+        protected XABAssetInfoManager m_AssetInfoManager = new XABAssetInfoManager();
+        protected XABInitTaskSchedule m_InitTaskSchedule = new XABInitTaskSchedule();
         public XAssetManagerOrdinary()
         {
 #if UNITY_EDITOR
             var mode = (EnumResMode) UnityEditor.EditorPrefs.GetInt(XABConst.EKResMode, XABConst.EKResModeDefaultValue);
             if (mode == EnumResMode.Local)
             {
-                m_DirEnv = new XABDirEnvLocal();
+                PathEnv = new XABPathEnvLocal();
             }
             else if (mode == EnumResMode.Remote)
             {
-                m_DirEnv = new XABDirEnvRemote();
+                PathEnv = new XABPathEnvRemote();
             }
             else
 #endif
             {
-                m_DirEnv = new XABDirEnvEmpty();
+                PathEnv = new XABPathEnvRelease();
             }
-            m_staticManifest = XABUtilities.ReadManifest(m_DirEnv.GetStaticAssetsPath());
+            m_staticManifest =
+                XABUtilities.ReadManifest(PathEnv.GetPath(EnumFileLocation.Stream, EnumBundleType.Static));
+        }
+        public string serverAddress { get; protected set; }
+        public void Initialize(string serverAddress)
+        {
+            this.serverAddress = serverAddress;
+            
+            m_InitTaskSchedule.Start(this, delegate(bool flag) {
+                Debug.Log("complete " + flag);
+            });
         }
 
         public void Dispose()
@@ -61,6 +80,7 @@ namespace XGameKit.XAssetManager
 
         public void Tick(float deltaTime)
         {
+            m_InitTaskSchedule.Update(deltaTime);
             foreach (var assetBundle in m_dictAssetBundles.Values)
             {
                 assetBundle.Tick(deltaTime);
@@ -159,7 +179,7 @@ namespace XGameKit.XAssetManager
                 obj.StopAsync();
             }
             //这里会通过其他数据获取location类型
-            obj.Load(this, m_DirEnv.GetBundlePath(EnumFileLocation.Document, bundleType), bundleName);
+            obj.Load(this, PathEnv.GetPath(EnumFileLocation.Client, bundleType), bundleName);
             return obj.GetValue();
         }
         //异步加载
@@ -186,7 +206,7 @@ namespace XGameKit.XAssetManager
                 obj.AddCallback(callback);
                 return;
             }
-            obj.LoadAsync(this, m_DirEnv.GetBundlePath(EnumFileLocation.Document, bundleType), bundleName, callback);
+            obj.LoadAsync(this, PathEnv.GetPath(EnumFileLocation.Client, bundleType), bundleName, callback);
         }
         //卸载
         public void UnloadBundle(string bundleName)

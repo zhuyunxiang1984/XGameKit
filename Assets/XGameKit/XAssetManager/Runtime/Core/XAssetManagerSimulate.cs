@@ -14,6 +14,10 @@ namespace XGameKit.XAssetManager
 {
     public class XAssetManagerSimulate : IXAssetManager
     {
+        public void Initialize(string serverAddress)
+        {
+            
+        }
         public void Dispose()
         {
             

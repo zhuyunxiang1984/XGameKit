@@ -34,7 +34,6 @@ namespace XGameKit.XAssetManager
                 EditorPrefs.SetInt(XABConst.EKResBuildPlatform, (int)platform);
             }
             
-            
             //设置打包路径
             var buildPath = EditorPrefs.GetString(XABConst.EKResBuildPath, XABConst.EKResBuildPathDefaultValue);
             EditorGUI.BeginChangeCheck();
@@ -63,6 +62,21 @@ namespace XGameKit.XAssetManager
             {
                 BuildAssetBundle(platform);
             }
+            
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("准备热更包(压缩)"))
+            {
+                var outputHotfix = EditorXAssetBundle.GetOutputHotfix(platform);
+                XFileList.LoadFileList(outputHotfix);
+            }
+            if (GUILayout.Button("准备热更包(非压缩)"))
+            {
+                var outputHotfix = EditorXAssetBundle.GetOutputHotfix(platform);
+                XFileList.CreateFileList(outputHotfix);
+            }
+            
+            GUILayout.EndHorizontal();
+            
             if (GUILayout.Button("打开目录"))
             {
                 var output = EditorXAssetBundle.GetOutput(platform);

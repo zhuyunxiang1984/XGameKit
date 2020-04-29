@@ -60,31 +60,6 @@ namespace XGameKit.XAssetManager
                 {
                     EditorPrefs.SetString(XABConst.EKResUrl, url);
                 }
-                //下载路径
-                var path = EditorPrefs.GetString(XABConst.EKResDownloadPath, XABConst.EKResDownloadPathDefaultValue);
-                EditorGUI.BeginChangeCheck();
-                GUILayout.BeginHorizontal();
-                EditorGUILayout.TextField("下载路径", path);
-                if (GUILayout.Button("选择路径", GUILayout.Width(80)))
-                {
-                    var sel = EditorUtility.OpenFolderPanel("选择路径", path, string.Empty);
-                    if (!string.IsNullOrEmpty(sel))
-                    {
-                        path = sel;
-                    }
-                }
-                if (GUILayout.Button("默认路径", GUILayout.Width(80)))
-                {
-                    path = XABConst.EKResDownloadPathDefaultValue;
-                }
-                GUILayout.EndHorizontal();
-                GUILayout.Space(2);
-                if (EditorGUI.EndChangeCheck())
-                {
-                    EditorPrefs.SetString(XABConst.EKResDownloadPath, path);
-                }
-                
-                
             }
 
             if (mode != EnumResMode.Simulate)

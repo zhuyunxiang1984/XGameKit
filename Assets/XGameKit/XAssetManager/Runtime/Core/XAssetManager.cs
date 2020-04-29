@@ -27,6 +27,11 @@ namespace XGameKit.XAssetManager
                 XDebug.Log(XABConst.Tag, "普通模式");
             }
         }
+
+        public void Initialize(string serverAddress)
+        {
+            m_instance.Initialize(serverAddress);
+        }
         public void Dispose()
         {
             m_instance.Dispose();
