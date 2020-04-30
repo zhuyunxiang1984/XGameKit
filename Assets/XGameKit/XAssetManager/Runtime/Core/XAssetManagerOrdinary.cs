@@ -18,8 +18,6 @@ namespace XGameKit.XAssetManager
         protected List<string> m_listDestroyAssetBundles = new List<string>();
         protected List<string> m_listDestroyAssetObjects = new List<string>();
         
-        //路径环境
-        public XABPathEnv PathEnv { get; protected set; }
         //
         public XABAssetInfoManager AssetInfoManager
         {
@@ -35,23 +33,8 @@ namespace XGameKit.XAssetManager
         protected XABInitTaskSchedule m_InitTaskSchedule = new XABInitTaskSchedule();
         public XAssetManagerOrdinary()
         {
-#if UNITY_EDITOR
-            var mode = (EnumResMode) UnityEditor.EditorPrefs.GetInt(XABConst.EKResMode, XABConst.EKResModeDefaultValue);
-            if (mode == EnumResMode.Local)
-            {
-                PathEnv = new XABPathEnvLocal();
-            }
-            else if (mode == EnumResMode.Remote)
-            {
-                PathEnv = new XABPathEnvRemote();
-            }
-            else
-#endif
-            {
-                PathEnv = new XABPathEnvRelease();
-            }
             m_staticManifest =
-                XABUtilities.ReadManifest(PathEnv.GetPath(EnumFileLocation.Stream, EnumBundleType.Static));
+                XABUtilities.ReadManifest(XABUtilities.GetResPath(EnumFileLocation.Stream, EnumBundleType.Static));
         }
         public string serverAddress { get; protected set; }
         public void Initialize(string serverAddress)
@@ -179,7 +162,7 @@ namespace XGameKit.XAssetManager
                 obj.StopAsync();
             }
             //这里会通过其他数据获取location类型
-            obj.Load(this, PathEnv.GetPath(EnumFileLocation.Client, bundleType), bundleName);
+            obj.Load(this, EnumFileLocation.Client, bundleType, bundleName);
             return obj.GetValue();
         }
         //异步加载
@@ -206,7 +189,7 @@ namespace XGameKit.XAssetManager
                 obj.AddCallback(callback);
                 return;
             }
-            obj.LoadAsync(this, PathEnv.GetPath(EnumFileLocation.Client, bundleType), bundleName, callback);
+            obj.LoadAsync(this, EnumFileLocation.Client, bundleType, bundleName, callback);
         }
         //卸载
         public void UnloadBundle(string bundleName)

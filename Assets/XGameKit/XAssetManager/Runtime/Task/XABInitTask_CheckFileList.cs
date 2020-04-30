@@ -37,8 +37,8 @@ namespace XGameKit.XAssetManager
                     XDebug.Log(XABConst.Tag, filelist.ToLog());
                 });
             assetInfoManager.SetServerFileList(null);
-            assetInfoManager.SetClientFileList(XFileList.LoadFileList(obj.PathEnv.GetPath(EnumFileLocation.Client, EnumBundleType.Hotfix)));
-            assetInfoManager.SetStreamFileList(XFileList.LoadFileList(obj.PathEnv.GetPath(EnumFileLocation.Stream, EnumBundleType.Hotfix)));
+            assetInfoManager.SetClientFileList(XFileList.LoadFileList(XABUtilities.GetResPath(EnumFileLocation.Client, EnumBundleType.Hotfix)));
+            assetInfoManager.SetStreamFileList(XFileList.LoadFileList(XABUtilities.GetResPath(EnumFileLocation.Stream, EnumBundleType.Hotfix)));
         }
 
         public override void Leave(XAssetManagerOrdinary obj)

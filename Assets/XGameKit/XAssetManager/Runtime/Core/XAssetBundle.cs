@@ -110,7 +110,7 @@ namespace XGameKit.XAssetManager
             m_callback += callback;
         }
         //同步加载
-        public void Load(IXAssetManager manager, string path, string name)
+        public void Load(IXAssetManager manager, EnumFileLocation location, EnumBundleType bundleType, string name)
         {
             m_AssetManager = manager;
             m_BundleName = name;
@@ -125,7 +125,7 @@ namespace XGameKit.XAssetManager
                     manager.LoadBundle(dependency);
                 }
             }
-            var fullPath = XABUtilities.GetBundleFullPath(path, name);
+            var fullPath = XABUtilities.GetBundleFullPath(location, bundleType, name);
             XDebug.Log(XABConst.Tag, $"加载 {fullPath}");
             SetValue(_LoadInternal(fullPath));
         }
@@ -145,7 +145,7 @@ namespace XGameKit.XAssetManager
             return null;
         }
         //异步加载
-        public void LoadAsync(IXAssetManager manager, string path, string name, Action<string, AssetBundle> callback = null)
+        public void LoadAsync(IXAssetManager manager, EnumFileLocation location, EnumBundleType bundleType, string name, Action<string, AssetBundle> callback = null)
         {
             m_AssetManager = manager;
             m_BundleName = name;
@@ -162,7 +162,7 @@ namespace XGameKit.XAssetManager
                     manager.LoadBundleAsync(dependent, _OnLoadedDependent);
                 }
             }
-            var fullPath = XABUtilities.GetBundleFullPath(path, name);
+            var fullPath = XABUtilities.GetBundleFullPath(location, bundleType, name);
             XDebug.Log(XABConst.Tag, $"加载 {fullPath}");
             _StartLoadAsync(fullPath);
             m_state = EnumLoadState.Loading;

@@ -27,24 +27,25 @@ namespace XGameKit.XAssetManager
 
         //编译平台
         public const string EKResBuildPlatform = "EKResBuildPlatform";
-        public const int EKResBuildPlatformDefaultValue = (int)EnumPlatform.Windows;
+        public const int EKResBuildPlatformValue = (int)EnumPlatform.Windows;
         
         //编译路径
         public const string EKResBuildPath = "EKResBuildPath";
-        public static string EKResBuildPathDefaultValue = $"{Application.dataPath}/../AssetBundles";
+        public static string EKResBuildPathValue = $"{Application.dataPath}/../AssetBundles";
 
         //运行平台
         public const string EKResRunPlatform = "EKResRunPlatform";
-        public const int EKResRunPlatformDefaultValue = (int)EnumPlatform.Windows;
+        public const int EKResRunPlatformValue = (int)EnumPlatform.Windows;
 
         //模式
         public const string EKResMode = "EKResMode";
-        public const int EKResModeDefaultValue = (int)EnumResMode.Simulate;
+        public const int EKResModeValue = (int)EnumResMode.Simulate;
         //路径
         public const string EKResPath = "EKResPath";
-        public static string EKResPathDefaultValue = $"{Application.dataPath}/../AssetBundles";
+        public static string EKResPathValue = $"{Application.dataPath}/../AssetBundles";
         //网址
         public const string EKResUrl = "EKResUrl";
+        public static string EKResUrlValue = $"file://{Application.dataPath}/../AssetBundles";
 
         //是否启用加密
         public const string EKResEnableEncrypt = "EKResEnableEncrypt";
@@ -91,9 +92,10 @@ namespace XGameKit.XAssetManager
 
     public enum EnumResMode
     {
-        Simulate = 0, //本地模拟
-        Local,        //本地资源
-        Remote,       //远程资源
+        Simulate = 0, //模拟模式
+        Local,        //本地模式
+        Remote,       //远程模式
+        Release,      //发布模式
     }
 
     #endregion

@@ -14,7 +14,7 @@ namespace XGameKit.XAssetManager
         public XAssetManager()
         {
 #if UNITY_EDITOR
-            var mode = (EnumResMode) UnityEditor.EditorPrefs.GetInt(XABConst.EKResMode, XABConst.EKResModeDefaultValue);
+            var mode = (EnumResMode) UnityEditor.EditorPrefs.GetInt(XABConst.EKResMode, XABConst.EKResModeValue);
             if (mode == EnumResMode.Simulate)
             {
                 m_instance = new XAssetManagerSimulate();

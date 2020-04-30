@@ -46,23 +46,65 @@ namespace XGameKit.XAssetManager
             var fileText = Encoding.UTF8.GetString(fileData);
             return JsonUtility.FromJson<XABManifest>(fileText);
         }
-
-        public static string GetBundleFullPath(string path, string bundleName)
+#if UNITY_EDITOR
+        //获取资源路径(编辑器设置)
+        public static string GetResPathEditSet()
         {
-            return $"{path}/{bundleName}";
-        }
-
-        public static string AppendPath(this string path, EnumBundleType bundleType)
-        {
-            return $"{path}/{bundleType.ToString()}";
-        }
-        public static string AppendPath(this string path, EnumPlatform platform)
-        {
+            var path = EditorPrefs.GetString(XABConst.EKResPath, XABConst.EKResPathValue);
+            var platform = (EnumPlatform)EditorPrefs.GetInt(XABConst.EKResRunPlatform, XABConst.EKResRunPlatformValue);
             return $"{path}/{platform.ToString()}";
         }
-        
-#if UNITY_EDITOR
-        
 #endif
+        //获取资源路径
+        public static string GetResPath(EnumFileLocation location, EnumBundleType bundleType)
+        {
+#if UNITY_EDITOR
+            var mode = (EnumResMode) EditorPrefs.GetInt(XABConst.EKResMode, XABConst.EKResModeValue);
+            //模拟模式
+            if (mode == EnumResMode.Simulate)
+            {
+                return string.Empty;
+            }
+            //本地模式
+            if (mode == EnumResMode.Local)
+            {
+                return $"{GetResPathEditSet()}/{bundleType.ToString()}";
+            }
+            //远程模式
+            if (mode == EnumResMode.Remote)
+            {
+                var path = string.Empty;
+                switch (bundleType)
+                {
+                    case EnumBundleType.Static:
+                        path = GetResPathEditSet();
+                        break;
+                    case EnumBundleType.Hotfix:
+                        path = XABConst.DocumentPath;
+                        break;
+                }
+                return $"{path}/{bundleType.ToString()}";;
+            }
+#endif
+            //发布模式
+            if (location == EnumFileLocation.Client)
+            {
+                return $"{XABConst.DocumentPath}/{bundleType.ToString()}";
+            }
+            if (location == EnumFileLocation.Stream)
+            {
+#if UNITY_EDITOR
+                return $"{GetResPathEditSet()}/{bundleType.ToString()}";
+#endif
+                return $"{XABConst.StreamingAssetsPath}/{bundleType.ToString()}";
+            }
+            return string.Empty;
+        }
+        //获取资源包完整路径
+        public static string GetBundleFullPath(EnumFileLocation location, EnumBundleType bundleType, string bundleName)
+        {
+            return $"{GetResPath(location, bundleType)}/{bundleName}";
+        }
+
     }
 }

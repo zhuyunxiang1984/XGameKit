@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6234735095736d94199cc483fe5444c4, type: 3}
   m_Name: EditorXABAssetNameConfig
   m_EditorClassIdentifier: 
-  StaticDatas: []
+  StaticDatas:
+  - AssetName: box1
+    AssetBundleName: box1.assetbundle
+    AssetPath: Assets/Project/Prefabs/Box1.prefab
   HotfixDatas:
   - AssetName: pic_basicbattle06
     AssetBundleName: cricle.assetbundle
@@ -146,6 +149,3 @@ MonoBehaviour:
   - AssetName: prefab3
     AssetBundleName: prefab3.assetbundle
     AssetPath: Assets/Project/Prefabs/Prefab3.prefab
-  - AssetName: box1
-    AssetBundleName: box1.assetbundle
-    AssetPath: Assets/Project/Prefabs/Box1.prefab

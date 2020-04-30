@@ -26,7 +26,7 @@ namespace XGameKit.XAssetManager
                 config.UpdateBundleName();
             }
             
-            var platform = (EnumPlatform)EditorPrefs.GetInt(XABConst.EKResBuildPlatform, XABConst.EKResBuildPlatformDefaultValue);
+            var platform = (EnumPlatform)EditorPrefs.GetInt(XABConst.EKResBuildPlatform, XABConst.EKResBuildPlatformValue);
             EditorGUI.BeginChangeCheck();
             platform = (EnumPlatform)EditorGUILayout.EnumPopup("选择平台", platform);
             if (EditorGUI.EndChangeCheck())
@@ -35,7 +35,7 @@ namespace XGameKit.XAssetManager
             }
             
             //设置打包路径
-            var buildPath = EditorPrefs.GetString(XABConst.EKResBuildPath, XABConst.EKResBuildPathDefaultValue);
+            var buildPath = EditorPrefs.GetString(XABConst.EKResBuildPath, XABConst.EKResBuildPathValue);
             EditorGUI.BeginChangeCheck();
             GUILayout.BeginHorizontal();
             EditorGUILayout.TextField("输出路径", buildPath);
@@ -49,7 +49,7 @@ namespace XGameKit.XAssetManager
             }
             if (GUILayout.Button("默认路径", GUILayout.Width(80)))
             {
-                buildPath = XABConst.EKResBuildPathDefaultValue;
+                buildPath = XABConst.EKResBuildPathValue;
             }
             GUILayout.EndHorizontal();
             GUILayout.Space(2);
@@ -61,6 +61,10 @@ namespace XGameKit.XAssetManager
             if (GUILayout.Button("打包"))
             {
                 BuildAssetBundle(platform);
+                
+                //创建filelist
+                var outputHotfix = EditorXAssetBundle.GetOutputHotfix(platform);
+                XFileList.CreateFileList(outputHotfix);
             }
             
             GUILayout.BeginHorizontal();
@@ -197,6 +201,7 @@ namespace XGameKit.XAssetManager
             var jsonHotfix = JsonUtility.ToJson(manifestHotfix);
             var pathHotfix = $"{outputHotfix}/manifest.json";
             File.WriteAllText(pathHotfix, jsonHotfix);
+
         }
     }
 }

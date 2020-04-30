@@ -45,7 +45,7 @@ MonoBehaviour:
       type: 3}
     BundleName: 
     SplitChildren: 0
-  - isStatic: 0
+  - isStatic: 1
     Object: {fileID: 6370101970596815866, guid: f3f0c59b55d6dca4f80e62206b5b97c5,
       type: 3}
     BundleName: 
