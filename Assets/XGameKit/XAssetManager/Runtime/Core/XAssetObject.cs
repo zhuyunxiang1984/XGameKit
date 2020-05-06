@@ -12,7 +12,7 @@ namespace XGameKit.XAssetManager
         protected IXAssetManager m_AssetManger;
         protected string m_BundleName;
         protected string m_AssetXName;
-        protected EnumLoadState m_state;
+        protected EnumJobState m_state;
         protected Object m_AssetObject;
         protected Action<string, Object> m_callback;
         protected int m_RefCount;
@@ -20,7 +20,7 @@ namespace XGameKit.XAssetManager
         protected float m_CacheTimeCounter;
         protected AssetBundleRequest m_LoadAssetRequest;
         
-        public EnumLoadState State
+        public EnumJobState State
         {
             get{return m_state;}
         }
@@ -50,12 +50,12 @@ namespace XGameKit.XAssetManager
             if (value != null)
             {
                 XDebug.Log(XABConst.Tag, $"加载成功！！ bundle:{m_BundleName} asset:{m_AssetXName}");
-                m_state = EnumLoadState.Done;
+                m_state = EnumJobState.Done;
             }
             else
             {
                 XDebug.LogError(XABConst.Tag, $"加载失败！！ bundle:{m_BundleName} asset:{m_AssetXName}");
-                m_state = EnumLoadState.None;
+                m_state = EnumJobState.None;
             }
             m_AssetObject = value;
             m_callback?.Invoke(m_AssetXName, m_AssetObject);
@@ -63,17 +63,17 @@ namespace XGameKit.XAssetManager
         }
         public void Dispose()
         {
-            if (m_state != EnumLoadState.None)
+            if (m_state != EnumJobState.None)
             {
                 m_AssetManger?.UnloadBundle(m_BundleName);
             }
-            if (m_state == EnumLoadState.Loading)
+            if (m_state == EnumJobState.Process)
             {
                 _StopLoadAsync();
             }
             m_AssetObject = null;
             m_callback = null;
-            m_state = EnumLoadState.None;
+            m_state = EnumJobState.None;
         }
         public void AddCallback(Action<string, Object> callback)
         {
@@ -110,7 +110,7 @@ namespace XGameKit.XAssetManager
                 }
                 m_LoadAssetRequest = assetBundle.LoadAssetAsync<T>(m_AssetXName);
             });
-            m_state = EnumLoadState.Loading;
+            m_state = EnumJobState.Process;
             m_callback += callback;
         }
 
@@ -121,23 +121,23 @@ namespace XGameKit.XAssetManager
 
         public void StopAsync()
         {
-            if (m_state != EnumLoadState.Loading)
+            if (m_state != EnumJobState.Process)
                 return;
             m_AssetManger?.UnloadBundle(m_BundleName);
             _StopLoadAsync();
-            m_state = EnumLoadState.None;
+            m_state = EnumJobState.None;
         }
         public void Tick(float deltaTime)
         {
             switch (m_state)
             {
-                case EnumLoadState.Loading:
+                case EnumJobState.Process:
                     if (m_LoadAssetRequest != null && m_LoadAssetRequest.isDone)
                     {
                         SetValue(m_LoadAssetRequest.asset);
                     }
                     break;
-                case EnumLoadState.Done:
+                case EnumJobState.Done:
                     if (m_RefCount <= 0 && m_CacheTimeCounter < m_CacheTime)
                     {
                         m_CacheTimeCounter += deltaTime;

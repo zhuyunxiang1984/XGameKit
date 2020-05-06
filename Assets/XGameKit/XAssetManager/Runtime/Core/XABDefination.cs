@@ -60,7 +60,7 @@ namespace XGameKit.XAssetManager
 
 
     #region 枚举定义
-
+    
     //平台定义
     public enum EnumPlatform
     {
@@ -78,16 +78,16 @@ namespace XGameKit.XAssetManager
     //资源包类型
     public enum EnumBundleType
     {
-        None = 0,
         Static,//跟包资源
         Hotfix,//热更资源
     }
 
-    public enum EnumLoadState
+    //执行状态
+    public enum EnumJobState
     {
-        None = 0, //未加载
-        Loading, //加载中    
-        Done, //已完成
+        None = 0, //未开始
+        Process,  //执行中    
+        Done,     //已完成
     }
 
     public enum EnumResMode
@@ -147,6 +147,16 @@ namespace XGameKit.XAssetManager
 
         //资源名对应包名
         [SerializeField] protected DictWrapper2 m_dictAssetNameLinkBundleName = new DictWrapper2();
+
+        public Dictionary<string, string> GetAssetNameToBundleNameDatas()
+        {
+            return m_dictAssetNameLinkBundleName.datas;
+        }
+
+        public Dictionary<string, ListWrapper> GetDependencyDatas()
+        {
+            return m_dictDependencies.datas;
+        }
 
         public void Clear()
         {

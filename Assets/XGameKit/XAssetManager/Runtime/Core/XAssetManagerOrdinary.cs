@@ -18,6 +18,10 @@ namespace XGameKit.XAssetManager
         protected List<string> m_listDestroyAssetBundles = new List<string>();
         protected List<string> m_listDestroyAssetObjects = new List<string>();
         
+        //状态
+        public EnumJobState CheckHotfixState { get; protected set; }
+        public EnumJobState DownloadHotfixState { get; protected set; }
+        
         //
         public XABAssetInfoManager AssetInfoManager
         {
@@ -30,11 +34,11 @@ namespace XGameKit.XAssetManager
         
         //资源信息管理
         protected XABAssetInfoManager m_AssetInfoManager = new XABAssetInfoManager();
-        protected XABInitTaskSchedule m_InitTaskSchedule = new XABInitTaskSchedule();
+        protected XABHotfixTaskSchedule m_InitTaskSchedule = new XABHotfixTaskSchedule();
         public XAssetManagerOrdinary()
         {
-            m_staticManifest =
-                XABUtilities.ReadManifest(XABUtilities.GetResPath(EnumFileLocation.Stream, EnumBundleType.Static));
+            m_AssetInfoManager.SetStaticManifest(XABUtilities.ReadManifest(XABUtilities.GetResPath(EnumFileLocation.Stream, EnumBundleType.Static)));
+
         }
         public string serverAddress { get; protected set; }
         public void Initialize(string serverAddress)
@@ -100,46 +104,16 @@ namespace XGameKit.XAssetManager
                 m_listDestroyAssetObjects.Clear();
             }
         }
-        public EnumBundleType GetBundleType(string bundleName)
-        {
-            if (m_staticManifest != null && m_staticManifest.IsBundleExist(bundleName))
-                return EnumBundleType.Static;
-            if (m_hotfixManifest != null && m_hotfixManifest.IsBundleExist(bundleName))
-                return EnumBundleType.Hotfix;
-            Debug.LogError($"不存在资源包！！ {bundleName} ");
-            return EnumBundleType.None;
-        }
-
-        public EnumBundleType GetAssetType(string assetName)
-        {
-            if (m_staticManifest != null && m_staticManifest.IsAssetExist(assetName))
-                return EnumBundleType.Static;
-            if (m_hotfixManifest != null && m_hotfixManifest.IsAssetExist(assetName))
-                return EnumBundleType.Hotfix;
-            Debug.LogError($"不存在资源！！ {assetName} ");
-            return EnumBundleType.None;
-        }
         public List<string> GetDependencies(string bundleName)
         {
-            var bundleType = GetBundleType(bundleName);
-            if (bundleType == EnumBundleType.None)
+            var bundleInfo = AssetInfoManager.GetBundleInfo(bundleName);
+            if (bundleInfo == null)
                 return null;
-            if (bundleType == EnumBundleType.Static)
-                return m_staticManifest.GetDependencies(bundleName);
-            if (bundleType == EnumBundleType.Hotfix)
-                return m_hotfixManifest.GetDependencies(bundleName);
-            return null;
+            return bundleInfo.dependencies;
         }
         public string GetBundleNameByAssetName(string assetName)
         {
-            var bundleType = GetAssetType(assetName);
-            if (bundleType == EnumBundleType.None)
-                return null;
-            if (bundleType == EnumBundleType.Static)
-                return m_staticManifest.GetBundleNameByAssetName(assetName);
-            if (bundleType == EnumBundleType.Hotfix)
-                return m_hotfixManifest.GetBundleNameByAssetName(assetName);
-            return string.Empty;
+            return AssetInfoManager.GetBundleNameByAssetName(assetName);
         }
         
         //同步加载
@@ -147,22 +121,22 @@ namespace XGameKit.XAssetManager
         {
             XDebug.Log(XABConst.Tag, $"--加载AssetBundle(同步) {bundleName}");
             bundleName = bundleName.ToLower();
-            var bundleType = GetBundleType(bundleName);
-            if (bundleType == EnumBundleType.None)
+            var bundleInfo = AssetInfoManager.GetBundleInfo(bundleName);
+            if (bundleInfo == null)
                 return null;
             var obj = _GetOrCreateAB(bundleName);
             obj.Retain();
-            if (obj.State == EnumLoadState.Done)
+            if (obj.State == EnumJobState.Done)
             {
                 return obj.GetValue();
             }
-            if (obj.State == EnumLoadState.Loading)
+            if (obj.State == EnumJobState.Process)
             {
                 //正在执行异步加载，那么停止异步加载，直接同步加载
                 obj.StopAsync();
             }
             //这里会通过其他数据获取location类型
-            obj.Load(this, EnumFileLocation.Client, bundleType, bundleName);
+            obj.Load(this, EnumFileLocation.Client, bundleInfo.bundleType, bundleName);
             return obj.GetValue();
         }
         //异步加载
@@ -170,8 +144,8 @@ namespace XGameKit.XAssetManager
         {
             XDebug.Log(XABConst.Tag, $"--加载AssetBundle(异步) {bundleName}");
             bundleName = bundleName.ToLower();
-            var bundleType = GetBundleType(bundleName);
-            if (bundleType == EnumBundleType.None)
+            var bundleInfo = AssetInfoManager.GetBundleInfo(bundleName);
+            if (bundleInfo == null)
             {
                 callback?.Invoke(bundleName, null);
                 return;
@@ -179,17 +153,17 @@ namespace XGameKit.XAssetManager
                 
             var obj = _GetOrCreateAB(bundleName);
             obj.Retain();
-            if (obj.State == EnumLoadState.Done)
+            if (obj.State == EnumJobState.Done)
             {
                 callback?.Invoke(bundleName, obj.GetValue());
                 return;
             }
-            if (obj.State == EnumLoadState.Loading)
+            if (obj.State == EnumJobState.Process)
             {
                 obj.AddCallback(callback);
                 return;
             }
-            obj.LoadAsync(this, EnumFileLocation.Client, bundleType, bundleName, callback);
+            obj.LoadAsync(this, EnumFileLocation.Client, bundleInfo.bundleType, bundleName, callback);
         }
         //卸载
         public void UnloadBundle(string bundleName)
@@ -205,19 +179,19 @@ namespace XGameKit.XAssetManager
         {
             XDebug.Log(XABConst.Tag, $"--加载AssetObject(同步) {assetName}");
             assetName = assetName.ToLower();
-            var assetType = GetAssetType(assetName);
-            if (assetType == EnumBundleType.None)
+            var bundleName = AssetInfoManager.GetBundleNameByAssetName(assetName);
+            if (string.IsNullOrEmpty(bundleName))
             {
                 return null;
             }
             
             var obj = _GetOrCreateAO(assetName);
             obj.Retain();
-            if (obj.State == EnumLoadState.Done)
+            if (obj.State == EnumJobState.Done)
             {
                 return obj.GetValue<T>();
             }
-            if (obj.State == EnumLoadState.Loading)
+            if (obj.State == EnumJobState.Process)
             {
                 //正在执行异步加载，那么停止异步加载，直接同步加载
                 obj.StopAsync();
@@ -230,20 +204,20 @@ namespace XGameKit.XAssetManager
         {
             XDebug.Log(XABConst.Tag, $"--加载AssetObject(异步) {assetName}");
             assetName = assetName.ToLower();
-            var assetType = GetAssetType(assetName);
-            if (assetType == EnumBundleType.None)
+            var bundleName = AssetInfoManager.GetBundleNameByAssetName(assetName);
+            if (string.IsNullOrEmpty(bundleName))
             {
                 callback?.Invoke(assetName, null);
                 return;
             }
             var obj = _GetOrCreateAO(assetName);
             obj.Retain();
-            if (obj.State == EnumLoadState.Done)
+            if (obj.State == EnumJobState.Done)
             {
                 callback?.Invoke(assetName, obj.GetValue<T>());
                 return;
             }
-            if (obj.State == EnumLoadState.Loading)
+            if (obj.State == EnumJobState.Process)
             {
                 obj.AddCallback((p1, p2) =>
                 {

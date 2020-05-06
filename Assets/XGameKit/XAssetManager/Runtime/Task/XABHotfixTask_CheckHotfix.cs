@@ -11,9 +11,13 @@ using UnityEditor;
 namespace XGameKit.XAssetManager
 {
     //比较文件列表
-    public class XABInitTask_CheckFileList : XTask<XAssetManagerOrdinary>
+    public class XABHotfixTask_CheckHotfix : XTask<XAssetManagerOrdinary>
     {
         protected string m_serverAddress;
+        protected XFileList m_server_filelist;
+        protected XFileList m_client_filelist;
+        protected XFileList m_stream_filelist;
+        
         public override void Enter(XAssetManagerOrdinary obj)
         {
             var assetInfoManager = obj.AssetInfoManager;
@@ -32,13 +36,12 @@ namespace XGameKit.XAssetManager
                 {
                     if (!string.IsNullOrEmpty(error))
                         return;
-                    var filelist = JsonUtility.FromJson<XFileList>(responseData);
-                    assetInfoManager.SetServerFileList(filelist);
-                    XDebug.Log(XABConst.Tag, filelist.ToLog());
+                    m_server_filelist = JsonUtility.FromJson<XFileList>(responseData);
+                    XDebug.Log(XABConst.Tag, m_server_filelist.ToLog());
                 });
-            assetInfoManager.SetServerFileList(null);
-            assetInfoManager.SetClientFileList(XFileList.LoadFileList(XABUtilities.GetResPath(EnumFileLocation.Client, EnumBundleType.Hotfix)));
-            assetInfoManager.SetStreamFileList(XFileList.LoadFileList(XABUtilities.GetResPath(EnumFileLocation.Stream, EnumBundleType.Hotfix)));
+            m_server_filelist = null;
+            m_client_filelist = XFileList.LoadFileList(XABUtilities.GetResPath(EnumFileLocation.Client, EnumBundleType.Hotfix));
+            m_stream_filelist = XFileList.LoadFileList(XABUtilities.GetResPath(EnumFileLocation.Stream, EnumBundleType.Hotfix));
         }
 
         public override void Leave(XAssetManagerOrdinary obj)
@@ -51,11 +54,11 @@ namespace XGameKit.XAssetManager
             if (string.IsNullOrEmpty(m_serverAddress))
                 return EnumXTaskResult.Failure;
             var assetInfoManager = obj.AssetInfoManager;
-            if (assetInfoManager.server_filelist == null)
+            if (m_server_filelist == null)
                 return EnumXTaskResult.Execute;
             
-            var deleteList = _GetDeleteFiles(assetInfoManager.server_filelist, assetInfoManager.client_filelist);
-            var downloads = _GetDownloadFiles(assetInfoManager.server_filelist, assetInfoManager.client_filelist, assetInfoManager.stream_filelist);
+            var deleteList = _GetDeleteFiles(m_server_filelist, m_client_filelist);
+            var downloads = _GetDownloadFiles(m_server_filelist, m_client_filelist, m_stream_filelist);
 
             var logger = XDebug.CreateMutiLogger(XABConst.Tag);
             logger.Append("===比较文件清单===");

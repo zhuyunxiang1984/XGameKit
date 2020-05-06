@@ -12,35 +12,90 @@ namespace XGameKit.XAssetManager
         //删除列表
         public List<string> ltExpiredX  { get; protected set; } = new List<string>();
 
-        public XFileList server_filelist { get; protected set; }
-        public XFileList client_filelist { get; protected set; }
-        public XFileList stream_filelist { get; protected set; }
-        
-        protected Dictionary<string, EnumFileLocation> m_dictLocation = new Dictionary<string, EnumFileLocation>();
+        protected XABManifest m_staticManifest;
 
+        protected XABManifest m_hotfixManifest;
+        //资源名->包名
+        protected Dictionary<string, string> m_dictAssetNameToBundleName = new Dictionary<string, string>();
+        //依赖关系
+        public class BundleInfo
+        {
+            public List<string> dependencies;
+            public EnumBundleType bundleType;
+        }
+        protected Dictionary<string, BundleInfo> m_dictBundles = new Dictionary<string, BundleInfo>();
+
+        protected Dictionary<string, EnumFileLocation> m_dictBundleLocations = new Dictionary<string, EnumFileLocation>();
         public void ClearLocation()
         {
-            m_dictLocation.Clear();
+            m_dictBundleLocations.Clear();
         }
-        public void SetLocation(string fileName, EnumFileLocation location)
+        public void SetLocation(string bundleName, EnumFileLocation location)
         {
-            if (m_dictLocation.ContainsKey(fileName))
-                m_dictLocation[fileName] = location;
+            if (m_dictBundleLocations.ContainsKey(bundleName))
+                m_dictBundleLocations[bundleName] = location;
             else
-                m_dictLocation.Add(fileName, location);
+                m_dictBundleLocations.Add(bundleName, location);
+        }
+        public void SetStaticManifest(XABManifest manifest)
+        {
+            m_staticManifest = manifest;
+            _UpdateManifestData();
+        }
+        public void SetHotfixManifest(XABManifest manifest)
+        {
+            m_hotfixManifest = manifest;
+            _UpdateManifestData();
+        }
+        public string GetBundleNameByAssetName(string assetName)
+        {
+            if (m_dictAssetNameToBundleName.ContainsKey(assetName))
+                return m_dictAssetNameToBundleName[assetName];
+            return string.Empty;
+        }
+        public BundleInfo GetBundleInfo(string bundleName)
+        {
+            if (m_dictBundles.ContainsKey(bundleName))
+                return m_dictBundles[bundleName];
+            return null;
+        }
+        protected void _UpdateManifestData()
+        {
+            m_dictAssetNameToBundleName.Clear();
+            m_dictBundles.Clear();
+            
+            _CollectManifestData(m_staticManifest, EnumBundleType.Static);
+            _CollectManifestData(m_hotfixManifest, EnumBundleType.Hotfix);
         }
 
-        public void SetServerFileList(XFileList filelist)
+        void _CollectManifestData(XABManifest manifest, EnumBundleType bundleType)
         {
-            server_filelist = filelist;
-        }
-        public void SetClientFileList(XFileList filelist)
-        {
-            client_filelist = filelist;
-        }
-        public void SetStreamFileList(XFileList filelist)
-        {
-            stream_filelist = filelist;
+            if (manifest == null)
+                return;
+            var datas = m_staticManifest.GetAssetNameToBundleNameDatas();
+            foreach (var pairs in datas)
+            {
+                if (m_dictAssetNameToBundleName.ContainsKey(pairs.Key))
+                {
+                    Debug.LogError($"资源名重复 {pairs.Key}");
+                    continue;
+                }
+                m_dictAssetNameToBundleName.Add(pairs.Key, pairs.Value);
+            }
+
+            var dependencyDatas = m_staticManifest.GetDependencyDatas();
+            foreach (var pairs in dependencyDatas)
+            {
+                if (m_dictBundles.ContainsKey(pairs.Key))
+                {
+                    Debug.LogError($"包名重复 {pairs.Key}");
+                    continue;
+                }
+                var bundleInfo = new BundleInfo();
+                bundleInfo.dependencies = pairs.Value.values;
+                bundleInfo.bundleType = bundleType;
+                m_dictBundles.Add(pairs.Key, bundleInfo);
+            }
         }
     }
 }

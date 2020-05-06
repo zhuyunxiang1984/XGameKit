@@ -16,7 +16,7 @@ namespace XGameKit.XAssetManager
         protected List<string> m_dependencies = new List<string>();
         protected int m_dependencyCurCount = 0;//依赖包加载计数
         protected int m_dependencyMaxCount = 0;
-        protected EnumLoadState m_state;
+        protected EnumJobState m_state;
         protected AssetBundle m_AssetBundle;//Bundle缓存
         protected Action<string, AssetBundle> m_callback;//完成回调
         protected int m_RefCount;
@@ -57,10 +57,11 @@ namespace XGameKit.XAssetManager
             get { return m_BundleName; }
         }
 
-        public EnumLoadState State
+        public EnumJobState State
         {
-            get{return m_state;}
+            get { return m_state; }
         }
+
         public AssetBundle GetValue()
         {
             return m_AssetBundle;
@@ -70,12 +71,12 @@ namespace XGameKit.XAssetManager
             if (value != null)
             {
                 XDebug.Log(XABConst.Tag, $"加载成功！！ bundle:{m_BundleName}");
-                m_state = EnumLoadState.Done;
+                m_state = EnumJobState.Done;
             }
             else
             {
                 XDebug.LogError(XABConst.Tag, $"加载失败！！ bundle:{m_BundleName}");
-                m_state = EnumLoadState.None;
+                m_state = EnumJobState.None;
             }
             m_AssetBundle = value;
             m_callback?.Invoke(m_BundleName, m_AssetBundle);
@@ -83,7 +84,7 @@ namespace XGameKit.XAssetManager
         }
         public void Dispose()
         {
-            if (m_AssetManager != null && m_state != EnumLoadState.None)
+            if (m_AssetManager != null && m_state != EnumJobState.None)
             {
                 foreach (var dependent in m_dependencies)
                 {
@@ -95,13 +96,13 @@ namespace XGameKit.XAssetManager
                 m_AssetBundle.Unload(true);
                 m_AssetBundle = null;
             }
-            if (m_state == EnumLoadState.Loading)
+            if (m_state == EnumJobState.Process)
             {
                 _StopLoadAsync();
             }
             m_AssetBundle = null;
             m_callback = null;
-            m_state = EnumLoadState.None;
+            m_state = EnumJobState.None;
         }
         public void AddCallback(Action<string, AssetBundle> callback)
         {
@@ -165,7 +166,7 @@ namespace XGameKit.XAssetManager
             var fullPath = XABUtilities.GetBundleFullPath(location, bundleType, name);
             XDebug.Log(XABConst.Tag, $"加载 {fullPath}");
             _StartLoadAsync(fullPath);
-            m_state = EnumLoadState.Loading;
+            m_state = EnumJobState.Process;
             m_callback += callback;
         }
         void _StartLoadAsync(string fullPath)
@@ -189,7 +190,7 @@ namespace XGameKit.XAssetManager
         }
         public void StopAsync()
         {
-            if (m_state != EnumLoadState.Loading)
+            if (m_state != EnumJobState.Process)
                 return;
             if (m_AssetManager != null)
             {
@@ -199,13 +200,13 @@ namespace XGameKit.XAssetManager
                 }
             }
             _StopLoadAsync();
-            m_state = EnumLoadState.None;
+            m_state = EnumJobState.None;
         }
         public void Tick(float deltaTime)
         {
             switch (m_state)
             {
-                case EnumLoadState.Loading:
+                case EnumJobState.Process:
                     switch (m_step)
                     {
                         case EnumLoadStep.Step1:
@@ -222,7 +223,7 @@ namespace XGameKit.XAssetManager
                             break;
                     }
                     break;
-                case EnumLoadState.Done:
+                case EnumJobState.Done:
                     if (m_RefCount <= 0 && m_CacheTimeCounter < m_CacheTime)
                     {
                         m_CacheTimeCounter += deltaTime;

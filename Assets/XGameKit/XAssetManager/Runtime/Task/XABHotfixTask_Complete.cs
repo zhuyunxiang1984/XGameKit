@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class XABInitTask_Download : MonoBehaviour
+public class XABHotfixTask_Complete : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
