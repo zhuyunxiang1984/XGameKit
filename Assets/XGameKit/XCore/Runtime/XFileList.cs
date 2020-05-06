@@ -75,6 +75,25 @@ namespace XGameKit.Core
             }
             return null;
         }
+        //保存filelist
+        public static bool SaveFileList(string path, XFileList fileList)
+        {
+            if (!XUtilities.IsFolder(path) || !Directory.Exists(path))
+                return false;
+            var filelistPath = $"{path}/{FILE_LIST_NAME}";
+            try
+            {
+                var json = JsonUtility.ToJson(fileList);
+                XUtilities.SaveFile(filelistPath, json);
+                XDebug.Log(Tag, json);
+                return true;
+            }
+            catch (Exception e)
+            {
+                XDebug.LogError(Tag, $"保存文件清单失败 {filelistPath}\n{e.ToString()}");
+            }
+            return false;
+        }
         
         //生成md5
         public static string ToMD5(FileStream fs)
@@ -113,6 +132,22 @@ namespace XGameKit.Core
             if (m_dictFileInfo.ContainsKey(name))
                 return m_dictFileInfo[name];
             return null;
+        }
+        public void AddFileInfo(string name, XFileInfo fileInfo)
+        {
+            if (m_dictFileInfo.ContainsKey(name))
+            {
+                Debug.LogError($"已经存在fileinfo了 {name}");
+                return;
+            }
+            m_dictFileInfo.Add(name, fileInfo);
+        }
+
+        public void DelFileInfo(string name)
+        {
+            if (!m_dictFileInfo.ContainsKey(name))
+                return;
+            m_dictFileInfo.Remove(name);
         }
 
         public string ToLog()

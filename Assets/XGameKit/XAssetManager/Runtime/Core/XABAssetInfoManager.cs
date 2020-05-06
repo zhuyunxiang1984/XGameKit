@@ -7,10 +7,40 @@ namespace XGameKit.XAssetManager
 {
     public class XABAssetInfoManager
     {
-        //下载列表
-        public List<string> ltDownload  { get; protected set; } = new List<string>();
-        //删除列表
-        public List<string> ltExpiredX  { get; protected set; } = new List<string>();
+        //更新信息
+        public class HotfixInfo
+        {
+            public XFileList client_filelist;
+            public long download_size;
+            public List<string> download_list = new List<string>();
+            public List<string> deleteXX_list = new List<string>();
+
+            public void Reset()
+            {
+                client_filelist = null;
+                download_size = 0L;
+                download_list.Clear();
+                deleteXX_list.Clear();
+            }
+
+            public string ToLog()
+            {
+                var text = string.Empty;
+                text += "===比较文件清单===\n";
+                text += "删除列表\n";
+                foreach (var temp in deleteXX_list)
+                {
+                    text += $"{temp}\n";
+                }
+                text += $"下载列表 下载总量:{download_size}\n";
+                foreach (var temp in download_list)
+                {
+                    text += $"{temp}\n";
+                }
+                return text;
+            }
+        }
+        public HotfixInfo hotfixInfo { get; protected set; } = new HotfixInfo();
 
         protected XABManifest m_staticManifest;
 
@@ -26,6 +56,7 @@ namespace XGameKit.XAssetManager
         protected Dictionary<string, BundleInfo> m_dictBundles = new Dictionary<string, BundleInfo>();
 
         protected Dictionary<string, EnumFileLocation> m_dictBundleLocations = new Dictionary<string, EnumFileLocation>();
+
         public void ClearLocation()
         {
             m_dictBundleLocations.Clear();

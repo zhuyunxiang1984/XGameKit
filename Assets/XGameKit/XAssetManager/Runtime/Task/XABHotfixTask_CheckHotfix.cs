@@ -16,7 +16,7 @@ namespace XGameKit.XAssetManager
         protected string m_serverAddress;
         protected XFileList m_server_filelist;
         protected XFileList m_client_filelist;
-        protected XFileList m_stream_filelist;
+        protected XFileList m_origin_filelist;
         
         public override void Enter(XAssetManagerOrdinary obj)
         {
@@ -41,7 +41,7 @@ namespace XGameKit.XAssetManager
                 });
             m_server_filelist = null;
             m_client_filelist = XFileList.LoadFileList(XABUtilities.GetResPath(EnumFileLocation.Client, EnumBundleType.Hotfix));
-            m_stream_filelist = XFileList.LoadFileList(XABUtilities.GetResPath(EnumFileLocation.Stream, EnumBundleType.Hotfix));
+            m_origin_filelist = XFileList.LoadFileList(XABUtilities.GetResPath(EnumFileLocation.Stream, EnumBundleType.Hotfix));
         }
 
         public override void Leave(XAssetManagerOrdinary obj)
@@ -53,73 +53,52 @@ namespace XGameKit.XAssetManager
         {
             if (string.IsNullOrEmpty(m_serverAddress))
                 return EnumXTaskResult.Failure;
-            var assetInfoManager = obj.AssetInfoManager;
             if (m_server_filelist == null)
                 return EnumXTaskResult.Execute;
-            
-            var deleteList = _GetDeleteFiles(m_server_filelist, m_client_filelist);
-            var downloads = _GetDownloadFiles(m_server_filelist, m_client_filelist, m_stream_filelist);
 
-            var logger = XDebug.CreateMutiLogger(XABConst.Tag);
-            logger.Append("===比较文件清单===");
-            logger.Append("删除列表");
-            foreach (var temp in deleteList)
-            {
-                logger.Append(temp);
-            }
-            logger.Append("下载列表");
-            foreach (var temp in downloads)
-            {
-                logger.Append(temp);
-            }
-            logger.Log();
+            var hotfixInfo = obj.AssetInfoManager.hotfixInfo;
+            _UpdateHotfixInfo(hotfixInfo, m_server_filelist, m_client_filelist, m_origin_filelist);
+            XDebug.Log(XABConst.Tag, hotfixInfo.ToLog());
+
             return EnumXTaskResult.Success;
         }
-        protected List<string> _GetDeleteFiles(XFileList remote, XFileList document)
+        //设置热更信息
+        protected void _UpdateHotfixInfo(XABAssetInfoManager.HotfixInfo hotfixInfo, XFileList server, XFileList client, XFileList origin)
         {
-            var result = new List<string>();
-            var remoteDatas = remote.GetDatas();
-            var documentDatas = document.GetDatas();
-            foreach (var fileInfo in documentDatas.Values)
-            {
-                var fileName = fileInfo.name;
-                if (remoteDatas.ContainsKey(fileName))
-                    continue;
-                result.Add(fileName);
-            }
-            return result;
-        }
-        protected List<string> _GetDownloadFiles(XFileList remote, XFileList document, XFileList streamingAssets)
-        {
-            var result = new List<string>();
-            var remoteDatas = remote.GetDatas();
-            var documentDatas = document.GetDatas();
-            var streamingAssetsDatas = streamingAssets.GetDatas();
+            //服务器清单
+            var serverDatas = server.GetDatas();
+            //客户端清单
+            var clientDatas = client.GetDatas();
+            //原始清单
+            var originDatas = origin.GetDatas();
 
-            foreach (var fileInfo in remoteDatas.Values)
+            hotfixInfo.Reset();
+            hotfixInfo.client_filelist = client;
+
+            //检查更新资源
+            foreach (var fileInfo in serverDatas.Values)
             {
                 var fileName = fileInfo.name;
-                if (documentDatas.ContainsKey(fileInfo.name))
+                if (clientDatas.ContainsKey(fileInfo.name) && clientDatas[fileName].md5 == fileInfo.md5)
                 {
-                    if (documentDatas[fileName].md5 != fileInfo.md5)
-                    {
-                        result.Add(fileName);
-                    }
+                    continue;
                 }
-                else if (streamingAssetsDatas.ContainsKey(fileInfo.name))
+                if (originDatas.ContainsKey(fileInfo.name) && originDatas[fileName].md5 == fileInfo.md5)
                 {
-                    if (streamingAssetsDatas[fileName].md5 != fileInfo.md5)
-                    {
-                        result.Add(fileName);
-                    }
+                    continue;
                 }
-                else
-                {
-                    //新增资源
-                    result.Add(fileName);
-                }
+                hotfixInfo.download_list.Add(fileName);
+                hotfixInfo.download_size += fileInfo.length;
             }
-            return result;
+
+            //检查删除资源
+            foreach (var fileInfo in clientDatas.Values)
+            {
+                var fileName = fileInfo.name;
+                if (serverDatas.ContainsKey(fileName))
+                    continue;
+                hotfixInfo.deleteXX_list.Add(fileName);
+            }
         }
     }
 }

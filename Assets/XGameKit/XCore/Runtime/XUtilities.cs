@@ -30,10 +30,32 @@ namespace XGameKit.Core
             }
             catch (Exception e)
             {
-                Debug.LogError($"ReadFile失败 {fullPath}\n{e.ToString()}");
+                Debug.LogError($"ReadFile 失败 {fullPath}\n{e.ToString()}");
             }
             return data;
         }
+
+        //写入文件
+        public static bool SaveFile(string fullPath, string content)
+        {
+            try
+            {
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+                File.WriteAllText(fullPath, content);
+#elif UNITY_ANDROID
+                                
+#elif UNITY_IPHONE || UNITY_IOS
+
+#endif
+                return true;
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"SaveFile 失败 {fullPath}\n{e.ToString()}");
+            }
+            return false;
+        }
+        
         //是否是文件夹
         public static bool IsFolder(string fullPath)
         {
