@@ -31,6 +31,14 @@ namespace XGameKit.XAssetManager
             }
             m_serverAddress += "/_filelist.json";
 #endif
+            m_server_filelist = null;
+            m_client_filelist = XFileList.LoadFileList(XABUtilities.GetResPath(EnumFileLocation.Client, EnumBundleType.Hotfix));
+            m_origin_filelist = XFileList.LoadFileList(XABUtilities.GetResPath(EnumFileLocation.Stream, EnumBundleType.Hotfix));
+            if(m_client_filelist==null)
+                m_client_filelist=new XFileList();
+            if(m_origin_filelist==null)
+                m_origin_filelist=new XFileList();
+            
             XWebRequestManagerSingle.GetUrl(m_serverAddress,
                 delegate(string error, string responseData)
                 {
@@ -39,9 +47,6 @@ namespace XGameKit.XAssetManager
                     m_server_filelist = JsonUtility.FromJson<XFileList>(responseData);
                     XDebug.Log(XABConst.Tag, m_server_filelist.ToLog());
                 });
-            m_server_filelist = null;
-            m_client_filelist = XFileList.LoadFileList(XABUtilities.GetResPath(EnumFileLocation.Client, EnumBundleType.Hotfix));
-            m_origin_filelist = XFileList.LoadFileList(XABUtilities.GetResPath(EnumFileLocation.Stream, EnumBundleType.Hotfix));
         }
 
         public override void Leave(XAssetManagerOrdinary obj)

@@ -10,7 +10,7 @@ namespace XGameKit.XAssetManager
         public XABHotfixTaskSchedule()
         {
             AddTask(new XABHotfixTask_CheckHotfix());
-            AddTask(new XABHotfixTask_UpdateHotfix());
+            AddTask(new XABHotfixTask_DownloadHotfix());
         }
     }
     

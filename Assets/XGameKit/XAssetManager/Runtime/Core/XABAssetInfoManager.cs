@@ -47,14 +47,14 @@ namespace XGameKit.XAssetManager
         protected XABManifest m_hotfixManifest;
         //资源名->包名
         protected Dictionary<string, string> m_dictAssetNameToBundleName = new Dictionary<string, string>();
-        //依赖关系
+        //资源包信息（依赖项，类型）
         public class BundleInfo
         {
             public List<string> dependencies;
             public EnumBundleType bundleType;
         }
         protected Dictionary<string, BundleInfo> m_dictBundles = new Dictionary<string, BundleInfo>();
-
+        //资源包定位
         protected Dictionary<string, EnumFileLocation> m_dictBundleLocations = new Dictionary<string, EnumFileLocation>();
 
         public void ClearLocation()

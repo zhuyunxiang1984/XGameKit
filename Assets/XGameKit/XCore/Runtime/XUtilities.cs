@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using UnityEngine;
 
 
@@ -36,12 +37,13 @@ namespace XGameKit.Core
         }
 
         //写入文件
-        public static bool SaveFile(string fullPath, string content)
+        public static bool SaveFile(string fullPath, byte[] content)
         {
+            MakePathExist(fullPath);
             try
             {
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
-                File.WriteAllText(fullPath, content);
+                File.WriteAllBytes(fullPath, content);
 #elif UNITY_ANDROID
                                 
 #elif UNITY_IPHONE || UNITY_IOS
@@ -54,6 +56,11 @@ namespace XGameKit.Core
                 Debug.LogError($"SaveFile 失败 {fullPath}\n{e.ToString()}");
             }
             return false;
+        }
+
+        public static bool SaveFile(string fullPath, string content)
+        {
+            return SaveFile(fullPath, Encoding.UTF8.GetBytes(content));
         }
         
         //是否是文件夹
