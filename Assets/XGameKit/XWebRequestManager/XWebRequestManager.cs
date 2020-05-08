@@ -19,6 +19,7 @@ namespace XGameKit.Core
             public string encrypt;
             public Action<string, byte[]> binResponse;
             public Action<string, string> strResponse;
+            public Action<float> onProgress;
             
             public void Reset()
             {
@@ -29,6 +30,7 @@ namespace XGameKit.Core
             
             public bool HandleRequest()
             {
+                onProgress?.Invoke(async.progress);
                 if (!async.isDone)
                     return false;
                 var webRequest = async.webRequest;
@@ -103,7 +105,7 @@ namespace XGameKit.Core
             }
         }
 
-        public void GetUrl(string url, Action<string, byte[]> response, string encrypt, int timeout = 5)
+        public void GetUrl(string url, Action<string, byte[]> response, string encrypt,  Action<float> onProgress = null, int timeout = 5)
         {
             _GetUrlInternal(new ParamBundle()
             {
@@ -114,9 +116,10 @@ namespace XGameKit.Core
                 binResponse = response,
                 encrypt = encrypt,
                 timeout = timeout,
+                onProgress = onProgress,
             });
         }
-        public void GetUrl(string url, Action<string, string> response, string encrypt, int timeout = 5)
+        public void GetUrl(string url, Action<string, string> response, string encrypt,  Action<float> onProgress = null, int timeout = 5)
         {
             _GetUrlInternal(new ParamBundle()
             {
@@ -127,10 +130,11 @@ namespace XGameKit.Core
                 binResponse = null,
                 encrypt = encrypt,
                 timeout = timeout,
+                onProgress = onProgress,
             });
         }
 
-        public void PostUrl(string url, string data, Action<string, byte[]> response, string encrypt, int timeout = 5)
+        public void PostUrl(string url, string data, Action<string, byte[]> response, string encrypt, Action<float> onProgress = null, int timeout = 5)
         {
             _PostUrlInternal(new ParamBundle()
             {
@@ -141,10 +145,11 @@ namespace XGameKit.Core
                 binResponse = response,
                 encrypt = encrypt,
                 timeout = timeout,
+                onProgress = onProgress,
             });
         }
 
-        public void PostUrl(string url, string data, Action<string, string> response, string encrypt, int timeout = 5)
+        public void PostUrl(string url, string data, Action<string, string> response, string encrypt, Action<float> onProgress = null, int timeout = 5)
         {
             _PostUrlInternal(new ParamBundle()
             {
@@ -155,6 +160,7 @@ namespace XGameKit.Core
                 binResponse = null,
                 encrypt = encrypt,
                 timeout = timeout,
+                onProgress = onProgress,
             });
         }
         
@@ -165,6 +171,7 @@ namespace XGameKit.Core
             public byte[] binData;
             public Action<string, string> strResponse;
             public Action<string, byte[]> binResponse;
+            public Action<float> onProgress;
             public string encrypt;
             public int timeout;
         }
@@ -173,7 +180,7 @@ namespace XGameKit.Core
         {
             UnityWebRequest webRequest = UnityWebRequest.Get(param.url);
             webRequest.timeout = param.timeout;
-            _AddRequest(webRequest, param.encrypt, param.strResponse, param.binResponse);
+            _AddRequest(webRequest, param.encrypt, param.strResponse, param.binResponse, param.onProgress);
         }
 
         protected void _PostUrlInternal(ParamBundle param)
@@ -195,16 +202,17 @@ namespace XGameKit.Core
             }
             webRequest.downloadHandler = new DownloadHandlerBuffer();
             webRequest.timeout = param.timeout;
-            _AddRequest(webRequest, param.encrypt, param.strResponse, param.binResponse);
+            _AddRequest(webRequest, param.encrypt, param.strResponse, param.binResponse, param.onProgress);
         }
 
-        protected void _AddRequest(UnityWebRequest webRequest, string encrypt, Action<string, string> strResponse, Action<string, byte[]> binResponse)
+        protected void _AddRequest(UnityWebRequest webRequest, string encrypt, Action<string, string> strResponse, Action<string, byte[]> binResponse, Action<float> onProgress)
         {
             var request = XObjectPool.Alloc<XWebRequest>();
             request.async = webRequest.SendWebRequest();
             request.encrypt = encrypt;
             request.strResponse = strResponse;
             request.binResponse = binResponse;
+            request.onProgress = onProgress;
             m_requests.Add(request);
         }
     }

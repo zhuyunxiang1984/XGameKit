@@ -63,6 +63,27 @@ namespace XGameKit.Core
             return SaveFile(fullPath, Encoding.UTF8.GetBytes(content));
         }
         
+        //检测文件是否存在
+        public static bool ExistFile(string fullPath)
+        {
+            try
+            {
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+                return File.Exists(fullPath);
+#elif UNITY_ANDROID
+                                
+#elif UNITY_IPHONE || UNITY_IOS
+
+#endif
+                return false;
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"SaveFile 失败 {fullPath}\n{e.ToString()}");
+            }
+            return false;
+        }
+        
         //是否是文件夹
         public static bool IsFolder(string fullPath)
         {

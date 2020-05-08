@@ -61,6 +61,11 @@ namespace XGameKit.Core
             if (!XUtilities.IsFolder(path) || !Directory.Exists(path))
                 return null;
             var filelistPath = $"{path}/{FILE_LIST_NAME}";
+            if (!XUtilities.ExistFile(filelistPath))
+            {
+                XDebug.Log(Tag, $"文件清单不存在 {filelistPath}");
+                return null;
+            }
             try
             {
                 var fileData = XUtilities.ReadFile(filelistPath);

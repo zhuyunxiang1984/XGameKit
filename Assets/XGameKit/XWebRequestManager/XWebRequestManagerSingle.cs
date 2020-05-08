@@ -23,23 +23,23 @@ namespace XGameKit.XAssetManager
             }
         }
         
-        public static void GetUrl(string url, Action<string, byte[]> response, string encrypt = "", int timeout = 5)
+        public static void GetUrl(string url, Action<string, byte[]> response, string encrypt = "", Action<float> onProgress = null, int timeout = 5)
         {
-            m_instance.RequestManager.GetUrl(url, response, encrypt, timeout);
+            m_instance.RequestManager.GetUrl(url, response, encrypt, onProgress, timeout);
         }
-        public static void GetUrl(string url, Action<string, string> response, string encrypt = "", int timeout = 5)
+        public static void GetUrl(string url, Action<string, string> response, string encrypt = "", Action<float> onProgress = null, int timeout = 5)
         {
-            m_instance.RequestManager.GetUrl(url, response, encrypt, timeout);
-        }
-
-        public static void PostUrl(string url, string data, Action<string, byte[]> response, string encrypt = "", int timeout = 5)
-        {
-            m_instance.RequestManager.PostUrl(url, data, response, encrypt, timeout);
+            m_instance.RequestManager.GetUrl(url, response, encrypt, onProgress, timeout);
         }
 
-        public static void PostUrl(string url, string data, Action<string, string> response, string encrypt = "", int timeout = 5)
+        public static void PostUrl(string url, string data, Action<string, byte[]> response, string encrypt = "", Action<float> onProgress = null, int timeout = 5)
         {
-            m_instance.RequestManager.PostUrl(url, data, response, encrypt, timeout);
+            m_instance.RequestManager.PostUrl(url, data, response, encrypt, onProgress, timeout);
+        }
+
+        public static void PostUrl(string url, string data, Action<string, string> response, string encrypt = "", Action<float> onProgress = null, int timeout = 5)
+        {
+            m_instance.RequestManager.PostUrl(url, data, response, encrypt, onProgress, timeout);
         }
         
         public XWebRequestManager RequestManager { get; protected set; } = new XWebRequestManager();

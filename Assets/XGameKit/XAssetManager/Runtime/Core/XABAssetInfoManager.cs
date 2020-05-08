@@ -11,6 +11,8 @@ namespace XGameKit.XAssetManager
         public class HotfixInfo
         {
             public XFileList client_filelist;
+            public XFileList server_filelist;
+            public XFileList origin_filelist;
             public long download_size;
             public List<string> download_list = new List<string>();
             public List<string> deleteXX_list = new List<string>();

@@ -79,6 +79,8 @@ namespace XGameKit.XAssetManager
 
             hotfixInfo.Reset();
             hotfixInfo.client_filelist = client;
+            hotfixInfo.server_filelist = server;
+            hotfixInfo.origin_filelist = origin;
 
             //检查更新资源
             foreach (var fileInfo in serverDatas.Values)

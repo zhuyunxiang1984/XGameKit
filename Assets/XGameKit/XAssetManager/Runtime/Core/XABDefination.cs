@@ -208,6 +208,22 @@ namespace XGameKit.XAssetManager
             return m_dictAssetNameLinkBundleName.ContainsKey(assetName);
         }
     }
+
+
+    /// <summary>
+    /// 事件监听
+    /// </summary>
+    public interface IXABManagerListener
+    {
+        //发生错误回调
+        void OnError(int errorCode);
+        //检查更新完成
+        void OnCheckComplete();
+        //热更完成
+        void OnComplete();
+        //下载回调
+        void OnDownloadHotfix(float deltaTime, ulong size);
+    }
     
     #endregion
 }

@@ -13,6 +13,7 @@ namespace XGameKit.XAssetManager
     {
         protected string m_serverAddress;
         protected int m_index;
+        protected string m_curDownload;
         protected EnumJobState m_state;
         protected XAssetManagerOrdinary m_manager;
         public override void Enter(XAssetManagerOrdinary obj)
@@ -20,7 +21,6 @@ namespace XGameKit.XAssetManager
             m_manager = obj;
             m_index = 0;
             m_state = EnumJobState.None;
-            var assetInfoManager = obj.AssetInfoManager;
             m_serverAddress = obj.serverAddress;
 #if UNITY_EDITOR
             m_serverAddress = EditorPrefs.GetString(XABConst.EKResUrl);
@@ -45,7 +45,7 @@ namespace XGameKit.XAssetManager
             if (m_state == EnumJobState.None)
             {
                 m_index = 0;
-                _Download(hotfixInfo, m_index);
+                _Download(hotfixInfo.download_list[m_index]);
             }
 
             if (m_state == EnumJobState.Done)
@@ -53,33 +53,57 @@ namespace XGameKit.XAssetManager
                 m_index += 1;
                 if (m_index >= hotfixInfo.download_list.Count)
                     return EnumXTaskResult.Success;
-                _Download(hotfixInfo, m_index);
+                _Download(hotfixInfo.download_list[m_index]);
             }
             return EnumXTaskResult.Execute;
         }
 
-        protected void _Download(XABAssetInfoManager.HotfixInfo hotfixInfo, int index)
+        protected void _Download(string name)
         {
             m_state = EnumJobState.Process;
-            var name = hotfixInfo.download_list[index];
+            m_curDownload = name;
             var url = $"{m_serverAddress}/{name}";
             XWebRequestManagerSingle.GetUrl(url,
-                delegate(string error, byte[] responseData)
-                {
-                    _OnDownload(name, responseData);
-                });
+                _OnDownloadComplete, "", _OnDowloadProgress);
         }
 
-        protected void _OnDownload(string name, byte[] data)
+        protected void _OnDownloadComplete(string error, byte[] data)
         {
             m_state = EnumJobState.Done;
 
             if (data == null)
                 return;
-            
+            var name = m_curDownload;
             m_manager.AssetInfoManager.SetLocation(name, EnumFileLocation.Client);
+            
+            //保存下载文件
             var path = XABUtilities.GetResPath(EnumFileLocation.Client, EnumBundleType.Hotfix);
             XUtilities.SaveFile($"{path}/{name}", data);
+
+            var hotfixInfo = m_manager.AssetInfoManager.hotfixInfo;
+            //保存filelist
+            var client_filelist = hotfixInfo.client_filelist;
+            var server_filelist = hotfixInfo.server_filelist;
+            var serverFileInfo = server_filelist.GetFileInfo(name);
+            var clientFileInfo = client_filelist.GetFileInfo(name);
+            if (clientFileInfo == null)
+            {
+                clientFileInfo = new XFileList.XFileInfo();
+                client_filelist.AddFileInfo(name, clientFileInfo);
+            }
+            clientFileInfo.name = name;
+            clientFileInfo.path = serverFileInfo.path;
+            clientFileInfo.length = serverFileInfo.length;
+            clientFileInfo.md5 = serverFileInfo.md5;
+            XFileList.SaveFileList(XABUtilities.GetResPath(EnumFileLocation.Client, EnumBundleType.Hotfix), client_filelist);
+        }
+
+        protected void _OnDowloadProgress(float progress)
+        {
+            var hotfixInfo = m_manager.AssetInfoManager.hotfixInfo;
+            var server_filelist = hotfixInfo.server_filelist;
+            var fileInfo = server_filelist.GetFileInfo(m_curDownload);
+            XDebug.Log(XABConst.Tag, $"download {m_curDownload} {fileInfo.length * progress}");
         }
     }
 
