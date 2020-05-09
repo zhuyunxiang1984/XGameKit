@@ -50,3 +50,8 @@ MonoBehaviour:
       type: 3}
     BundleName: 
     SplitChildren: 0
+  - isStatic: 0
+    Object: {fileID: 6370101970596815866, guid: 0cbf6f5258b2fb844b01f075f69b580e,
+      type: 3}
+    BundleName: 
+    SplitChildren: 0

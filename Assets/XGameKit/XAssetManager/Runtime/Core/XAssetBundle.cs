@@ -134,7 +134,7 @@ namespace XGameKit.XAssetManager
         {
             try
             {
-                byte[] data = XABUtilities.ReadFile(fullPath);
+                byte[] data = XUtilities.ReadFile(fullPath);
                 //解密
                 //读取AssetBundle
                 return AssetBundle.LoadFromMemory(data);
@@ -234,7 +234,7 @@ namespace XGameKit.XAssetManager
         //读取文件
         void _ExecuteStep1()
         {
-            m_fileData = XABUtilities.ReadFile(m_fullPath);
+            m_fileData = XUtilities.ReadFile(m_fullPath);
             m_step = EnumLoadStep.Step2;
         }
         //解密

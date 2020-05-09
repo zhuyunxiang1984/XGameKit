@@ -149,3 +149,6 @@ MonoBehaviour:
   - AssetName: prefab3
     AssetBundleName: prefab3.assetbundle
     AssetPath: Assets/Project/Prefabs/Prefab3.prefab
+  - AssetName: box2
+    AssetBundleName: box2.assetbundle
+    AssetPath: Assets/Project/Prefabs/Box2.prefab

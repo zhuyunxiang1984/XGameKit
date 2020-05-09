@@ -11,6 +11,7 @@ namespace XGameKit.XAssetManager
         {
             AddTask(new XABHotfixTask_CheckHotfix());
             AddTask(new XABHotfixTask_DownloadHotfix());
+            AddTask(new XABHotfixTask_LoadHotfixManifest());
         }
     }
     

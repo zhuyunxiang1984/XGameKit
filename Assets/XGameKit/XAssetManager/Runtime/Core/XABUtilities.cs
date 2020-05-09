@@ -15,32 +15,15 @@ namespace XGameKit.XAssetManager
 {
     public static class XABUtilities
     {
-        //从文件读取
-        public static byte[] ReadFile(string fullPath)
+        public static bool ExistManifest(string path)
         {
-            byte[] data = null;
-            try
-            {
-#if UNITY_EDITOR || UNITY_STANDALONE_WIN
-                data = File.ReadAllBytes(fullPath);
-#elif UNITY_ANDROID
-                data = null;
-                
-#elif UNITY_IPHONE || UNITY_IOS
-                data = null;
-#endif
-            }
-            catch (Exception e)
-            {
-                XDebug.LogError(XABConst.Tag, $"ReadFile失败 {fullPath}\n{e.ToString()}");
-            }
-            return data;
+            return XUtilities.ExistFile(path + "/manifest.json");
         }
 
         public static XABManifest ReadManifest(string path)
         {
             var fullPath = path + "/manifest.json";
-            var fileData = ReadFile(fullPath);
+            var fileData = XUtilities.ReadFile(fullPath);
             if (fileData == null)
                 return null;
             var fileText = Encoding.UTF8.GetString(fileData);

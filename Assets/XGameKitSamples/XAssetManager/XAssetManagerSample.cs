@@ -40,6 +40,7 @@ public class XAssetManagerSample : MonoBehaviour
                 Debug.Log($"complete {name} {asset}");
                 if (asset == null)
                     return;
+                GameObject.Instantiate(asset, Random.insideUnitSphere * 50f, Quaternion.identity);
             });
         }
         if (Input.GetKeyDown(KeyCode.R))

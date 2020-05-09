@@ -105,6 +105,11 @@ namespace XGameKit.XAssetManager
             var fileInfo = server_filelist.GetFileInfo(m_curDownload);
             XDebug.Log(XABConst.Tag, $"download {m_curDownload} {fileInfo.length * progress}");
         }
+
+        protected void _OnComplete()
+        {
+            
+        }
     }
 
 

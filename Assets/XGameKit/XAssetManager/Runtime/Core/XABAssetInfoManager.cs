@@ -84,6 +84,7 @@ namespace XGameKit.XAssetManager
         {
             if (m_dictAssetNameToBundleName.ContainsKey(assetName))
                 return m_dictAssetNameToBundleName[assetName];
+            XDebug.LogError(XABConst.Tag, $"无法找到该资源对应的包名 {assetName}");
             return string.Empty;
         }
         public BundleInfo GetBundleInfo(string bundleName)
@@ -105,7 +106,7 @@ namespace XGameKit.XAssetManager
         {
             if (manifest == null)
                 return;
-            var datas = m_staticManifest.GetAssetNameToBundleNameDatas();
+            var datas = manifest.GetAssetNameToBundleNameDatas();
             foreach (var pairs in datas)
             {
                 if (m_dictAssetNameToBundleName.ContainsKey(pairs.Key))
@@ -116,7 +117,7 @@ namespace XGameKit.XAssetManager
                 m_dictAssetNameToBundleName.Add(pairs.Key, pairs.Value);
             }
 
-            var dependencyDatas = m_staticManifest.GetDependencyDatas();
+            var dependencyDatas = manifest.GetDependencyDatas();
             foreach (var pairs in dependencyDatas)
             {
                 if (m_dictBundles.ContainsKey(pairs.Key))
