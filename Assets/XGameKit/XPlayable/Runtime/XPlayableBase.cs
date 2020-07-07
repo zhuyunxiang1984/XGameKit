@@ -1,22 +1,26 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Sirenix.OdinInspector;
 using XGameKit.Core;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Sirenix.OdinInspector;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace XGameKit.Core
 {
     public abstract class XPlayableBase : MonoBehaviour
     {
 #if UNITY_EDITOR
-        [Button("播放"), HorizontalGroup("2")]
+        [Button("播放", ButtonSizes.Medium), HorizontalGroup]
         void EditPlayAnim()
         {
             Play();
         }
-        [Button("倒放"), HorizontalGroup("2")]
+        [Button("反向", ButtonSizes.Medium), HorizontalGroup]
         void EditRevsAnim()
         {
             Revs();
@@ -36,8 +40,11 @@ namespace XGameKit.Core
         private bool _IsPlaying;
         private float _PlayTime;
         private float _PlayTimeCounter;
+        private float _DelayTime;
+        private float _DelayTimeCounter;
         private bool _IsReverse;
         private Action _OnComplete;
+        private bool _IsPause;
 
         protected virtual string _GetPlayName()
         {
@@ -49,6 +56,7 @@ namespace XGameKit.Core
         protected abstract void _OnPlay();
         protected abstract void _OnStop();
         protected abstract void _OnUpdate(float curTime, float maxTime);
+        protected virtual void _OnPause(bool pause) { }
 
         private void Awake()
         {
@@ -62,8 +70,14 @@ namespace XGameKit.Core
 
         private void Update()
         {
-            if (!_IsPlaying)
+            if (!_IsPlaying || _IsPause)
                 return;
+            if (_DelayTime > 0f && _DelayTimeCounter < _DelayTime)
+            {
+                _DelayTimeCounter += Time.deltaTime;
+                if (_DelayTimeCounter < _DelayTime)
+                    return;
+            }
             _PlayTimeCounter += Time.deltaTime;
             //Debug.Log(_PlayTimeCounter + " " + _PlayTime);
             if (_PlayTimeCounter > _PlayTime)
@@ -120,29 +134,39 @@ namespace XGameKit.Core
             }
         }
 
-        public void Play(Action OnComplete = null, float time = 0f, EnumPlayMode mode = EnumPlayMode.Once)
+        public void Play(Action OnComplete = null, float time = 0f, EnumPlayMode mode = EnumPlayMode.Once, float delay = 0f)
         {
-            XDebug.Log(XPlayableConst.Tag, $"开始播放 {_GetPlayName()}");
+            XDebug.Log(XPlayableConst.Tag, $"开始播放 {_GetPlayName()} go:{gameObject.name}");
             _PlayMode = mode;
             _PlayTime = _GetPlayTime(time);
             _IsReverse = false;
             _OnComplete = OnComplete;
+            _DelayTime = delay;
+            _DelayTimeCounter = 0f;
             _PlayInternal();
         }
 
-        public void Revs(Action OnComplete = null, float time = 0f, EnumPlayMode mode = EnumPlayMode.Once)
+        public void Revs(Action OnComplete = null, float time = 0f, EnumPlayMode mode = EnumPlayMode.Once, float delay = 0f)
         {
             XDebug.Log(XPlayableConst.Tag, $"开始倒放 {_GetPlayName()}");
             _PlayMode = mode;
             _PlayTime = _GetPlayTime(time);
             _IsReverse = true;
             _OnComplete = OnComplete;
+            _DelayTime = delay;
+            _DelayTimeCounter = 0f;
             _PlayInternal();
         }
 
         public void Stop()
         {
             _StopInternal();
+        }
+
+        public void Pause(bool pause)
+        {
+            _IsPause = pause;
+            _OnPause(pause);
         }
     }
 }
