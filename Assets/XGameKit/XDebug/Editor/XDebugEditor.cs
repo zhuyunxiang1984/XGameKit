@@ -58,7 +58,7 @@ namespace XGameKit.Core.Editor
 
                     var filePath = Application.dataPath.Substring(0, Application.dataPath.LastIndexOf("Assets")) + temp1;
                     filePath = filePath.Replace('/', '\\');
-                    if (InternalEditorUtility.OpenFileAtLineExternal(filePath, temp2))
+                    if (InternalEditorUtility.TryOpenErrorFileFromConsole(filePath, temp2))
                     {
                         //打开成功处理完成
                         return true;
