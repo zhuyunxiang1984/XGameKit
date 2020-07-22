@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace XGameKit.GameScene
+namespace XGameKit.GameApp
 {
     /// <summary>
     /// 游戏场景
     /// </summary>
-    public abstract class XGameScene
+    public abstract partial class XGameScene
     {       
         public string Name { get; protected set; }
 
