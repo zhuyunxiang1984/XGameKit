@@ -33,11 +33,13 @@ namespace XGameKit.XAssetManager
         protected XABManifest m_hotfixManifest;
         
         //资源信息管理
-        protected XABAssetInfoManager m_AssetInfoManager = new XABAssetInfoManager();
-        protected XABHotfixTaskSchedule m_InitTaskSchedule = new XABHotfixTaskSchedule();
+        protected XABAssetInfoManager m_AssetInfoManager;
+        protected XABHotfixTaskSchedule m_InitTaskSchedule;
         public XAssetManagerOrdinary()
         {
+            m_AssetInfoManager = new XABAssetInfoManager();
             m_AssetInfoManager.SetStaticManifest(XABUtilities.ReadManifest(XABUtilities.GetResPath(EnumFileLocation.Stream, EnumBundleType.Static)));
+            m_InitTaskSchedule = new XABHotfixTaskSchedule(this);
 
         }
         public string serverAddress { get; protected set; }
@@ -45,8 +47,8 @@ namespace XGameKit.XAssetManager
         {
             this.serverAddress = serverAddress;
             
-            m_InitTaskSchedule.Start(this, delegate(bool flag) {
-                Debug.Log("complete " + flag);
+            m_InitTaskSchedule.Start(delegate(bool complete, int failure) {
+                Debug.Log($"complete:{complete}  failure:{failure}");
             });
         }
 
@@ -67,7 +69,7 @@ namespace XGameKit.XAssetManager
 
         public void Tick(float deltaTime)
         {
-            m_InitTaskSchedule.Update(deltaTime);
+            m_InitTaskSchedule.Tick(deltaTime);
             foreach (var assetBundle in m_dictAssetBundles.Values)
             {
                 assetBundle.Tick(deltaTime);

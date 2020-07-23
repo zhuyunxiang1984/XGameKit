@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace XGameKit.Core
 {
-    public class XTaskWaitSeconds<T> : XTask<T>
+    public class XTaskWaitSeconds : XTask
     {
         protected float m_time;
         protected float m_timeCounter;
@@ -12,21 +12,21 @@ namespace XGameKit.Core
         {
             m_time = time;
         }
-        public override void Enter(T obj)
+        public override void Enter()
         {
             XDebug.Log(XTaskConst.Tag, $"wait {m_time.ToString("f2")} seconds");
             m_timeCounter = 0f;
         }
-        public override void Leave(T obj)
+        public override void Leave()
         {
         }
-        public override EnumXTaskResult Execute(T obj, float elapsedTime)
+        public override float Tick(float elapsedTime)
         {
             m_timeCounter += elapsedTime;
             if (m_timeCounter < m_time)
-                return EnumXTaskResult.Execute;
+                return Mathf.Clamp01(m_timeCounter / m_time);
             m_timeCounter = m_time;
-            return EnumXTaskResult.Success;
+            return 1f;
         }
     }
 }

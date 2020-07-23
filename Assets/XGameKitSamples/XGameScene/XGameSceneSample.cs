@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using XGameKit.Core;
 using XGameKit.GameApp;
 using XGameKit.GameSceneSample;
+using XGameKit.XAssetManager;
 using Sirenix.OdinInspector;
 
 public class XGameSceneSample : XGameApp
@@ -16,17 +18,28 @@ public class XGameSceneSample : XGameApp
         EnterScene(SceneName);
     }
 
+    protected override void OnAwake()
+    {
+        base.OnAwake();
+
+        var assetManager = XService.AddService<XAssetManager>();
+        assetManager.Initialize();
+
+    }
+
     protected override void OnStart()
     {
-        AddScene(EnumSceneName.scene1, new XGameSceneTest());
-        AddScene(EnumSceneName.scene2, new XGameSceneTest());
+        base.OnStart();
+
+        AddScene(EnumSceneName.scene1, new XGameSceneTest1());
+        AddScene(EnumSceneName.scene2, new XGameSceneTest2());
         AddScene(EnumSceneName.scene3, new XGameSceneTest());
         AddScene(EnumSceneName.scene4, new XGameSceneTest());
         AddScene(EnumSceneName.scene5, new XGameSceneTest());
         AddScene(EnumSceneName.scene6, new XGameSceneTest());
         AddScene(EnumSceneName.scene7, new XGameSceneTest());
-        AddScene(EnumSceneName.scene8, new XGameSceneTest());
-        AddScene(EnumSceneName.scene9, new XGameSceneTest());
+        AddScene(EnumSceneName.scene8, new XGameSceneTest8());
+        AddScene(EnumSceneName.scene9, new XGameSceneTest9());
 
         SetLink(EnumSceneName.scene1, EnumSceneName.scene3);
         SetLink(EnumSceneName.scene3, EnumSceneName.scene5);

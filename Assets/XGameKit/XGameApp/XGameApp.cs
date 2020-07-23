@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using XGameKit.XAssetManager;
 
 namespace XGameKit.GameApp
 {
@@ -8,6 +10,8 @@ namespace XGameKit.GameApp
     {
         public const string Tag = "XGameApp";
 
+        //assetloader
+        protected XAssetLoader m_assetloader;
         //场景数据
         protected Dictionary<string, XGameSceneNode> m_dictSceneNodes = new Dictionary<string, XGameSceneNode>();
         //状态
@@ -39,17 +43,24 @@ namespace XGameKit.GameApp
         public List<XGameSceneNode> LeaveScenesList { get; protected set; } = new List<XGameSceneNode>();
         //待进入的场景列表
         public List<XGameSceneNode> EnterScenesList { get; protected set; } = new List<XGameSceneNode>();
+        //当前unity场景
+        public string CurrUnityScene { get; protected set; }
 
         private void Awake()
         {
+            DontDestroyOnLoad(gameObject);
             m_dictStates.Add(EnumGameAppState.None, new XGameAppStateChangeNone(this));
             m_dictStates.Add(EnumGameAppState.ChangeScene, new XGameAppStateChangeScene(this));
             m_dictStates.Add(EnumGameAppState.LeaveCurrScene, new XGameAppStateLeaveCurrScene(this));
             m_dictStates.Add(EnumGameAppState.HandleAssets, new XGameAppStateHandleAssets(this));
             m_dictStates.Add(EnumGameAppState.EnterNextScene, new XGameAppStateEnterNextScene(this));
+
+            OnAwake();
         }
         private void Start()
         {
+            m_assetloader = new XAssetLoader();
+
             m_currState = m_dictStates[EnumGameAppState.None];
             m_currStateEnum = EnumGameAppState.None;
             m_nextStateEnum = EnumGameAppState.None;
@@ -59,10 +70,17 @@ namespace XGameKit.GameApp
         private void Update()
         {
             Tick(Time.deltaTime);
+            OnUpdate(Time.deltaTime);
+        }
+        protected virtual void OnAwake()
+        {
         }
         protected virtual void OnStart()
         {
 
+        }
+        protected virtual void OnUpdate(float elapsedTime)
+        {
         }
 
         public void ChangeState(EnumGameAppState state)
@@ -169,6 +187,15 @@ namespace XGameKit.GameApp
             {
                 CurrScenes.RemoveAt(index);
             }
+        }
+
+        public void SetCurrUnityScene(string name)
+        {
+            CurrUnityScene = name;
+        }
+        public AsyncOperation LoadUnityScene(string name)
+        {
+            return SceneManager.LoadSceneAsync(name);
         }
 
         public string ToString(List<XGameSceneNode> nodes)

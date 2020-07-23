@@ -6,77 +6,108 @@ using UnityEngine;
 
 namespace XGameKit.Core
 {
-    public class XTaskSchedule<T> where T : class
+    public class XTaskSchedule
     {
-        protected List<XTask<T>> m_tasks = new List<XTask<T>>();
-        protected Action<bool> m_OnComplete;
-        protected T m_obj;
+        public enum Mode
+        {
+            All = 0,
+            StopByFailure,
+        }
+        protected List<XTask> m_tasks = new List<XTask>();
+        protected Action<bool, int> m_OnComplete;
+        protected Mode m_mode;
         protected int m_step;
+        protected int m_failure;
 
-        public void AddMethod(Action<T> method)
+        protected Action<float> m_OnProgress;
+        protected float m_curWeight;
+        protected float m_maxWeight;
+
+        public XTaskSchedule()
+        {
+            m_step = -1;
+        }
+
+        public void AddMethod(Action method)
         {
             if (method == null)
                 return;
-            m_tasks.Add(new XTaskCallMethod<T>(method));
+            m_tasks.Add(new XTaskCallMethod(method));
         }
 
         public void AddWait(float seconds)
         {
             if (seconds <= 0f)
                 return;
-            m_tasks.Add(new XTaskWaitSeconds<T>(seconds));
+            m_tasks.Add(new XTaskWaitSeconds(seconds));
         }
-        public void AddTask(XTask<T> task)
+        public void AddTask(XTask task)
         {
             if (task == null)
                 return;
             m_tasks.Add(task);
         }
-        public void Start(T obj, Action<bool> OnComplete = null)
+        public void Start(Action<bool, int> OnComplete = null, Action<float> OnProgress = null, Mode mode = Mode.All)
         {
-            m_obj = obj;
-            m_OnComplete = OnComplete;
+            m_mode = mode;
             m_step = 0;
-            m_tasks[m_step].Enter(m_obj);
+            m_failure = 0;
+            m_OnComplete = OnComplete;
+
+            m_curWeight = 0;
+            m_maxWeight = 0;
+            foreach (var task in m_tasks)
+            {
+                m_maxWeight += task.weight;
+            }
+            m_OnProgress = OnProgress;
+            m_OnProgress?.Invoke(0f);
+
+            m_tasks[m_step].Enter();
         }
         public void Stop()
         {
-            if (m_obj == null)
-                return;
-            m_tasks[m_step].Leave(m_obj);
-            m_obj = null;
-            m_OnComplete?.Invoke(false);
-            m_OnComplete = null;
+            m_tasks[m_step].Leave();
+            m_step = -1;
+            m_OnComplete?.Invoke(false, m_failure);
         }
-        public void Complete(bool success)
+        public void Tick(float elapsedTime)
         {
-            if (m_obj == null)
+            if (m_step == -1)
                 return;
-            m_tasks[m_step].Leave(m_obj);
-            m_obj = null;
-            m_OnComplete?.Invoke(success);
-            m_OnComplete = null;
-        }
-        public void Update(float elapsedTime)
-        {
-            if (m_obj == null)
-                return;
-            var result = m_tasks[m_step].Execute(m_obj, elapsedTime);
-            if (result == EnumXTaskResult.Execute)
-                return;
-            if (result == EnumXTaskResult.Failure)
+            var result = m_tasks[m_step].Tick(elapsedTime);
+            if (result >= 0f && result < 1f)
             {
-                Complete(false);
+                float progress = (m_curWeight + m_tasks[m_step].weight * result) / m_maxWeight;
+                m_OnProgress?.Invoke(progress);
                 return;
             }
-            if (result == EnumXTaskResult.Success && m_step + 1 >= m_tasks.Count)
+            if (result < 0f)
             {
-                Complete(true);
-                return;
+                ++m_failure;
+                if (m_mode == Mode.StopByFailure)
+                {
+                    m_step = -1;
+                    m_OnComplete?.Invoke(false, m_failure);
+                    return;
+                }
             }
-            m_tasks[m_step].Leave(m_obj);
+            if (result >= 1f)
+            {
+                if (m_step + 1 >= m_tasks.Count)
+                {
+                    m_step = -1;
+                    m_OnProgress?.Invoke(1f);
+                    m_OnComplete?.Invoke(true, m_failure);
+                    return;
+                }
+            }
+            m_curWeight += m_tasks[m_step].weight;
+            m_OnProgress?.Invoke(m_curWeight / m_maxWeight);
+
+            m_tasks[m_step].Leave();
             m_step += 1;
-            m_tasks[m_step].Enter(m_obj);
+            m_tasks[m_step].Enter();
         }
     }
 }

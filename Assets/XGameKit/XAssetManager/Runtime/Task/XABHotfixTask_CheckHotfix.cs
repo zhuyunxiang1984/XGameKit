@@ -11,17 +11,24 @@ using UnityEditor;
 namespace XGameKit.XAssetManager
 {
     //比较文件列表
-    public class XABHotfixTask_CheckHotfix : XTask<XAssetManagerOrdinary>
+    public class XABHotfixTask_CheckHotfix : XTask
     {
+        protected XAssetManagerOrdinary m_manager;
+
         protected string m_serverAddress;
         protected XFileList m_server_filelist;
         protected XFileList m_client_filelist;
         protected XFileList m_origin_filelist;
-        
-        public override void Enter(XAssetManagerOrdinary obj)
+
+        public XABHotfixTask_CheckHotfix(XAssetManagerOrdinary manager)
         {
-            var assetInfoManager = obj.AssetInfoManager;
-            m_serverAddress = obj.serverAddress;
+            m_manager = manager;
+        }
+
+        public override void Enter()
+        {
+            var assetInfoManager = m_manager.AssetInfoManager;
+            m_serverAddress = m_manager.serverAddress;
 #if UNITY_EDITOR
             m_serverAddress = EditorPrefs.GetString(XABConst.EKResUrl);
             if (string.IsNullOrEmpty(m_serverAddress))
@@ -49,23 +56,22 @@ namespace XGameKit.XAssetManager
                 });
         }
 
-        public override void Leave(XAssetManagerOrdinary obj)
+        public override void Leave()
         {
             
         }
 
-        public override EnumXTaskResult Execute(XAssetManagerOrdinary obj, float elapsedTime)
+        public override float Tick(float elapsedTime)
         {
             if (string.IsNullOrEmpty(m_serverAddress))
-                return EnumXTaskResult.Failure;
+                return -1f;
             if (m_server_filelist == null)
-                return EnumXTaskResult.Execute;
-
-            var hotfixInfo = obj.AssetInfoManager.hotfixInfo;
+                return 0f;
+            var hotfixInfo = m_manager.AssetInfoManager.hotfixInfo;
             _UpdateHotfixInfo(hotfixInfo, m_server_filelist, m_client_filelist, m_origin_filelist);
             XDebug.Log(XABConst.Tag, hotfixInfo.ToLog());
 
-            return EnumXTaskResult.Success;
+            return 1f;
         }
         //设置热更信息
         protected void _UpdateHotfixInfo(XABAssetInfoManager.HotfixInfo hotfixInfo, XFileList server, XFileList client, XFileList origin)

@@ -9,8 +9,10 @@ namespace XGameKit.GameApp
     /// </summary>
     public abstract partial class XGameScene
     {       
-        public string Name { get; protected set; }
+        //unityscene
+        public virtual string UnityScene { get { return string.Empty; } }
 
+        public string Name { get; protected set; }
         public void SetName(string name)
         {
             Name = name;

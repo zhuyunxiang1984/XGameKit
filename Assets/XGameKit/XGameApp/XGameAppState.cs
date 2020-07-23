@@ -1,7 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using XGameKit.Core;
+
+#if UNITY_EDITOR
+using UnityEditor;
+using UnityEditor.SceneManagement;
+#endif
 
 namespace XGameKit.GameApp
 {
@@ -113,23 +119,58 @@ namespace XGameKit.GameApp
     }
     public class XGameAppStateEnterNextScene : XGameAppState
     {
+        protected AsyncOperation m_loadOperation;
         public XGameAppStateEnterNextScene(XGameApp app) : base(app)
         {
         }
         public override void OnEnter()
         {
-            //依次进入场景
-            foreach (var node in m_app.EnterScenesList)
+            //加载unity场景
+            var unityScene = string.Empty;
+            foreach (var node in m_app.CurrScenes)
             {
-                m_app.EnterScene(node);
+                if (string.IsNullOrEmpty(node.scene.UnityScene))
+                    continue;
+                unityScene = node.scene.UnityScene;
             }
-            m_app.ChangeState(EnumGameAppState.None);
+            if (m_app.EnterScenesList.Count > 0)
+            {
+                foreach (var node in m_app.EnterScenesList)
+                {
+                    if (string.IsNullOrEmpty(node.scene.UnityScene))
+                        continue;
+                    unityScene = node.scene.UnityScene;
+                }
+            }
+            if (!string.IsNullOrEmpty(unityScene) && unityScene != m_app.CurrUnityScene)
+            {
+#if UNITY_EDITOR
+                EditorSceneManager.LoadSceneInPlayMode($"Assets/XGameKitSamples/XGameScene/{unityScene}.unity", new LoadSceneParameters(LoadSceneMode.Single));
+#else
+                m_loadOperation = SceneManager.LoadSceneAsync(unityScene);
+#endif
+                m_app.SetCurrUnityScene(unityScene);
+
+            }
+            else
+            {
+                m_loadOperation = null;
+            }
         }
         public override void OnLeave()
         {
         }
         public override void OnTick(float elapsedTime)
         {
+            if (m_loadOperation == null || m_loadOperation.isDone)
+            {
+                //依次进入场景
+                foreach (var node in m_app.EnterScenesList)
+                {
+                    m_app.EnterScene(node);
+                }
+                m_app.ChangeState(EnumGameAppState.None);
+            }
         }
     }
 }

@@ -5,32 +5,39 @@ using XGameKit.Core;
 
 namespace XGameKit.XAssetManager
 {
-    public class XABHotfixTask_LoadHotfixManifest : XTask<XAssetManagerOrdinary>
+    public class XABHotfixTask_LoadHotfixManifest : XTask
     {
-        public override void Enter(XAssetManagerOrdinary obj)
+        protected XAssetManagerOrdinary m_manager;
+
+        public XABHotfixTask_LoadHotfixManifest(XAssetManagerOrdinary manager)
+        {
+            m_manager = manager;
+        }
+
+        public override void Enter()
         {
             var clientHotfixPath = XABUtilities.GetResPath(EnumFileLocation.Client, EnumBundleType.Hotfix);
             if (XABUtilities.ExistManifest(clientHotfixPath))
             {
-                obj.AssetInfoManager.SetHotfixManifest(XABUtilities.ReadManifest(clientHotfixPath));
+                m_manager.AssetInfoManager.SetHotfixManifest(XABUtilities.ReadManifest(clientHotfixPath));
                 return;
             }
             var streamHotfixPath = XABUtilities.GetResPath(EnumFileLocation.Stream, EnumBundleType.Hotfix);
             if (XABUtilities.ExistManifest(streamHotfixPath))
             {
-                obj.AssetInfoManager.SetHotfixManifest(XABUtilities.ReadManifest(streamHotfixPath));
+                m_manager.AssetInfoManager.SetHotfixManifest(XABUtilities.ReadManifest(streamHotfixPath));
                 return;
             }
         }
-        public override void Leave(XAssetManagerOrdinary obj)
+        public override void Leave()
         {
             
             
         }
 
-        public override EnumXTaskResult Execute(XAssetManagerOrdinary obj, float elapsedTime)
+        public override float Tick(float elapsedTime)
         {
-            return EnumXTaskResult.Success;
+            return 1f;
         }
     }
 

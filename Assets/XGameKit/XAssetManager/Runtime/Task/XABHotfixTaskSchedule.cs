@@ -5,21 +5,21 @@ using XGameKit.Core;
 
 namespace XGameKit.XAssetManager
 {
-    public class XABHotfixTaskSchedule : XTaskSchedule<XAssetManagerOrdinary>
+    public class XABHotfixTaskSchedule : XTaskSchedule
     {
-        public XABHotfixTaskSchedule()
+        public XABHotfixTaskSchedule(XAssetManagerOrdinary manager)
         {
-            AddTask(new XABHotfixTask_CheckHotfix());
-            AddTask(new XABHotfixTask_DownloadHotfix());
-            AddTask(new XABHotfixTask_LoadHotfixManifest());
+            AddTask(new XABHotfixTask_CheckHotfix(manager));
+            AddTask(new XABHotfixTask_DownloadHotfix(manager));
+            AddTask(new XABHotfixTask_LoadHotfixManifest(manager));
         }
     }
     
-    public class XABHotfixTaskCheckSchedule : XTaskSchedule<XAssetManagerOrdinary>
+    public class XABHotfixTaskCheckSchedule : XTaskSchedule
     {
-        public XABHotfixTaskCheckSchedule()
+        public XABHotfixTaskCheckSchedule(XAssetManagerOrdinary manager)
         {
-            AddTask(new XABHotfixTask_CheckHotfix());
+            AddTask(new XABHotfixTask_CheckHotfix(manager));
         }
     }
 }

@@ -9,19 +9,23 @@ using UnityEditor;
 
 namespace XGameKit.XAssetManager
 {
-    public class XABHotfixTask_DownloadHotfix : XTask<XAssetManagerOrdinary>
+    public class XABHotfixTask_DownloadHotfix : XTask
     {
+        protected XAssetManagerOrdinary m_manager;
         protected string m_serverAddress;
         protected int m_index;
         protected string m_curDownload;
         protected EnumJobState m_state;
-        protected XAssetManagerOrdinary m_manager;
-        public override void Enter(XAssetManagerOrdinary obj)
+
+        public XABHotfixTask_DownloadHotfix(XAssetManagerOrdinary manager)
         {
-            m_manager = obj;
+            m_manager = manager;
+        }
+        public override void Enter()
+        {
             m_index = 0;
             m_state = EnumJobState.None;
-            m_serverAddress = obj.serverAddress;
+            m_serverAddress = m_manager.serverAddress;
 #if UNITY_EDITOR
             m_serverAddress = EditorPrefs.GetString(XABConst.EKResUrl);
             if (string.IsNullOrEmpty(m_serverAddress))
@@ -32,16 +36,16 @@ namespace XGameKit.XAssetManager
 #endif
         }
 
-        public override void Leave(XAssetManagerOrdinary obj)
+        public override void Leave()
         {
             
         }
 
-        public override EnumXTaskResult Execute(XAssetManagerOrdinary obj, float elapsedTime)
+        public override float Tick(float elapsedTime)
         {
-            var hotfixInfo = obj.AssetInfoManager.hotfixInfo;
+            var hotfixInfo = m_manager.AssetInfoManager.hotfixInfo;
             if (hotfixInfo.download_list.Count < 1)
-                return EnumXTaskResult.Success;
+                return 1f;
             if (m_state == EnumJobState.None)
             {
                 m_index = 0;
@@ -52,10 +56,10 @@ namespace XGameKit.XAssetManager
             {
                 m_index += 1;
                 if (m_index >= hotfixInfo.download_list.Count)
-                    return EnumXTaskResult.Success;
+                    return 1f;
                 _Download(hotfixInfo.download_list[m_index]);
             }
-            return EnumXTaskResult.Execute;
+            return 0f;
         }
 
         protected void _Download(string name)

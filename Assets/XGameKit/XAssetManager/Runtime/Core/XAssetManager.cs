@@ -28,7 +28,7 @@ namespace XGameKit.XAssetManager
             }
         }
 
-        public void Initialize(string serverAddress)
+        public void Initialize(string serverAddress = "")
         {
             m_instance.Initialize(serverAddress);
         }

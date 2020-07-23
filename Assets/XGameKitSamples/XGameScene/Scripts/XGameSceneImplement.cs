@@ -21,4 +21,21 @@ namespace XGameKit.GameSceneSample
     public class XGameSceneTest : XGameScene
     {
     }
+
+    public class XGameSceneTest1 : XGameScene
+    {
+        public override string UnityScene => "SampleScene1";
+    }
+    public class XGameSceneTest2 : XGameScene
+    {
+        public override string UnityScene => "SampleScene2";
+    }
+    public class XGameSceneTest8 : XGameScene
+    {
+        public override string UnityScene => "SampleScene8";
+    }
+    public class XGameSceneTest9 : XGameScene
+    {
+        public override string UnityScene => "SampleScene9";
+    }
 }
