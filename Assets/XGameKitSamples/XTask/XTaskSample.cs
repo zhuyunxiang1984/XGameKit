@@ -39,11 +39,11 @@ public class XTaskSample : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             m_writer.Reset();
-            m_writer.WriteByte(1);
-            m_writer.WriteInt16(2);
-            m_writer.WriteInt32(3);
-            m_writer.WriteFloat(3.14f);
-            m_writer.WriteString("hello world! 你好吗？");
+            for (int i = 0; i < 1024; ++i)
+            {
+                m_writer.WriteInt32(i);
+
+            }
             Debug.Log(m_writer.ToString());
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
@@ -53,12 +53,11 @@ public class XTaskSample : MonoBehaviour
             {
                 m_reader.SetBytes(data);
                 m_reader.Reset();
-                Debug.Log(m_reader.ReadByte());
-                Debug.Log(m_reader.ReadInt16());
-                Debug.Log(m_reader.ReadInt32());
-                Debug.Log(m_reader.ReadFloat());
-                Debug.Log(m_reader.ReadString());
+                for (int i = 0; i < 1024; ++i)
+                {
+                    Debug.Log(m_reader.ReadInt32());
 
+                }
             }
         }
            
