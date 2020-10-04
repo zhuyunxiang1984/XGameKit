@@ -17,7 +17,7 @@ namespace XGameKit.XUI
         //msgmanager
         public XMsgManager MsgManager { get; protected set; } = new XMsgManager();
         //evtmanager
-        public XEvtManager EvtManager { get; protected set; } = new XEvtManager();
+        public XEventManager EventManager { get; protected set; } = new XEventManager();
         //assetloader
         public IXUIAssetLoader AssetLoader { get; protected set; } = new XUIAssetLoaderDefault();
         public IXUILocalizationLoader LocalizationLoader { get; protected set; }=new XUILocalizationLoaderDefault();
@@ -98,7 +98,7 @@ namespace XGameKit.XUI
                 var paramBundle = new XUIParamBundle();
                 paramBundle.AssetLoader = AssetLoader;
                 paramBundle.LocalizationLoader = LocalizationLoader;
-                paramBundle.EvtManager = EvtManager;
+                paramBundle.EventManager = EventManager;
                 paramBundle.MsgManager = MsgManager;
                 paramBundle.uiRoot = uiRoot;
                 paramBundle.TextureManager = TextureManager;

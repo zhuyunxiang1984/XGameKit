@@ -1,13 +1,15 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using XGameKit.Core;
 
 public class XEventSystemSample : MonoBehaviour
 {
+    protected XEventManager m_EventManager;
     void Start()
     {
-        XService.AddService<XEvtManager>();
+        XService.AddService<XEventManager>();
         
         var aa = XService.AddService<XMsgManager>();
         var bb = XService.AddService<XMsgManager>("bb");
@@ -15,6 +17,13 @@ public class XEventSystemSample : MonoBehaviour
         
         aa.Register<XSampleMsg1>(OnHandleMsg1aa);
         bb.Register<XSampleMsg1>(OnHandleMsg1bb);
+        
+        //
+        m_EventManager = XService.GetService<XEventManager>();
+        m_EventManager.AddListener<int>("test1", (param1) => { Debug.Log(param1);});
+        m_EventManager.AddListener<int, int>("test2", (param1,param2) => { Debug.Log($"{param1},{param2}");});
+        m_EventManager.AddListener<int, int, int>("test3", (param1,param2,param3) => { Debug.Log($"{param1},{param2},{param3}");});
+        m_EventManager.AddListener<XSampleEvent1>("test4", (evt) => { Debug.Log(evt.value);});
     }
 
     // Update is called once per frame
@@ -22,36 +31,25 @@ public class XEventSystemSample : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            var evtManager = XService.GetService<XEvtManager>();
-            var evt = evtManager.GetEvent<XSampleEvent1>();
-            evt.value = 100;
-            evtManager.PostEvent(evt);
+            m_EventManager.PostEvent("test1",100);
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            var evtManager = XService.GetService<XEvtManager>();
-            var evt = evtManager.GetEvent<XSampleEvent1>();
-            evt.value = 200;
-            evtManager.PostEvent(evt);
+            m_EventManager.PostEvent("test2",100,200);
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            var msgManager = XService.GetService<XMsgManager>();
-            var mgr = msgManager.GetMsg<XSampleMsg1>();
-            mgr.value = 200;
-            msgManager.SendMsg(mgr);
+            m_EventManager.PostEvent("test3",100,200,300);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            m_EventManager.PostEvent<XSampleEvent1>("test4", (evt) => { evt.value = 999;});
         }
 
         if (Input.GetKeyDown(KeyCode.L))
         {
             XDebug.Log("XObjectPool", XObjectPool.DumpLog());
         }
-    }
-
-    void OnHandleEvent1(XEvent evtbase)
-    {
-        var evt = evtbase as XSampleEvent1;
-        Debug.Log(evt.value);
     }
 
     bool OnHandleMsg1aa(XMessage msgbase)
@@ -69,13 +67,9 @@ public class XEventSystemSample : MonoBehaviour
 }
 
 
-public class XSampleEvent1 : XEvent
+public class XSampleEvent1 : XCustomEvent<XSampleEvent1>
 {
     public int value;
-    public override void Reset()
-    {
-        
-    }
 }
 
 public class XSampleMsg1 : XMessage

@@ -105,7 +105,7 @@ namespace XGameKit.XUI
     public struct XUIParamBundle
     {
         public XMsgManager MsgManager;
-        public XEvtManager EvtManager;
+        public XEventManager EventManager;
         public XUIRoot uiRoot;
         public IXUIAssetLoader AssetLoader;
         public IXUILocalizationLoader LocalizationLoader;
@@ -114,7 +114,7 @@ namespace XGameKit.XUI
         public void Clear()
         {
             MsgManager = null;
-            EvtManager = null;
+            EventManager = null;
             uiRoot = null;
             AssetLoader = null;
             LocalizationLoader = null;
