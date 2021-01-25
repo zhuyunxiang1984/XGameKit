@@ -45,13 +45,20 @@ namespace XGameKit.Core
             var relativePath = string.Empty;
             while (node != child.root)
             {
+                if (string.IsNullOrEmpty(relativePath))
+                {
+                    relativePath = node.name;
+                }
+                else
+                {
+                    relativePath = $"{node.name}/{relativePath}";
+                }
                 var parent = node.parent;
                 if (parent == root)
                 {
-                    if (string.IsNullOrEmpty(relativePath))
-                        return node.name;
-                    return $"{node.name}/{relativePath}";
+                    return relativePath;
                 }
+                node = parent;
             }
             return string.Empty;
         }
