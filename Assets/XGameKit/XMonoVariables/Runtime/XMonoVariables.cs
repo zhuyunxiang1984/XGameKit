@@ -59,23 +59,25 @@ namespace XGameKit.Core
                 {
                     continue;
                 }
-                if (!value.recorded)
-                {
-                    Debug.LogError($"{value.name} 没有记录路径");
-                    continue;
-                }
                 if (value.isself)
                 {
                     value.gameobject = gameObject;
                     continue;
                 }
-                var child = transform.Find(value.relativePath);
-                if (child == null)
+                if (string.IsNullOrEmpty(value.relativePath))
                 {
-                    Debug.LogError($"{value.relativePath} 不存在");
-                    continue;
+                    Debug.LogError($"{value.name} 没有记录路径");
                 }
-                value.gameobject = child.gameObject;
+                else
+                {
+                    var child = transform.Find(value.relativePath);
+                    if (child == null)
+                    {
+                        Debug.LogError($"{value.relativePath} 不存在");
+                        continue;
+                    }
+                    value.gameobject = child.gameObject;
+                }
             }
         }
 
