@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using XGameKit.Core;
 
-namespace XGameKit.XAssetManager
+namespace XGameKit.XAssetManager.Backup
 {
     public class XWebRequestManagerSingle : MonoBehaviour
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using XGameKit.XAssetManager;
+using XGameKit.XAssetManager.Backup;
 
 namespace XGameKit.GameApp
 {

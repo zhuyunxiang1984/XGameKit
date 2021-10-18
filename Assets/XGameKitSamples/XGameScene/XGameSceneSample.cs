@@ -4,7 +4,7 @@ using UnityEngine;
 using XGameKit.Core;
 using XGameKit.GameApp;
 using XGameKit.GameSceneSample;
-using XGameKit.XAssetManager;
+using XGameKit.XAssetManager.Backup;
 using Sirenix.OdinInspector;
 
 public class XGameSceneSample : XGameApp

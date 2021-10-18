@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using XGameKit.Core;
-using XGameKit.XAssetManager;
+using XGameKit.XAssetManager.Backup;
 
 public class XAssetManagerSample : MonoBehaviour
 {
